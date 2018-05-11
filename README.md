@@ -1,5 +1,14 @@
 # Bearings
 
+Bearings is a personal goal tracker for setting daily goals, communicating those goals, and allowing an accountability partner or other interested party have access to give support.
+
+Key features needed:
+- [ ] Daily planning/log with public and private content areas supporting markdown
+- [ ] Daily goal list that rolls over into next day's planning to track completion of previous day
+- [ ] Quarterly or yearly milestone planning to link daily goals toward
+
+## Bearings runs on a Phoenix server and is built with Elixir
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
@@ -8,13 +17,3 @@ To start your Phoenix server:
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
