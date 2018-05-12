@@ -7,8 +7,16 @@ defmodule Bearings.DailiesTest do
   describe "dailies" do
     alias Bearings.Dailies.Daily
 
-    @valid_attrs %{date: ~N[2010-04-17 14:00:00.000000], private_markdown: "some private_markdown", public_markdown: "some public_markdown"}
-    @update_attrs %{date: ~N[2011-05-18 15:01:01.000000], private_markdown: "some updated private_markdown", public_markdown: "some updated public_markdown"}
+    @valid_attrs %{
+      date: ~N[2010-04-17 14:00:00.000000],
+      private_markdown: "some private_markdown",
+      public_markdown: "some public_markdown"
+    }
+    @update_attrs %{
+      date: ~N[2011-05-18 15:01:01.000000],
+      private_markdown: "some updated private_markdown",
+      public_markdown: "some updated public_markdown"
+    }
     @invalid_attrs %{date: nil, private_markdown: nil, public_markdown: nil}
 
     def daily_fixture(attrs \\ %{}) do

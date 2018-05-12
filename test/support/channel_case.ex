@@ -15,6 +15,9 @@ defmodule BearingsWeb.ChannelCase do
 
   use ExUnit.CaseTemplate
 
+  alias Bearings.Repo
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       # Import conveniences for testing with channels
@@ -25,13 +28,13 @@ defmodule BearingsWeb.ChannelCase do
     end
   end
 
-
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Bearings.Repo)
+    :ok = Sandbox.checkout(Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Bearings.Repo, {:shared, self()})
+      Sandbox.mode(Repo, {:shared, self()})
     end
+
     :ok
   end
-
 end
