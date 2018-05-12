@@ -15,7 +15,18 @@ jobs:
       - run: mix local.hex --force
       - run: mix local.rebar --force
       - run: mix deps.get
-      - run: mix ecto.create
+      - run:
+          command: npm install
+          working_directory: assets
       - run: mix credo --strict
       - run: mix format --check-formatted
+      - run:
+          name: eslint
+          command: ./node_modules/.bin/eslint --format=junit --output-file="test/eslint/junit.xml" js/**/*.js
+          working_directory: assets
+      - run:
+          name: build assets
+          command: node node_modules/webpack/bin/webpack.js --mode development
+          working_directory: assets
+      - run: mix ecto.create
       - run: mix test
