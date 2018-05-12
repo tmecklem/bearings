@@ -26,7 +26,7 @@ defmodule Bearings.Mixfile do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "test/support", "test/bearings_web/features/pages"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -37,13 +37,16 @@ defmodule Bearings.Mixfile do
       {:cowboy, "~> 1.0"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.2"},
+      {:ex_machina, "~> 2.2", only: :test},
       {:gettext, "~> 0.11"},
       {:phoenix, "~> 1.3.2"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:timex, "~> 3.1"},
+      {:wallaby, "~> 0.20.0", [runtime: false, only: :test]}
     ]
   end
 

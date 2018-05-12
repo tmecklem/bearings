@@ -1,0 +1,11 @@
+<h1> Daily for <%= @daily.date %></h1>
+
+<div class="daily_public_markdown">
+  <%= to_html(@daily.public_markdown) %>
+</div>
+
+<div class="daily_private_markdown">
+  <%= to_html(@daily.private_markdown) %>
+</div>
+
+<%= link "Edit", to: daily_path(@conn, :edit, @daily.id) %>

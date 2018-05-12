@@ -8,12 +8,12 @@ defmodule Bearings.DailiesTest do
     alias Bearings.Dailies.Daily
 
     @valid_attrs %{
-      date: ~N[2010-04-17 14:00:00.000000],
+      date: ~D[2010-04-17],
       private_markdown: "some private_markdown",
       public_markdown: "some public_markdown"
     }
     @update_attrs %{
-      date: ~N[2011-05-18 15:01:01.000000],
+      date: ~D[2011-05-18],
       private_markdown: "some updated private_markdown",
       public_markdown: "some updated public_markdown"
     }
@@ -40,7 +40,7 @@ defmodule Bearings.DailiesTest do
 
     test "create_daily/1 with valid data creates a daily" do
       assert {:ok, %Daily{} = daily} = Dailies.create_daily(@valid_attrs)
-      assert daily.date == ~N[2010-04-17 14:00:00.000000]
+      assert daily.date == ~D[2010-04-17]
       assert %Markdown{raw: "some private_markdown"} = daily.private_markdown
       assert %Markdown{raw: "some public_markdown"} = daily.public_markdown
     end
@@ -53,7 +53,7 @@ defmodule Bearings.DailiesTest do
       daily = daily_fixture()
       assert {:ok, daily} = Dailies.update_daily(daily, @update_attrs)
       assert %Daily{} = daily
-      assert daily.date == ~N[2011-05-18 15:01:01.000000]
+      assert daily.date == ~D[2011-05-18]
       assert %Markdown{raw: "some updated private_markdown"} = daily.private_markdown
       assert %Markdown{raw: "some updated public_markdown"} = daily.public_markdown
     end

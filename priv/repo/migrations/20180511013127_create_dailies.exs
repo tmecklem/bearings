@@ -3,7 +3,7 @@ defmodule Bearings.Repo.Migrations.CreateDailies do
 
   def change do
     create table(:dailies) do
-      add :date, :naive_datetime
+      add :date, :date
       add :public_markdown, :text
       add :private_markdown, :text
 

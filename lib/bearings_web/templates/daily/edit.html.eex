@@ -1,0 +1,3 @@
+<h1>Daily Goal Sheet</h1>
+
+<%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :update, @daily)) %>

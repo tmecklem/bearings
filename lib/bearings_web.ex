@@ -41,6 +41,7 @@ defmodule BearingsWeb do
       import BearingsWeb.Router.Helpers
       import BearingsWeb.ErrorHelpers
       import BearingsWeb.Gettext
+      import BearingsWeb.MarkdownHelper
     end
   end
 

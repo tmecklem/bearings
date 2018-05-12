@@ -16,7 +16,7 @@ defmodule BearingsWeb.MarkdownHelperTest do
       <h3>H3</h3>
       """
 
-      assert MarkdownHelper.to_html(%Markdown{raw: content}) == expected_html
+      assert {:safe, ^expected_html} = MarkdownHelper.to_html(%Markdown{raw: content})
     end
   end
 end

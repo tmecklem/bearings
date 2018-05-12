@@ -14,14 +14,10 @@ defmodule BearingsWeb.Router do
   end
 
   scope "/", BearingsWeb do
-    # Use the default browser stack
     pipe_through(:browser)
+
+    resources("/dailies", DailyController)
 
     get("/", PageController, :index)
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", BearingsWeb do
-  #   pipe_through :api
-  # end
 end

@@ -7,25 +7,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Bearings!</title>
+    <title></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Do+Hyeon|Vollkorn|Permanent+Marker" rel="stylesheet">
   </head>
 
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
+        <nav role="navigation"></nav>
       </header>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= if get_flash(@conn, :info) do %>
+        <p class="alert alert-info" role="alert" data-test="flash_info"><%= get_flash(@conn, :info) %></p>
+      <% end %>
+      <%= if get_flash(@conn, :error) do %>
+        <p class="alert alert-danger" role="alert" data-test="flash_danger"><%= get_flash(@conn, :error) %></p>
+      <% end %>
 
-      <main role="main">
+      <main role="main" class="main clearfix">
         <%= render @view_module, @view_template, assigns %>
       </main>
 

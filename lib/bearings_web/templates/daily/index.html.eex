@@ -1,0 +1,11 @@
+<ul>
+  <%= for daily <- @dailies do %>
+    <li>
+      <%= link to: daily_path(@conn, :show, daily.id) do %>
+        <%= daily.date %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link "New", to: daily_path(@conn, :new) %>

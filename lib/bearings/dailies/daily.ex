@@ -9,13 +9,13 @@ defmodule Bearings.Dailies.Daily do
   alias Bearings.Dailies.Markdown
 
   @type t :: %__MODULE__{
-          date: NaiveDateTime.t(),
+          date: Date.t(),
           private_markdown: Markdown.t(),
           public_markdown: Markdown.t()
         }
 
   schema "dailies" do
-    field(:date, :naive_datetime)
+    field(:date, :date)
     field(:private_markdown, Markdown)
     field(:public_markdown, Markdown)
 

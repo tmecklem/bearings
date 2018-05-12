@@ -11,6 +11,9 @@ defmodule Bearings.Dailies.Markdown do
   @behaviour Ecto.Type
 
   @impl Ecto.Type
+  def cast(%__MODULE__{} = mod), do: {:ok, mod}
+
+  @impl Ecto.Type
   def cast(markdown) when is_binary(markdown) do
     {:ok, %__MODULE__{raw: markdown}}
   end
@@ -33,4 +36,10 @@ defmodule Bearings.Dailies.Markdown do
 
   @impl Ecto.Type
   def type, do: :string
+
+  defimpl Inspect, for: Bearings.Dailies.Markdown do
+    def inspect(daily, _) do
+      "#Bearings.Dailies.Markdown<#{daily.raw}>"
+    end
+  end
 end
