@@ -14,7 +14,8 @@ defmodule Bearings.DataCase do
 
   use ExUnit.CaseTemplate
 
-  alias Bearings.{Changeset, Repo}
+  alias Bearings.Repo
+  alias Ecto.Changeset
   alias Ecto.Adapters.SQL.Sandbox
 
   using do
