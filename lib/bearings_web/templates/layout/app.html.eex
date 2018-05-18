@@ -9,14 +9,45 @@
 
     <title></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <link href="https://fonts.googleapis.com/css?family=Lato|Do+Hyeon|Vollkorn|Permanent+Marker" rel="stylesheet">
   </head>
 
   <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="#">Bearings</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <%= link "Dailies", to: daily_path(@conn, :index), class: "nav-link" %>
+            </li>
+          </ul>
+          <%= if @current_user do %>
+            <ul class="navbar-nav right">
+              <li class="nav-item dropdown">
+
+                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= @current_user.name %>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <%= link "Logout", to: auth_path(@conn, :delete), method: "delete", class: "dropdown-item" %>
+                </div>
+              </li>
+            </ul>
+          <% else %>
+            <div class="navbar-nav">
+              <%= link to: auth_path(@conn, :index, :github), class: "nav-item nav-link" do %>
+                Login with <i class="fab fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </nav>
+    </header>
     <div class="container">
-      <header class="header">
-        <nav role="navigation"></nav>
-      </header>
 
       <%= if get_flash(@conn, :info) do %>
         <p class="alert alert-info" role="alert" data-test="flash_info"><%= get_flash(@conn, :info) %></p>

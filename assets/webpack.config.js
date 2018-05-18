@@ -27,7 +27,11 @@ module.exports = {
           }, {
             loader: "sass-loader",
             options: {
-              precision: 8
+              precision: 8,
+              includePaths: [
+                'node_modules/bootstrap/scss',
+                'node_modules/@fortawesome/fontawesome-free/scss'
+              ]
             }
           }],
           fallback: 'style-loader'

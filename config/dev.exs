@@ -27,6 +27,8 @@ config :bearings, BearingsWeb.Endpoint,
 
 config :logger, :console, format: "[$level] $message\n"
 
+config :oauth2, debug: true
+
 config :phoenix, :stacktrace_depth, 20
 
 config :bearings, Bearings.Repo,
