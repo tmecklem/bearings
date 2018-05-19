@@ -18,6 +18,7 @@ defmodule Bearings.Dailies.Daily do
     field(:date, :date)
     field(:private_markdown, Markdown)
     field(:public_markdown, Markdown)
+    field(:owner_id, :integer)
 
     timestamps()
   end
@@ -25,7 +26,7 @@ defmodule Bearings.Dailies.Daily do
   @doc false
   def changeset(daily, attrs) do
     daily
-    |> cast(attrs, [:date, :public_markdown, :private_markdown])
-    |> validate_required([:date, :public_markdown, :private_markdown])
+    |> cast(attrs, [:date, :owner_id, :public_markdown, :private_markdown])
+    |> validate_required([:date, :owner_id, :public_markdown, :private_markdown])
   end
 end

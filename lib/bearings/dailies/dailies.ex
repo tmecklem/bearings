@@ -17,8 +17,10 @@ defmodule Bearings.Dailies do
       [%Daily{}, ...]
 
   """
-  def list_dailies do
-    Repo.all(Daily)
+  def list_dailies(owner_id) do
+    Daily
+    |> where(owner_id: ^owner_id)
+    |> Repo.all()
   end
 
   @doc """
