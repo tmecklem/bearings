@@ -3,6 +3,9 @@ defmodule BearingsWeb.FeatureCase do
 
   use ExUnit.CaseTemplate
 
+  alias Bearings.Repo
+  alias BearingsWeb.{Endpoint, FakeOAuthServer}
+  alias Ecto.Adapters.SQL.Sandbox
   alias Wallaby.Browser
 
   using do
@@ -19,7 +22,7 @@ defmodule BearingsWeb.FeatureCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Bearings.Repo)
+    :ok = Sandbox.checkout(Repo)
 
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Bearings.Repo, {:shared, self()})
@@ -28,6 +31,20 @@ defmodule BearingsWeb.FeatureCase do
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Bearings.Repo, self())
     {:ok, session} = Wallaby.start_session(metadata: metadata)
     session = Browser.resize_window(session, 1400, 900)
-    {:ok, session: session}
+
+    auth_server = FakeOAuthServer.open()
+
+    settings =
+      Application.get_env(:bearings, Bearings.OAuth.GitHub)
+      |> Keyword.merge(
+        site: "http://localhost:#{auth_server.port}",
+        authorize_url: "http://localhost:#{auth_server.port}/authorize",
+        token_url: "http://localhost:#{auth_server.port}/access_token",
+        redirect_uri: Endpoint.url() <> "/auth/github/callback"
+      )
+
+    Application.put_env(:bearings, Bearings.OAuth.GitHub, settings)
+
+    {:ok, session: session, auth_server: auth_server}
   end
 end

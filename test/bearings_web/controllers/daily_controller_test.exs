@@ -7,12 +7,20 @@ defmodule BearingsWeb.DailyControllerTest do
     my_dailies = insert_list(4, :daily, owner_id: user.id)
     _others = insert_list(4, :daily)
 
-    {:ok, conn: conn, my_dailies: my_dailies}
+    {:ok, conn: conn, my_dailies: my_dailies, user: user}
   end
 
-  test "GET /", %{conn: conn} do
+  test "index", %{conn: conn} do
     conn = get(conn, "/dailies")
 
     assert 4 == length(conn.assigns.dailies)
+  end
+
+  test "create", %{conn: conn} do
+    params = params_for(:daily, owner_id: nil)
+    conn = post(conn, "dailies", daily: params)
+
+    assert redirected_to(conn) =~ ~r[/dailies/\d+]
+    assert get_flash(conn, :info) != nil
   end
 end

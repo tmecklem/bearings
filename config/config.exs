@@ -23,7 +23,10 @@ config :logger, :console,
 config :bearings, Bearings.OAuth.GitHub,
   client_id: System.get_env("GITHUB_CLIENT_ID"),
   client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
-  redirect_uri: System.get_env("GITHUB_REDIRECT_URI")
+  redirect_uri: System.get_env("GITHUB_REDIRECT_URI"),
+  site: "https://api.github.com",
+  authorize_url: "https://github.com/login/oauth/authorize",
+  token_url: "https://github.com/login/oauth/access_token"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

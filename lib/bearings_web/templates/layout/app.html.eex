@@ -29,7 +29,7 @@
             <ul class="navbar-nav right">
               <li class="nav-item dropdown">
 
-                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-test="current_user">
                   <%= @current_user.name %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -39,7 +39,7 @@
             </ul>
           <% else %>
             <div class="navbar-nav">
-              <%= link to: auth_path(@conn, :index, :github), class: "nav-item nav-link" do %>
+              <%= link to: auth_path(@conn, :index, :github), class: "nav-item nav-link", "data-test": "login" do %>
                 Login with <i class="fab fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
               <% end %>
             </div>

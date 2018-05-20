@@ -26,6 +26,7 @@ defmodule Bearings.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Bearings.DataCase
+      import Bearings.Factory
     end
   end
 

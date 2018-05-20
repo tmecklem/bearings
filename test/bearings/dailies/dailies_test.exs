@@ -19,27 +19,20 @@ defmodule Bearings.DailiesTest do
     }
     @invalid_attrs %{date: nil, private_markdown: nil, public_markdown: nil}
 
-    def daily_fixture(attrs \\ %{}) do
-      {:ok, daily} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Dailies.create_daily()
-
-      daily
-    end
-
     test "list_dailies/0 returns all dailies" do
-      daily = daily_fixture()
-      assert Dailies.list_dailies() == [daily]
+      daily = insert(:daily)
+      assert Dailies.list_dailies(daily.owner_id) == [daily]
     end
 
     test "get_daily!/1 returns the daily with given id" do
-      daily = daily_fixture()
+      daily = insert(:daily)
       assert Dailies.get_daily!(daily.id) == daily
     end
 
     test "create_daily/1 with valid data creates a daily" do
-      assert {:ok, %Daily{} = daily} = Dailies.create_daily(@valid_attrs)
+      user = insert(:user)
+      attrs = Map.put(@valid_attrs, :owner_id, user.id)
+      assert {:ok, %Daily{} = daily} = Dailies.create_daily(attrs)
       assert daily.date == ~D[2010-04-17]
       assert %Markdown{raw: "some private_markdown"} = daily.private_markdown
       assert %Markdown{raw: "some public_markdown"} = daily.public_markdown
@@ -50,7 +43,7 @@ defmodule Bearings.DailiesTest do
     end
 
     test "update_daily/2 with valid data updates the daily" do
-      daily = daily_fixture()
+      daily = insert(:daily)
       assert {:ok, daily} = Dailies.update_daily(daily, @update_attrs)
       assert %Daily{} = daily
       assert daily.date == ~D[2011-05-18]
@@ -59,19 +52,19 @@ defmodule Bearings.DailiesTest do
     end
 
     test "update_daily/2 with invalid data returns error changeset" do
-      daily = daily_fixture()
+      daily = insert(:daily)
       assert {:error, %Ecto.Changeset{}} = Dailies.update_daily(daily, @invalid_attrs)
       assert daily == Dailies.get_daily!(daily.id)
     end
 
     test "delete_daily/1 deletes the daily" do
-      daily = daily_fixture()
+      daily = insert(:daily)
       assert {:ok, %Daily{}} = Dailies.delete_daily(daily)
       assert_raise Ecto.NoResultsError, fn -> Dailies.get_daily!(daily.id) end
     end
 
     test "change_daily/1 returns a daily changeset" do
-      daily = daily_fixture()
+      daily = insert(:daily)
       assert %Ecto.Changeset{} = Dailies.change_daily(daily)
     end
   end

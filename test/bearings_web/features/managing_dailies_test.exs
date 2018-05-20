@@ -1,10 +1,17 @@
 defmodule ManagingDailiesTest do
   use BearingsWeb.FeatureCase
 
-  # import Wallaby.Query, only: [css: 2]
-
   alias BearingsWeb.EditDailiesPage
+  alias BearingsWeb.FakeOAuthServer
   alias BearingsWeb.Page
+
+  setup %{auth_server: auth_server, session: session} do
+    user = insert(:user)
+    FakeOAuthServer.set_user_response(auth_server, user)
+    Page.login(session, user)
+
+    :ok
+  end
 
   test "planning a day", %{session: session} do
     daily = build(:daily)

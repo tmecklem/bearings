@@ -34,6 +34,7 @@ defmodule Bearings.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bypass, "~> 0.8", only: :test},
       {:cowboy, "~> 1.0"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.2"},
