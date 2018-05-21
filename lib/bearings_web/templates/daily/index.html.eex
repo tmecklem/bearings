@@ -1,6 +1,8 @@
-<ul>
+<h1>Your Previous Dailies</h1>
+
+<ul class="list-group">
   <%= for daily <- @dailies do %>
-    <li>
+    <li class="list-group-item">
       <%= link to: daily_path(@conn, :show, daily.id) do %>
         <%= daily.date %>
       <% end %>

@@ -2,21 +2,21 @@
 
 <div class="form-group">
   <%= label f, :date %>
-  <%= date_input(f, :date, "data-test": "date") %>
+  <%= date_input f, :date, class: "form-control", "data-test": "date" %>
   <%= error_tag f, :date %>
 </div>
 
 <div class="form-group">
   <%= label f, :public %>
-  <%= textarea(f, :public_markdown, class: "markdown", "data-test": "public_markdown") %>
+  <%= textarea(f, :public_markdown, class: "markdown form-control", "data-test": "public_markdown") %>
   <%= error_tag f, :public_markdown %>
 </div>
 
 <div class="form-group">
   <%= label f, :private %>
-  <%= textarea(f, :private_markdown, class: "markdown", "data-test": "private_markdown") %>
+  <%= textarea(f, :private_markdown, class: "markdown form-control", "data-test": "private_markdown") %>
   <%= error_tag f, :private_markdown %>
 </div>
 
-<%= submit("Submit", "data-test": "save_daily") %>
+<%= submit "Submit", class: "btn btn-primary", "data-test": "save_daily" %>
 <% end %>
