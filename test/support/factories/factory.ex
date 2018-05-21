@@ -3,4 +3,5 @@ defmodule Bearings.Factory do
   use ExMachina.Ecto, repo: Bearings.Repo
 
   use Bearings.DailyFactory
+  use Bearings.UserFactory
 end

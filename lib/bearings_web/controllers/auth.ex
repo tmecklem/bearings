@@ -12,7 +12,12 @@ defmodule BearingsWeb.Auth do
 
   def call(conn, _) do
     user_id = get_session(conn, :user_id)
-    user = user_id && Account.get_user!(user_id)
-    assign(conn, :current_user, user)
+
+    if conn.assigns[:current_user] do
+      conn
+    else
+      user = user_id && Account.get_user!(user_id)
+      assign(conn, :current_user, user)
+    end
   end
 end

@@ -8,20 +8,11 @@ defmodule Bearings.OAuth.GitHub do
   alias OAuth2.Client
   alias OAuth2.Strategy.AuthCode
 
-  defp config do
-    [
-      strategy: GitHub,
-      site: "https://api.github.com",
-      authorize_url: "https://github.com/login/oauth/authorize",
-      token_url: "https://github.com/login/oauth/access_token"
-    ]
-  end
-
   # Public API
 
   def client do
     Application.get_env(:bearings, __MODULE__)
-    |> Keyword.merge(config())
+    |> Keyword.merge(strategy: GitHub)
     |> Client.new()
   end
 

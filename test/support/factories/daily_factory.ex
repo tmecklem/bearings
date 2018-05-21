@@ -5,6 +5,7 @@ defmodule Bearings.DailyFactory do
       def daily_factory do
         %Bearings.Dailies.Daily{
           date: Date.utc_today(),
+          owner_id: insert(:user).id,
           private_markdown: %Bearings.Dailies.Markdown{raw: "## Private"},
           public_markdown: %Bearings.Dailies.Markdown{raw: "## Public"}
         }
