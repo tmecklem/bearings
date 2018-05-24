@@ -1,11 +1,22 @@
-<h1> Daily for <%= @daily.date %></h1>
+<div class="container daily">
+  <div class="container">
+    <div class="row text-light daily-title">
+      <div class="col-sm-9">Daily Plan</div>
+      <div class="col-sm-3 text-right"><%= @daily.date %></div>
+    </div>
 
-<div class="daily_public_markdown">
-  <%= to_html(@daily.public_markdown) %>
+    <div class="markdown-show">
+      <%= to_html(@daily.public_markdown) %>
+    </div>
+
+    <div class="markdown-show bg-light">
+      <%= to_html(@daily.private_markdown) %>
+    </div>
+  </div>
+
+  <div class="row daily-footer">
+    <div class="col-sm text-right">
+      <%= link "Edit", to: daily_path(@conn, :edit, @daily.id), class: "btn btn-secondary" %>
+    </div>
+  </div>
 </div>
-
-<div class="daily_private_markdown">
-  <%= to_html(@daily.private_markdown) %>
-</div>
-
-<%= link "Edit", to: daily_path(@conn, :edit, @daily.id) %>

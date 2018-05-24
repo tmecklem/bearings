@@ -1,4 +1,5 @@
 
+@import "./variables";
 @import "node_modules/bootstrap/scss/bootstrap";
 
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
@@ -6,3 +7,65 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "fa-brands";
 @import "fa-regular";
 @import "fa-solid";
+
+.navbar-light .navbar-brand {
+  color: $primary;
+}
+
+.daily-form {
+  margin: 3em auto 1em;
+  max-width: 900px;
+}
+
+.daily-form .form-group {
+  margin-top: 2em;
+}
+
+.daily-list {
+  margin-top: 2em;
+}
+
+.daily-card {
+  border: 1px solid $secondary;
+  padding: 0;
+}
+
+.daily {
+  max-width: 700px;
+}
+
+.daily > .container {
+  overflow: auto; //prevent margin collapsing of inside elements with outside container
+  border: 1px solid $primary;
+  padding: 0;
+  margin: 3em auto 1em;
+
+  h1 {
+    font-size : 1.5rem;
+  }
+
+  h2 {
+    font-size : 1.25rem;
+  }
+}
+
+.daily-title {
+  background-color: $primary;
+  padding: 1em 1.5em;
+  text-transform: uppercase;
+}
+
+.daily-footer {
+  text-transform: uppercase;
+}
+
+.markdown {
+  height: 20em;
+}
+
+.markdown-show {
+  font-family: 'Nanum Myeongjo', serif;
+  padding: 2.75em 3.5em;
+  font-size: 0.9rem;
+  border-top: 1px solid lightgrey;
+}

@@ -1,13 +1,21 @@
-<h1>Your Previous Dailies</h1>
+<div class="container daily-list">
+  <h4 class="text-primary">Daily Plans</h4>
 
-<ul class="list-group">
-  <%= for daily <- @dailies do %>
-    <li class="list-group-item">
-      <%= link to: daily_path(@conn, :show, daily.id) do %>
-        <%= daily.date %>
-      <% end %>
-    </li>
-  <% end %>
-</ul>
+  <div class="row">
+    <%= for daily <- @dailies do %>
+      <div class="col-sm-3 daily-card">
+        <div class="bg-secondary">
+          <%= link daily.date, to: daily_path(@conn, :show, daily.id), class: "text-light" %>
+        </div>
+        <div>Important stuff here</div>
+      </div>
+      <div class="offset-sm-1"></div>
+    <% end %>
+  </div>
 
-<%= link "New", to: daily_path(@conn, :new) %>
+  <div class="row">
+    <div class="col-sm-11 text-right">
+      <%= link "New", to: daily_path(@conn, :new), class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>

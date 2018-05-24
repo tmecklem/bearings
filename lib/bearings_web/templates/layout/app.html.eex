@@ -9,6 +9,8 @@
 
     <title></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Lato" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Lato|Nanum+Myeongjo" rel="stylesheet">
   </head>
 
   <body>

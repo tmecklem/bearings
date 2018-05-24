@@ -1,3 +1,4 @@
-<h1>Daily Goal Sheet</h1>
-
-<%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :update, @daily)) %>
+<div class="container daily-form">
+  <h3 class="text-primary">Daily Goal Sheet</h3>
+  <%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :update, @daily)) %>
+</div>
