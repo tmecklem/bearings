@@ -6,6 +6,8 @@ defmodule BearingsWeb.MarkdownHelper do
   alias Bearings.Dailies.Markdown
   alias Phoenix.HTML
 
+  def to_html(nil), do: nil
+
   def to_html(%Markdown{raw: markdown}) do
     case Earmark.as_html(markdown) do
       {:ok, html, _} -> HTML.raw(html)

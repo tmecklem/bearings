@@ -18,5 +18,9 @@ defmodule BearingsWeb.MarkdownHelperTest do
 
       assert {:safe, ^expected_html} = MarkdownHelper.to_html(%Markdown{raw: content})
     end
+
+    test "it handles nil" do
+      assert is_nil(MarkdownHelper.to_html(nil))
+    end
   end
 end

@@ -5,7 +5,7 @@
     <%= for daily <- @dailies do %>
       <div class="col-sm-3 daily-card" data-test="daily">
         <div class="bg-secondary">
-          <%= link daily.date, to: daily_path(@conn, :show, @conn.assigns.current_user, daily.id), class: "text-light" %>
+          <%= link daily.date, to: daily_path(@conn, :show, @conn.params["username"], daily.id), class: "text-light" %>
         </div>
         <div>Important stuff here</div>
       </div>
@@ -15,7 +15,11 @@
 
   <div class="row">
     <div class="col-sm-11 text-right">
-      <%= link "New", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-secondary" %>
+      <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
+        <%= link "New", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-secondary" %>
+      <% else %>
+        <% inspect @conn.assigns.supporter %>
+      <% end %>
     </div>
   </div>
 </div>

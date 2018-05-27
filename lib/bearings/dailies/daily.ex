@@ -23,6 +23,10 @@ defmodule Bearings.Dailies.Daily do
     timestamps()
   end
 
+  def strip_private_markdown(%__MODULE__{} = daily) do
+    %{daily | private_markdown: nil}
+  end
+
   @doc false
   def changeset(daily, attrs) do
     daily

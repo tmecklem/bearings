@@ -143,6 +143,13 @@ defmodule Bearings.Account do
   """
   def get_supporter!(id), do: Repo.get!(Supporter, id)
 
+  def find_supporter(supporter: %User{id: supporter_id}, owner_username: owner_username) do
+    Supporter
+    |> join(:inner, [s], u in assoc(s, :user))
+    |> where([s, u], s.supporter_id == ^supporter_id and u.github_login == ^owner_username)
+    |> Repo.one()
+  end
+
   @doc """
   Creates a supporter.
 

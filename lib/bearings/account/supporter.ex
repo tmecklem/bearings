@@ -1,13 +1,17 @@
 defmodule Bearings.Account.Supporter do
+  @moduledoc """
+  Struct and functions to repesent supporters.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
   alias Bearings.Account.User
 
   schema "supporters" do
-    belongs_to :user, User
-    belongs_to :supporter, User
-    field :accountable, :boolean, default: false
+    belongs_to(:user, User)
+    belongs_to(:supporter, User)
+    field(:accountable, :boolean, default: false)
 
     timestamps()
   end
