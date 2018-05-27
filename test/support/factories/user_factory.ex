@@ -4,9 +4,9 @@ defmodule Bearings.UserFactory do
     quote do
       def user_factory do
         %Bearings.Account.User{
-          email: "test@example.com",
-          github_id: "1353",
-          github_login: "test"
+          email: sequence(:email, &"test#{&1}@example.com"),
+          github_id: sequence(:github_id, &"#{&1}"),
+          github_login: sequence(:github_login, &"login#{&1}")
         }
       end
     end

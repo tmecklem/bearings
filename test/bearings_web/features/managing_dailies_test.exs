@@ -1,7 +1,7 @@
 defmodule ManagingDailiesTest do
   use BearingsWeb.FeatureCase
 
-  alias BearingsWeb.EditDailiesPage
+  alias BearingsWeb.DailiesEditPage
   alias BearingsWeb.FakeOAuthServer
   alias BearingsWeb.Page
 
@@ -10,26 +10,26 @@ defmodule ManagingDailiesTest do
     FakeOAuthServer.set_user_response(auth_server, user)
     Page.login(session, user)
 
-    :ok
+    {:ok, user: user}
   end
 
-  test "planning a day", %{session: session} do
+  test "planning a day", %{session: session, user: user} do
     daily = build(:daily)
 
     session
-    |> EditDailiesPage.visit_add_page()
-    |> EditDailiesPage.fill_form(daily)
-    |> EditDailiesPage.save()
+    |> DailiesEditPage.visit_add_page(user)
+    |> DailiesEditPage.fill_form(daily)
+    |> DailiesEditPage.save()
     |> assert_has(Page.flash_info())
   end
 
-  test "editing a day's plan", %{session: session} do
+  test "editing a day's plan", %{session: session, user: user} do
     daily = insert(:daily)
 
     session
-    |> EditDailiesPage.visit_edit_page(daily)
-    |> EditDailiesPage.fill_form(daily)
-    |> EditDailiesPage.save()
+    |> DailiesEditPage.visit_edit_page(user, daily)
+    |> DailiesEditPage.fill_form(daily)
+    |> DailiesEditPage.save()
     |> assert_has(Page.flash_info())
   end
 end

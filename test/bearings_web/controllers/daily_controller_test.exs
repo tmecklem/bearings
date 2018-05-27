@@ -10,15 +10,15 @@ defmodule BearingsWeb.DailyControllerTest do
     {:ok, conn: conn, my_dailies: my_dailies, user: user}
   end
 
-  test "index", %{conn: conn} do
-    conn = get(conn, "/dailies")
+  test "index", %{conn: conn, user: %{github_login: username}} do
+    conn = get(conn, "/#{username}/dailies")
 
     assert 4 == length(conn.assigns.dailies)
   end
 
-  test "create", %{conn: conn} do
+  test "create", %{conn: conn, user: %{github_login: username}} do
     params = params_for(:daily, owner_id: nil)
-    conn = post(conn, "dailies", daily: params)
+    conn = post(conn, "/#{username}/dailies", daily: params)
 
     assert redirected_to(conn) =~ ~r[/dailies/\d+]
     assert get_flash(conn, :info) != nil

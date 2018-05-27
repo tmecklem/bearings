@@ -16,7 +16,7 @@
 
   <div class="row daily-footer">
     <div class="col-sm text-right">
-      <%= link "Edit", to: daily_path(@conn, :edit, @daily.id), class: "btn btn-secondary" %>
+      <%= link "Edit", to: daily_path(@conn, :edit, @conn.assigns.current_user, @daily.id), class: "btn btn-secondary" %>
     </div>
   </div>
 </div>

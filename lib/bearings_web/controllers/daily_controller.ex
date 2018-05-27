@@ -10,7 +10,7 @@ defmodule BearingsWeb.DailyController do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-  def create(conn, %{"daily" => daily_params}, %{id: user_id}) do
+  def create(conn, %{"daily" => daily_params}, %{id: user_id} = user) do
     daily_params
     |> Map.put("owner_id", user_id)
     |> Dailies.create_daily()
@@ -18,7 +18,7 @@ defmodule BearingsWeb.DailyController do
       {:ok, daily} ->
         conn
         |> put_flash(:info, "Created Successfully")
-        |> redirect(to: daily_path(conn, :show, daily))
+        |> redirect(to: daily_path(conn, :show, user, daily))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -37,10 +37,6 @@ defmodule BearingsWeb.DailyController do
     render(conn, "index.html", dailies: dailies)
   end
 
-  def index(conn, _params, _) do
-    render(conn, "index.html", dailies: [])
-  end
-
   def new(conn, _params, _user) do
     changeset = Dailies.change_daily(%Daily{})
     render(conn, "new.html", changeset: changeset)
@@ -51,14 +47,14 @@ defmodule BearingsWeb.DailyController do
     render(conn, "show.html", daily: daily)
   end
 
-  def update(conn, %{"id" => id, "daily" => daily_params}, _user) do
+  def update(conn, %{"id" => id, "daily" => daily_params}, user) do
     daily = Dailies.get_daily!(id)
 
     case Dailies.update_daily(daily, daily_params) do
       {:ok, daily} ->
         conn
         |> put_flash(:info, "Updated Successfully")
-        |> redirect(to: daily_path(conn, :show, daily))
+        |> redirect(to: daily_path(conn, :show, user, daily))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", changeset: changeset, daily: daily)

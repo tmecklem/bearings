@@ -38,7 +38,7 @@ defmodule Bearings.Mixfile do
       {:cowboy, "~> 1.0"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.2"},
-      {:ex_machina, "~> 2.2", only: :test},
+      {:ex_machina, "~> 2.2", only: [:dev, :test]},
       {:gettext, "~> 0.11"},
       {:oauth2, "~> 0.9.2"},
       {:phoenix, "~> 1.3.2"},

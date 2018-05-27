@@ -1,20 +1,22 @@
-defmodule BearingsWeb.EditDailiesPage do
+defmodule BearingsWeb.DailiesEditPage do
   @moduledoc """
   Module to interact with dailies add/edit pages
   """
 
   use Wallaby.DSL
 
+  import BearingsWeb.Router.Helpers, only: [daily_path: 3, daily_path: 4]
   import Wallaby.Query, only: [css: 1]
 
   alias Bearings.Dailies.Daily
+  alias BearingsWeb.Endpoint
 
-  def visit_add_page(session) do
-    visit(session, "/dailies/new")
+  def visit_add_page(session, user) do
+    visit(session, daily_path(Endpoint, :new, user))
   end
 
-  def visit_edit_page(session, daily) do
-    visit(session, "/dailies/#{daily.id}/edit")
+  def visit_edit_page(session, user, daily) do
+    visit(session, daily_path(Endpoint, :edit, user, daily))
   end
 
   def fill_form(session, %Daily{} = daily) do

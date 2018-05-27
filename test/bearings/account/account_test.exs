@@ -74,4 +74,68 @@ defmodule Bearings.AccountTest do
       assert %Ecto.Changeset{} = Account.change_user(user)
     end
   end
+
+  describe "supporters" do
+    alias Bearings.Account.Supporter
+
+    @valid_attrs %{accountable: true, supporter_id: 42, user_id: 42}
+    @update_attrs %{accountable: false, supporter_id: 43, user_id: 43}
+    @invalid_attrs %{accountable: nil, supporter_id: nil, user_id: nil}
+
+    def supporter_fixture(attrs \\ %{}) do
+      {:ok, supporter} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Account.create_supporter()
+
+      supporter
+    end
+
+    test "list_supporters/0 returns all supporters" do
+      supporter = supporter_fixture()
+      assert Account.list_supporters() == [supporter]
+    end
+
+    test "get_supporter!/1 returns the supporter with given id" do
+      supporter = supporter_fixture()
+      assert Account.get_supporter!(supporter.id) == supporter
+    end
+
+    test "create_supporter/1 with valid data creates a supporter" do
+      assert {:ok, %Supporter{} = supporter} = Account.create_supporter(@valid_attrs)
+      assert supporter.accountable == true
+      assert supporter.supporter_id == 42
+      assert supporter.user_id == 42
+    end
+
+    test "create_supporter/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Account.create_supporter(@invalid_attrs)
+    end
+
+    test "update_supporter/2 with valid data updates the supporter" do
+      supporter = supporter_fixture()
+      assert {:ok, supporter} = Account.update_supporter(supporter, @update_attrs)
+      assert %Supporter{} = supporter
+      assert supporter.accountable == false
+      assert supporter.supporter_id == 43
+      assert supporter.user_id == 43
+    end
+
+    test "update_supporter/2 with invalid data returns error changeset" do
+      supporter = supporter_fixture()
+      assert {:error, %Ecto.Changeset{}} = Account.update_supporter(supporter, @invalid_attrs)
+      assert supporter == Account.get_supporter!(supporter.id)
+    end
+
+    test "delete_supporter/1 deletes the supporter" do
+      supporter = supporter_fixture()
+      assert {:ok, %Supporter{}} = Account.delete_supporter(supporter)
+      assert_raise Ecto.NoResultsError, fn -> Account.get_supporter!(supporter.id) end
+    end
+
+    test "change_supporter/1 returns a supporter changeset" do
+      supporter = supporter_fixture()
+      assert %Ecto.Changeset{} = Account.change_supporter(supporter)
+    end
+  end
 end
