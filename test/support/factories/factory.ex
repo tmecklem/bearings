@@ -5,4 +5,5 @@ defmodule Bearings.Factory do
   use Bearings.DailyFactory
   use Bearings.SupporterFactory
   use Bearings.UserFactory
+  use Bearings.GoalFactory
 end

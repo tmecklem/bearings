@@ -6,6 +6,29 @@
     <%= error_tag f, :date %>
   </div>
 
+  <div class="form-group goals-form">
+    <%= content_tag(:label, "Goals", for: "goals") %>
+    <%= inputs_for f, :goals, fn(g) -> %>
+      <div class="row">
+        <div class="col-10 goal-input">
+          <%= text_input g, :body, class: "form-control", "data-test": "goal-#{g.index}" %>
+          <%= error_tag g, :body %>
+        </div>
+        <div class="col">
+          <%= link("Remove", to: goal_path(@conn, :delete, @conn.assigns.current_user, g.data.id), method: :delete, class: "btn btn-danger") %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-sm text-center">
+      <button class="btn btn-primary" id="add-goal-btn" data-test="add_goal" type="button">
+        Add Goal
+      </button>
+    </div>
+  </div>
+
   <div class="form-group">
     <%= label f, :daily_plan, "Daily Plan" %>
     <p class="form-text text-muted">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
