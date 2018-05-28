@@ -34,7 +34,7 @@ defmodule BearingsWeb.FakeOAuthServer do
           avatar: user.avatar,
           email: user.email,
           id: user.github_id |> Integer.parse() |> elem(0),
-          login: user.github_login,
+          login: user.username,
           name: user.name
         }
         |> Poison.encode!()

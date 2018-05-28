@@ -61,7 +61,7 @@ defmodule BearingsWeb.AuthController do
       email: email,
       name: user["name"],
       github_id: user["id"] |> Integer.to_string(),
-      github_login: user["login"],
+      username: user["login"],
       avatar: user["avatar_url"]
     }
   end

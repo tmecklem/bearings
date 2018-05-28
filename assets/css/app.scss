@@ -21,6 +21,15 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   margin-top: 2em;
 }
 
+.daily-form label {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.daily-form .form-text {
+  font-size: 0.9rem;
+}
+
 .daily-list {
   margin-top: 2em;
 }

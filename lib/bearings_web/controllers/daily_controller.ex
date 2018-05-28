@@ -44,7 +44,7 @@ defmodule BearingsWeb.DailyController do
     render(conn, "edit.html", changeset: changeset, daily: daily)
   end
 
-  def index(conn, %{"username" => username}, %{supporter: %Supporter{accountable: false}}) do
+  def index(conn, %{"username" => username}, %{supporter: %Supporter{include_private: false}}) do
     dailies =
       username
       |> Dailies.list_dailies()
@@ -130,7 +130,7 @@ defmodule BearingsWeb.DailyController do
   end
 
   defp authorize_owner(conn, _opts) do
-    if conn.assigns.current_user.github_login == conn.params["username"] do
+    if conn.assigns.current_user.username == conn.params["username"] do
       conn
     else
       conn
@@ -142,7 +142,7 @@ defmodule BearingsWeb.DailyController do
 
   defp authorize_supporter_or_owner(conn, _opts) do
     cond do
-      conn.assigns.current_user.github_login == conn.params["username"] ->
+      conn.assigns.current_user.username == conn.params["username"] ->
         conn
 
       supporter =
@@ -160,7 +160,7 @@ defmodule BearingsWeb.DailyController do
     end
   end
 
-  defp maybe_strip_private(daily, %{supporter: %Supporter{accountable: false}}) do
+  defp maybe_strip_private(daily, %{supporter: %Supporter{include_private: false}}) do
     Daily.strip_private_markdown(daily)
   end
 

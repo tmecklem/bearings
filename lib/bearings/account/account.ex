@@ -146,7 +146,7 @@ defmodule Bearings.Account do
   def find_supporter(supporter: %User{id: supporter_id}, owner_username: owner_username) do
     Supporter
     |> join(:inner, [s], u in assoc(s, :user))
-    |> where([s, u], s.supporter_id == ^supporter_id and u.github_login == ^owner_username)
+    |> where([s, u], s.supporter_id == ^supporter_id and u.username == ^owner_username)
     |> Repo.one()
   end
 

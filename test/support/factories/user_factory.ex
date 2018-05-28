@@ -6,7 +6,7 @@ defmodule Bearings.UserFactory do
         %Bearings.Account.User{
           email: sequence(:email, &"test#{&1}@example.com"),
           github_id: sequence(:github_id, &"#{&1}"),
-          github_login: sequence(:github_login, &"login#{&1}")
+          username: sequence(:username, &"login#{&1}")
         }
       end
     end

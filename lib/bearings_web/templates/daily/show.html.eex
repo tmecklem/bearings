@@ -6,12 +6,12 @@
     </div>
 
     <div class="markdown-show">
-      <%= to_html(@daily.public_markdown) %>
+      <%= to_html(@daily.daily_plan) %>
     </div>
 
-    <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.accountable == false do %>
+    <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.include_private == false do %>
       <div class="markdown-show bg-light">
-        <%= to_html(@daily.private_markdown) %>
+        <%= to_html(@daily.personal_journal) %>
       </div>
     <% end %>
   </div>

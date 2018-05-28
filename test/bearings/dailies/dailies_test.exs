@@ -9,26 +9,26 @@ defmodule Bearings.DailiesTest do
 
     @valid_attrs %{
       date: ~D[2010-04-17],
-      private_markdown: "some private_markdown",
-      public_markdown: "some public_markdown"
+      personal_journal: "some personal_journal",
+      daily_plan: "some daily_plan"
     }
     @update_attrs %{
       date: ~D[2011-05-18],
-      private_markdown: "some updated private_markdown",
-      public_markdown: "some updated public_markdown"
+      personal_journal: "some updated personal_journal",
+      daily_plan: "some updated daily_plan"
     }
-    @invalid_attrs %{date: nil, private_markdown: nil, public_markdown: nil}
+    @invalid_attrs %{date: nil, personal_journal: nil, daily_plan: nil}
 
     test "list_dailies/0 returns all dailies" do
       user = insert(:user)
       daily = insert(:daily, owner_id: user.id)
-      assert Dailies.list_dailies(user.github_login) == [daily]
+      assert Dailies.list_dailies(user.username) == [daily]
     end
 
     test "get_daily!/2 returns the daily with given date and username" do
       user = insert(:user)
       daily = insert(:daily, owner_id: user.id)
-      assert Dailies.get_daily!(daily.date, user.github_login) == daily
+      assert Dailies.get_daily!(daily.date, user.username) == daily
     end
 
     test "create_daily/1 with valid data creates a daily" do
@@ -36,8 +36,8 @@ defmodule Bearings.DailiesTest do
       attrs = Map.put(@valid_attrs, :owner_id, user.id)
       assert {:ok, %Daily{} = daily} = Dailies.create_daily(attrs)
       assert daily.date == ~D[2010-04-17]
-      assert %Markdown{raw: "some private_markdown"} = daily.private_markdown
-      assert %Markdown{raw: "some public_markdown"} = daily.public_markdown
+      assert %Markdown{raw: "some personal_journal"} = daily.personal_journal
+      assert %Markdown{raw: "some daily_plan"} = daily.daily_plan
     end
 
     test "create_daily/1 with invalid data returns error changeset" do
@@ -49,15 +49,15 @@ defmodule Bearings.DailiesTest do
       assert {:ok, daily} = Dailies.update_daily(daily, @update_attrs)
       assert %Daily{} = daily
       assert daily.date == ~D[2011-05-18]
-      assert %Markdown{raw: "some updated private_markdown"} = daily.private_markdown
-      assert %Markdown{raw: "some updated public_markdown"} = daily.public_markdown
+      assert %Markdown{raw: "some updated personal_journal"} = daily.personal_journal
+      assert %Markdown{raw: "some updated daily_plan"} = daily.daily_plan
     end
 
     test "update_daily/2 with invalid data returns error changeset" do
       user = insert(:user)
       daily = insert(:daily, owner_id: user.id)
       assert {:error, %Ecto.Changeset{}} = Dailies.update_daily(daily, @invalid_attrs)
-      assert daily == Dailies.get_daily!(daily.date, user.github_login)
+      assert daily == Dailies.get_daily!(daily.date, user.username)
     end
 
     test "delete_daily/1 deletes the daily" do
@@ -66,7 +66,7 @@ defmodule Bearings.DailiesTest do
       assert {:ok, %Daily{}} = Dailies.delete_daily(daily)
 
       assert_raise Ecto.NoResultsError, fn ->
-        Dailies.get_daily!(daily.date, user.github_login)
+        Dailies.get_daily!(daily.date, user.username)
       end
     end
 

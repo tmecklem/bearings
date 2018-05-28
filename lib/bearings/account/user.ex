@@ -10,7 +10,7 @@ defmodule Bearings.Account.User do
     field(:avatar, :string)
     field(:email, :string)
     field(:github_id, :string)
-    field(:github_login, :string)
+    field(:username, :string)
     field(:name, :string)
 
     timestamps()
@@ -19,7 +19,9 @@ defmodule Bearings.Account.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:avatar, :email, :github_id, :github_login, :name])
-    |> validate_required([:email, :github_login, :github_id])
+    |> cast(attrs, [:avatar, :email, :github_id, :username, :name])
+    |> validate_required([:email, :username, :github_id])
+    |> unique_constraint(:username, name: :unique_username)
+    |> unique_constraint(:email, name: :unique_email)
   end
 end

@@ -21,7 +21,7 @@ defmodule Bearings.Dailies do
   def list_dailies(username) do
     Daily
     |> join(:inner, [d], o in User, o.id == d.owner_id)
-    |> where([_d, o], o.github_login == ^username)
+    |> where([_d, o], o.username == ^username)
     |> order_by(:date)
     |> Repo.all()
   end
@@ -33,7 +33,7 @@ defmodule Bearings.Dailies do
     Daily
     |> join(:inner, [d], o in User, o.id == d.owner_id)
     |> where([d], d.date == ^date)
-    |> where([_d, o], o.github_login == ^username)
+    |> where([_d, o], o.username == ^username)
     |> Repo.one!()
   end
 

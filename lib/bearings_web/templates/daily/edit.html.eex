@@ -1,4 +1,4 @@
 <div class="container daily-form">
-  <h3 class="text-primary">Daily Goal Sheet</h3>
+  <h3 class="text-primary">Edit Daily Plan</h3>
   <%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :update, @conn.assigns.current_user, @daily)) %>
 </div>

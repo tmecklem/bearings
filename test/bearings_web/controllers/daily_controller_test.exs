@@ -13,13 +13,13 @@ defmodule BearingsWeb.DailyControllerTest do
   end
 
   describe "as owner" do
-    test "index", %{conn: conn, user: %{github_login: username}} do
+    test "index", %{conn: conn, user: %{username: username}} do
       conn = get(conn, "/#{username}/dailies")
 
       assert 4 == length(conn.assigns.dailies)
     end
 
-    test "create", %{conn: conn, user: %{github_login: username}} do
+    test "create", %{conn: conn, user: %{username: username}} do
       params = params_for(:daily, owner_id: nil)
       conn = post(conn, "/#{username}/dailies", daily: params)
 
@@ -56,7 +56,7 @@ defmodule BearingsWeb.DailyControllerTest do
   describe "as accountability partner" do
     setup %{conn: conn, user: user} do
       other = insert(:user)
-      insert(:supporter, supporter: user, user: other, accountable: true)
+      insert(:supporter, supporter: user, user: other, include_private: true)
       other_dailies = insert_list(4, :daily, owner_id: other.id)
 
       {:ok, conn: conn, other_user: other, other_dailies: other_dailies}
@@ -64,12 +64,12 @@ defmodule BearingsWeb.DailyControllerTest do
 
     test "can see index with private markdown", %{
       conn: conn,
-      other_user: %{github_login: username}
+      other_user: %{username: username}
     } do
       conn = get(conn, "/#{username}/dailies")
 
       assert 4 == length(conn.assigns.dailies)
-      assert hd(conn.assigns.dailies).private_markdown != nil
+      assert hd(conn.assigns.dailies).personal_journal != nil
     end
 
     test "create", %{conn: conn, other_user: user} do
@@ -83,7 +83,7 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert html_response(conn, 200)
       assert conn.assigns.daily.id == daily.id
-      assert conn.assigns.daily.private_markdown != nil
+      assert conn.assigns.daily.personal_journal != nil
     end
 
     test "cannot update a daily", %{conn: conn, other_user: user} do
@@ -102,7 +102,7 @@ defmodule BearingsWeb.DailyControllerTest do
   describe "as supporter" do
     setup %{conn: conn, user: user} do
       other = insert(:user)
-      insert(:supporter, supporter: user, user: other, accountable: false)
+      insert(:supporter, supporter: user, user: other, include_private: false)
       other_dailies = insert_list(4, :daily, owner_id: other.id)
 
       {:ok, conn: conn, other_user: other, other_dailies: other_dailies}
@@ -110,12 +110,12 @@ defmodule BearingsWeb.DailyControllerTest do
 
     test "can see index without private section", %{
       conn: conn,
-      other_user: %{github_login: username}
+      other_user: %{username: username}
     } do
       conn = get(conn, "/#{username}/dailies")
 
       assert 4 == length(conn.assigns.dailies)
-      assert hd(conn.assigns.dailies).private_markdown == nil
+      assert hd(conn.assigns.dailies).personal_journal == nil
     end
 
     test "create", %{conn: conn, other_user: user} do
@@ -129,7 +129,7 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert html_response(conn, 200)
       assert conn.assigns.daily.id == daily.id
-      assert conn.assigns.daily.private_markdown == nil
+      assert conn.assigns.daily.personal_journal == nil
     end
 
     test "cannot update a daily", %{conn: conn, other_user: user} do

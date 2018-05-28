@@ -9,14 +9,14 @@ defmodule Bearings.AccountTest do
     @valid_attrs %{
       email: "some email",
       github_id: "some github_id",
-      github_login: "some github_username"
+      username: "some github_username"
     }
     @update_attrs %{
       email: "some updated email",
       github_id: "some updated github_id",
-      github_login: "some updated github_username"
+      username: "some updated github_username"
     }
-    @invalid_attrs %{email: nil, github_id: nil, github_login: nil}
+    @invalid_attrs %{email: nil, github_id: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -41,7 +41,7 @@ defmodule Bearings.AccountTest do
       assert {:ok, %User{} = user} = Account.create_user(@valid_attrs)
       assert user.email == "some email"
       assert user.github_id == "some github_id"
-      assert user.github_login == "some github_username"
+      assert user.username == "some github_username"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -54,7 +54,7 @@ defmodule Bearings.AccountTest do
       assert %User{} = user
       assert user.email == "some updated email"
       assert user.github_id == "some updated github_id"
-      assert user.github_login == "some updated github_username"
+      assert user.username == "some updated github_username"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
@@ -78,9 +78,9 @@ defmodule Bearings.AccountTest do
   describe "supporters" do
     alias Bearings.Account.Supporter
 
-    @valid_attrs %{accountable: true, supporter_id: 42, user_id: 42}
-    @update_attrs %{accountable: false, supporter_id: 43, user_id: 43}
-    @invalid_attrs %{accountable: nil, supporter_id: nil, user_id: nil}
+    @valid_attrs %{include_private: true, supporter_id: 42, user_id: 42}
+    @update_attrs %{include_private: false, supporter_id: 43, user_id: 43}
+    @invalid_attrs %{include_private: nil, supporter_id: nil, user_id: nil}
 
     def supporter_fixture(attrs \\ %{}) do
       {:ok, supporter} =
@@ -103,7 +103,7 @@ defmodule Bearings.AccountTest do
 
     test "create_supporter/1 with valid data creates a supporter" do
       assert {:ok, %Supporter{} = supporter} = Account.create_supporter(@valid_attrs)
-      assert supporter.accountable == true
+      assert supporter.include_private == true
       assert supporter.supporter_id == 42
       assert supporter.user_id == 42
     end
@@ -116,7 +116,7 @@ defmodule Bearings.AccountTest do
       supporter = supporter_fixture()
       assert {:ok, supporter} = Account.update_supporter(supporter, @update_attrs)
       assert %Supporter{} = supporter
-      assert supporter.accountable == false
+      assert supporter.include_private == false
       assert supporter.supporter_id == 43
       assert supporter.user_id == 43
     end
