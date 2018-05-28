@@ -17,9 +17,15 @@ defmodule BearingsWeb.Router do
   scope "/", BearingsWeb do
     pipe_through(:browser)
 
-    resources("/dailies", DailyController)
+    # resources("/dailies", DailyController)
 
     get("/", PageController, :index)
+  end
+
+  scope "/:username", BearingsWeb do
+    pipe_through(:browser)
+
+    resources("/dailies", DailyController, as: :daily)
   end
 
   scope "/auth", BearingsWeb do

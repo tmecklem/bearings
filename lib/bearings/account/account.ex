@@ -111,4 +111,107 @@ defmodule Bearings.Account do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  alias Bearings.Account.Supporter
+
+  @doc """
+  Returns the list of supporters.
+
+  ## Examples
+
+      iex> list_supporters()
+      [%Supporter{}, ...]
+
+  """
+  def list_supporters do
+    Repo.all(Supporter)
+  end
+
+  @doc """
+  Gets a single supporter.
+
+  Raises `Ecto.NoResultsError` if the Supporter does not exist.
+
+  ## Examples
+
+      iex> get_supporter!(123)
+      %Supporter{}
+
+      iex> get_supporter!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_supporter!(id), do: Repo.get!(Supporter, id)
+
+  def find_supporter(supporter: %User{id: supporter_id}, owner_username: owner_username) do
+    Supporter
+    |> join(:inner, [s], u in assoc(s, :user))
+    |> where([s, u], s.supporter_id == ^supporter_id and u.github_login == ^owner_username)
+    |> Repo.one()
+  end
+
+  @doc """
+  Creates a supporter.
+
+  ## Examples
+
+      iex> create_supporter(%{field: value})
+      {:ok, %Supporter{}}
+
+      iex> create_supporter(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_supporter(attrs \\ %{}) do
+    %Supporter{}
+    |> Supporter.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a supporter.
+
+  ## Examples
+
+      iex> update_supporter(supporter, %{field: new_value})
+      {:ok, %Supporter{}}
+
+      iex> update_supporter(supporter, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_supporter(%Supporter{} = supporter, attrs) do
+    supporter
+    |> Supporter.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Supporter.
+
+  ## Examples
+
+      iex> delete_supporter(supporter)
+      {:ok, %Supporter{}}
+
+      iex> delete_supporter(supporter)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_supporter(%Supporter{} = supporter) do
+    Repo.delete(supporter)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking supporter changes.
+
+  ## Examples
+
+      iex> change_supporter(supporter)
+      %Ecto.Changeset{source: %Supporter{}}
+
+  """
+  def change_supporter(%Supporter{} = supporter) do
+    Supporter.changeset(supporter, %{})
+  end
 end

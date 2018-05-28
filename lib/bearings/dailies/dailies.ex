@@ -6,6 +6,7 @@ defmodule Bearings.Dailies do
   import Ecto.Query, warn: false
   alias Bearings.Repo
 
+  alias Bearings.Account.User
   alias Bearings.Dailies.Daily
 
   @doc """
@@ -17,9 +18,10 @@ defmodule Bearings.Dailies do
       [%Daily{}, ...]
 
   """
-  def list_dailies(owner_id) do
+  def list_dailies(username) do
     Daily
-    |> where(owner_id: ^owner_id)
+    |> join(:inner, [d], o in User, o.id == d.owner_id)
+    |> where([_d, o], o.github_login == ^username)
     |> Repo.all()
   end
 
@@ -38,6 +40,14 @@ defmodule Bearings.Dailies do
 
   """
   def get_daily!(id), do: Repo.get!(Daily, id)
+
+  def get_daily!(id, username) do
+    Daily
+    |> join(:inner, [d], o in User, o.id == d.owner_id)
+    |> where([d], d.id == ^id)
+    |> where([_d, o], o.github_login == ^username)
+    |> Repo.one()
+  end
 
   @doc """
   Creates a daily.

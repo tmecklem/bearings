@@ -20,8 +20,9 @@ defmodule Bearings.DailiesTest do
     @invalid_attrs %{date: nil, private_markdown: nil, public_markdown: nil}
 
     test "list_dailies/0 returns all dailies" do
-      daily = insert(:daily)
-      assert Dailies.list_dailies(daily.owner_id) == [daily]
+      user = insert(:user)
+      daily = insert(:daily, owner_id: user.id)
+      assert Dailies.list_dailies(user.github_login) == [daily]
     end
 
     test "get_daily!/1 returns the daily with given id" do
