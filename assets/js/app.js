@@ -4,4 +4,6 @@ import 'phoenix_html'
 import 'bootstrap'
 import DailyForm from './daily-form'
 
-const dailyForm = new DailyForm();
+if (document.getElementById('add-goal-btn')) {
+  DailyForm.init()
+}
