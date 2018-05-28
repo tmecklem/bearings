@@ -9,9 +9,11 @@
       <%= to_html(@daily.public_markdown) %>
     </div>
 
-    <div class="markdown-show bg-light">
-      <%= to_html(@daily.private_markdown) %>
-    </div>
+    <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.accountable == false do %>
+      <div class="markdown-show bg-light">
+        <%= to_html(@daily.private_markdown) %>
+      </div>
+    <% end %>
   </div>
 
   <div class="row daily-footer">
@@ -24,3 +26,5 @@
     </div>
   </div>
 </div>
+
+<p></p>
