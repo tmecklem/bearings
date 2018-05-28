@@ -24,7 +24,7 @@ defmodule ManagingDailiesTest do
   end
 
   test "editing a day's plan", %{session: session, user: user} do
-    daily = insert(:daily)
+    daily = insert(:daily, owner_id: user.id)
 
     session
     |> DailiesEditPage.visit_edit_page(user, daily)

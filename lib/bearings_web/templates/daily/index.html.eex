@@ -5,7 +5,7 @@
     <%= for daily <- @dailies do %>
       <div class="col-sm-3 daily-card" data-test="daily">
         <div class="bg-secondary">
-          <%= link daily.date, to: daily_path(@conn, :show, @conn.params["username"], daily.id), class: "text-light" %>
+          <%= link daily.date, to: daily_path(@conn, :show, @conn.params["username"], daily), class: "text-light" %>
         </div>
         <div>Important stuff here</div>
       </div>

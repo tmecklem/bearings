@@ -22,31 +22,19 @@ defmodule Bearings.Dailies do
     Daily
     |> join(:inner, [d], o in User, o.id == d.owner_id)
     |> where([_d, o], o.github_login == ^username)
+    |> order_by(:date)
     |> Repo.all()
   end
 
   @doc """
   Gets a single daily.
-
-  Raises `Ecto.NoResultsError` if the Daily does not exist.
-
-  ## Examples
-
-      iex> get_daily!(123)
-      %Daily{}
-
-      iex> get_daily!(456)
-      ** (Ecto.NoResultsError)
-
   """
-  def get_daily!(id), do: Repo.get!(Daily, id)
-
-  def get_daily!(id, username) do
+  def get_daily!(date, username) do
     Daily
     |> join(:inner, [d], o in User, o.id == d.owner_id)
-    |> where([d], d.id == ^id)
+    |> where([d], d.date == ^date)
     |> where([_d, o], o.github_login == ^username)
-    |> Repo.one()
+    |> Repo.one!()
   end
 
   @doc """

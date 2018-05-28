@@ -25,9 +25,10 @@ defmodule Bearings.DailiesTest do
       assert Dailies.list_dailies(user.github_login) == [daily]
     end
 
-    test "get_daily!/1 returns the daily with given id" do
-      daily = insert(:daily)
-      assert Dailies.get_daily!(daily.id) == daily
+    test "get_daily!/2 returns the daily with given date and username" do
+      user = insert(:user)
+      daily = insert(:daily, owner_id: user.id)
+      assert Dailies.get_daily!(daily.date, user.github_login) == daily
     end
 
     test "create_daily/1 with valid data creates a daily" do
@@ -53,15 +54,20 @@ defmodule Bearings.DailiesTest do
     end
 
     test "update_daily/2 with invalid data returns error changeset" do
-      daily = insert(:daily)
+      user = insert(:user)
+      daily = insert(:daily, owner_id: user.id)
       assert {:error, %Ecto.Changeset{}} = Dailies.update_daily(daily, @invalid_attrs)
-      assert daily == Dailies.get_daily!(daily.id)
+      assert daily == Dailies.get_daily!(daily.date, user.github_login)
     end
 
     test "delete_daily/1 deletes the daily" do
-      daily = insert(:daily)
+      user = insert(:user)
+      daily = insert(:daily, owner_id: user.id)
       assert {:ok, %Daily{}} = Dailies.delete_daily(daily)
-      assert_raise Ecto.NoResultsError, fn -> Dailies.get_daily!(daily.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Dailies.get_daily!(daily.date, user.github_login)
+      end
     end
 
     test "change_daily/1 returns a daily changeset" do

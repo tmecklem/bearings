@@ -31,6 +31,7 @@ defmodule Bearings.Dailies.Daily do
   def changeset(daily, attrs) do
     daily
     |> cast(attrs, [:date, :owner_id, :public_markdown, :private_markdown])
-    |> validate_required([:date, :owner_id, :public_markdown, :private_markdown])
+    |> validate_required([:date, :owner_id, :public_markdown])
+    |> unique_constraint(:date, name: :unique_owner_id_date)
   end
 end

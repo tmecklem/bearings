@@ -18,7 +18,8 @@
     <div class="col-sm text-right">
       <%= link "Back to List", to: daily_path(@conn, :index, @conn.params["username"]), class: "btn btn-secondary-outline" %>
       <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
-        <%= link "Edit", to: daily_path(@conn, :edit, @conn.params["username"], @daily.id), class: "btn btn-secondary" %>
+        <%= link "Edit", to: daily_path(@conn, :edit, @conn.params["username"], @daily), class: "btn btn-secondary" %>
+        <%= link "Delete", method: :delete, to: daily_path(@conn, :delete, @conn.params["username"], @daily), class: "btn btn-danger" %>
       <% end %>
     </div>
   </div>
