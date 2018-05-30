@@ -21,8 +21,8 @@ defmodule Bearings.DailiesTest do
 
     test "list_dailies/0 returns all dailies" do
       user = insert(:user)
-      daily = insert(:daily, owner_id: user.id)
-      assert Dailies.list_dailies(user.username) == [daily]
+      daily_id = insert(:daily, owner_id: user.id).id
+      assert %Daily{id: ^daily_id} = hd(Dailies.list_dailies(user.username))
     end
 
     test "get_daily!/2 returns the daily with given date and username" do

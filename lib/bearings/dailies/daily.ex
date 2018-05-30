@@ -6,6 +6,7 @@ defmodule Bearings.Dailies.Daily do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Bearings.Account.User
   alias Bearings.Dailies.Markdown
 
   @type t :: %__MODULE__{
@@ -18,7 +19,7 @@ defmodule Bearings.Dailies.Daily do
     field(:date, :date)
     field(:personal_journal, Markdown)
     field(:daily_plan, Markdown)
-    field(:owner_id, :integer)
+    belongs_to(:owner, User)
 
     timestamps()
   end

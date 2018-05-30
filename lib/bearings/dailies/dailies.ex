@@ -20,8 +20,9 @@ defmodule Bearings.Dailies do
   """
   def list_dailies(username) do
     Daily
-    |> join(:inner, [d], o in User, o.id == d.owner_id)
+    |> join(:inner, [d], o in assoc(d, :owner))
     |> where([_d, o], o.username == ^username)
+    |> preload([d], [:owner])
     |> order_by(:date)
     |> Repo.all()
   end
