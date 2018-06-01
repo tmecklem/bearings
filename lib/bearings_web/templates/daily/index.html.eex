@@ -1,17 +1,22 @@
 <div class="container daily-list">
   <h4 class="text-primary">Daily Plans</h4>
 
-  <div class="row">
-    <%= for daily <- @dailies do %>
-      <div class="col-sm-3 daily-card" data-test="daily">
-        <div class="bg-secondary">
-          <%= link daily.date, to: daily_path(@conn, :show, @conn.params["username"], daily), class: "text-light" %>
+  <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
+    <div class="row">
+      <%= for {day, daily} <- week do %>
+        <div class="col-sm daily-card">
+          <div class="bg-secondary text-light">
+            <%= Timex.format!(day, "{M}/{D}") %>
+          </div>
+          <%= if daily do %>
+            <%= link to: daily_path(@conn, :show, @conn.params["username"], daily), "data-test": "daily" do %>
+              <%= img_tag "#{daily.owner.avatar}&size=120", class: "avatar" %>
+            <% end %>
+          <% end %>
         </div>
-        <div>Important stuff here</div>
+      <% end %>
       </div>
-      <div class="offset-sm-1"></div>
     <% end %>
-  </div>
 
   <div class="row">
     <div class="col-sm-11 text-right">
