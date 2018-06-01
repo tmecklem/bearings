@@ -5,5 +5,6 @@ import 'bootstrap'
 import DailyForm from './daily-form'
 
 if (document.getElementById('add-goal-btn')) {
-  DailyForm.init()
+  const dailyForm = new DailyForm()
+  dailyForm.joinDailyChannel()
 }

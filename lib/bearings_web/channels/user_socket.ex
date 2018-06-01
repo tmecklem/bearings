@@ -1,6 +1,8 @@
 defmodule BearingsWeb.UserSocket do
   use Phoenix.Socket
 
+  channel("dailies:*", BearingsWeb.DailyChannel)
+
   transport(:websocket, Phoenix.Transports.WebSocket, timeout: 45_000)
 
   def connect(_params, socket) do

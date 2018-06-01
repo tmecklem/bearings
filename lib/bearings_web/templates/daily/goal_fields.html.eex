@@ -1,0 +1,16 @@
+<%= content_tag(:label, "Goals", for: "goals") %>
+<%= inputs_for @daily_form, :goals, fn g -> %>
+  <div class="row">
+    <div class="col-10 goal-input">
+      <%= text_input g, :body, class: "form-control", id: "goal-#{g.index}" %>
+      <%= error_tag g, :body %>
+    </div>
+    <div class="col">
+      <%= if g.data.id do %>
+        <%= content_tag(:button, "Remove", class: "btn btn-danger remove-btn", "data-event-message": "remove_goal_#{g.data.id}", type: "button") %>
+      <% else %>
+        <%= content_tag(:button, "Save", class: "btn btn-danger save-btn", "data-event-message": "save_goal_#{g.index}", "data-index": "#{g.index}") %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

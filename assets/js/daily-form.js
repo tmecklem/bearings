@@ -1,63 +1,88 @@
+import { Socket } from 'phoenix'
+
 export default class DailyForm {
-  static init () {
+
+  constructor() {
+    this.channel = this.initChannel()
+    this.goalsForm = document.querySelector('.goals-form')
+  }
+
+  initChannel() {
+    let socket = new Socket('/socket', {})
+    socket.connect()
+
+    let channel = socket.channel(`dailies:${this.getDailyId()}`, {username: this.getUserName()})
+    return channel
+  }
+
+  getDailyId() {
+    // Gets the date from the location, allowing
+    // us to get the daily ID to connect to the
+    // right channel.
+    const location = document.location.href
+    return location.match(/(\d{4})-(\d{1,2})-(\d{1,2})/)[0]
+  }
+
+  getUserName() {
+    // Gets the username from location
+    // The channel requires the username
+    // to be passed in as a parameter
+    return document.location.href.match(/\/(.*)\/(.*)\/dailies/)[2]
+  }
+
+  joinDailyChannel() {
+    this.channel.join()
+      .receive('ok', () => {
+       this.initAddGoalButton()
+       this.setChannelEventListeners()
+     })
+      .receive('error', resp => { console.log('Failed to join daily channel', resp) })
+  }
+
+  initAddGoalButton() {
     const addGoalButton = document.getElementById('add-goal-btn')
     if (addGoalButton) {
       addGoalButton.addEventListener('click', (event) => {
-        this.addGoal()
+        this.channel.push('add_goal')
       }, false)
     }
   }
 
-  static addGoal () {
-    const goalsDiv = document.querySelector('.goals-form')
-    const goalsCount = goalsDiv.querySelectorAll('.form-control').length
-    const newInput = this.createGoalForm(goalsCount)
-
-    goalsDiv.appendChild(newInput)
+  setChannelEventListeners() {
+    this.channel.on('new_goal_form', (payload) => {
+      console.log('Got new goal with ', payload)
+      if (this.goalsForm) {
+        while (this.goalsForm.firstChild) {
+          this.goalsForm.removeChild(this.goalsForm.firstChild)
+        }
+        this.goalsForm.insertAdjacentHTML('beforeend', payload.html)
+        this.attachRemoveBtnEventListeners()
+        this.attachSaveBtnEventListeners()
+      }
+    })
   }
 
-  static createGoalForm (goalsCount) {
-    const row = this.createDiv(`row goal-inputs-${goalsCount}`)
-    const inputCol = this.createDiv('col-10')
-    const input = this.createGoalInput(goalsCount)
-    const removeCol = this.createDiv('col')
-    const removeBtn = this.createRemoveBtn(goalsCount)
-    inputCol.appendChild(input)
-    removeCol.appendChild(removeBtn)
-    row.appendChild(inputCol)
-    row.appendChild(removeCol)
-    return row
+  attachRemoveBtnEventListeners() {
+    const btns = this.goalsForm.querySelectorAll('.remove-btn')
+    if (btns && btns.length > 0) {
+      btns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          this.channel.push(btn.data.eventMessage)
+        }, false)
+      })
+    }
   }
 
-  static createDiv (className) {
-    const div = document.createElement('div')
-    div.setAttribute('class', className)
-    return div
-  }
-
-  static createGoalInput (goalsCount) {
-    const input = document.createElement('input')
-    input.setAttribute('class', 'form-control')
-    input.setAttribute('data-test', `goal-${goalsCount}`)
-    input.setAttribute('id', `daily_goals_${goalsCount}_body`)
-    input.setAttribute('name', `daily[goals][${goalsCount}][body]`)
-    input.setAttribute('type', 'text')
-    return input
-  }
-
-  static createRemoveBtn (index) {
-    const btn = document.createElement('button')
-    btn.setAttribute('class', 'btn btn-danger')
-    btn.setAttribute('type', 'button')
-    btn.innerText = 'Remove'
-    btn.addEventListener('click', (e) => {
-      this.removeGoal(index)
-    }, false)
-    return btn
-  }
-
-  static removeGoal (index) {
-    const goalInputs = document.querySelector(`.goal-inputs-${index}`)
-    goalInputs.remove()
+  attachSaveBtnEventListeners() {
+    const btns = this.goalsForm.querySelectorAll('.save-btn')
+    if (btns && btns.length > 0) {
+      btns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const index = btn.data.index
+          const input = this.goalsForm.querySelector(`#goal-${index}`)
+          this.channel.push(btn.data.eventMessage, {body: input.value})
+        }, false)
+      })
+    }
   }
 }
