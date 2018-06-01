@@ -37,6 +37,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 .daily-card {
   border: 1px solid $secondary;
   padding: 0;
+  min-height: 120px;
 }
 
 .daily {
@@ -76,4 +77,18 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   font-family: 'Sorts Mill Goudy', serif;
   padding: 2.75em 3.5em;
   border-top: 1px solid lightgrey;
+}
+
+.avatar:hover{
+  border-radius: 50% 50% 50% 50%;
+  transform: scale(0.90) translate(0px);
+}
+// How To Make Rounded Avatars http://wp.me/p1lTu0-9VQ
+.avatar {
+  margin: 1em;
+  width: 40px;
+  height: 40px;
+  border-radius: 50% 50% 50% 50%;
+  transition:All 0.2s ease;
+  transform: scale(1);
 }
