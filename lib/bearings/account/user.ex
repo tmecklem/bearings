@@ -4,7 +4,10 @@ defmodule Bearings.Account.User do
   """
 
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias Bearings.Account.Supporter
 
   schema "users" do
     field(:avatar, :string)
@@ -12,6 +15,11 @@ defmodule Bearings.Account.User do
     field(:github_id, :string)
     field(:username, :string)
     field(:name, :string)
+
+    # relationships where this user is the supporter
+    has_many(:supports, Supporter, foreign_key: :supporter_id)
+    # users that this user supports
+    has_many(:supports_users, through: [:supports, :user])
 
     timestamps()
   end

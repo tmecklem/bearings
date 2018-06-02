@@ -3,20 +3,22 @@
 
   <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
     <div class="row">
-      <%= for {day, daily} <- week do %>
+      <%= for {day, dailies} <- week do %>
         <div class="col-sm daily-card">
           <div class="bg-secondary text-light">
             <%= Timex.format!(day, "{M}/{D}") %>
           </div>
-          <%= if daily do %>
-            <%= link to: daily_path(@conn, :show, @conn.params["username"], daily), "data-test": "daily" do %>
-              <%= img_tag "#{daily.owner.avatar}&size=120", class: "avatar" %>
+          <%= if Enum.count(dailies) > 0 do %>
+            <%= for daily <- dailies do %>
+              <%= link to: daily_path(@conn, :show, daily.owner.username, daily), "data-test": "daily" do %>
+                <%= img_tag "#{daily.owner.avatar}&size=120", class: "avatar" %>
+              <% end %>
             <% end %>
           <% end %>
         </div>
       <% end %>
-      </div>
-    <% end %>
+    </div>
+  <% end %>
 
   <div class="row">
     <div class="col-sm-11 text-right">

@@ -3,6 +3,6 @@ defmodule BearingsWeb.PageControllerTest do
 
   # test "GET /", %{conn: conn} do
   #   conn = get(conn, "/")
-  #   assert redirected_to(conn) =~ daily_path(conn, :index, nil)
+  #   assert redirected_to(conn) =~ dailies_path(conn, :index)
   # end
 end

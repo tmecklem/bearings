@@ -5,13 +5,13 @@ defmodule BearingsWeb.DailiesIndexPage do
 
   use Wallaby.DSL
 
-  import BearingsWeb.Router.Helpers, only: [daily_path: 3]
+  import BearingsWeb.Router.Helpers, only: [dailies_path: 2]
   import Wallaby.Query, only: [css: 2]
 
   alias BearingsWeb.Endpoint
 
-  def visit_page(session, user) do
-    visit(session, daily_path(Endpoint, :index, user))
+  def visit_page(session) do
+    visit(session, dailies_path(Endpoint, :index))
   end
 
   def dailies(count: count) do

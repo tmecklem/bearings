@@ -147,6 +147,7 @@ defmodule Bearings.Account do
     Supporter
     |> join(:inner, [s], u in assoc(s, :user))
     |> where([s, u], s.supporter_id == ^supporter_id and u.username == ^owner_username)
+    |> preload([s], [:user])
     |> Repo.one()
   end
 

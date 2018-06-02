@@ -25,7 +25,7 @@
             <ul class="navbar-nav right">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <%= link "Dailies", to: daily_path(@conn, :index, @conn.assigns.current_user), class: "nav-link" %>
+                  <%= link "Dailies", to: dailies_path(@conn, :index), class: "nav-link" %>
                 </li>
               </ul>
               <li class="nav-item dropdown">
