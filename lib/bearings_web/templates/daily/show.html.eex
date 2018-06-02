@@ -18,7 +18,7 @@
 
   <div class="row daily-footer">
     <div class="col-sm text-right">
-      <%= link "Back to List", to: daily_path(@conn, :index, @conn.params["username"]), class: "btn btn-secondary-outline" %>
+      <%= link "Back to List", to: @conn.params["return_page"] || daily_path(@conn, :index, @conn.params["username"]), class: "btn btn-secondary-outline" %>
       <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
         <%= link "Edit", to: daily_path(@conn, :edit, @conn.params["username"], @daily), class: "btn btn-secondary" %>
         <%= link "Delete", method: :delete, to: daily_path(@conn, :delete, @conn.params["username"], @daily), class: "btn btn-danger" %>

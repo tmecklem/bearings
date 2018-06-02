@@ -14,12 +14,12 @@ defmodule BearingsWeb.DailyView do
           until: end_date |> Timex.end_of_week(:sun),
           right_open: false
         )
-        |> Enum.map(fn day -> add_daily_for_day(day, dailies) end)
+        |> Enum.map(fn day -> add_dailies_for_day(day, dailies) end)
     end
   end
 
-  defp add_daily_for_day(day, dailies) do
-    {day, Enum.find(dailies, fn daily -> Date.to_erl(daily.date) == Date.to_erl(day) end)}
+  defp add_dailies_for_day(day, dailies) do
+    {day, Enum.filter(dailies, fn(daily) -> Date.to_erl(daily.date) == Date.to_erl(day) end)}
   end
 
   defp dailies_range(nil), do: nil

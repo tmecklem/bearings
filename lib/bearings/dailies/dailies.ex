@@ -10,18 +10,41 @@ defmodule Bearings.Dailies do
   alias Bearings.Dailies.Daily
 
   @doc """
-  Returns the list of dailies.
+  Returns the list of dailies for the user and anyone the user supports.
 
   ## Examples
 
-      iex> list_dailies()
-      [%Daily{}, ...]
+  iex> list_dailies(username)
+  [%Daily{}, ...]
 
   """
-  def list_dailies(username) do
+  def list_dailies(username, options \\ []) do
+    include_supports = Keyword.get(options, :include_supports, false)
+
+    user_ids =
+      case include_supports do
+        true ->
+          user =
+            User
+            |> where([u], u.username == ^username)
+            |> preload(:supports_users)
+            |> Repo.one()
+
+          [user | user.supports_users]
+          |> Enum.map(& &1.id)
+
+        false ->
+          user =
+            User
+            |> where([u], u.username == ^username)
+            |> Repo.one()
+
+          [user.id]
+      end
+
     Daily
     |> join(:inner, [d], o in assoc(d, :owner))
-    |> where([_d, o], o.username == ^username)
+    |> where([_d, o], o.id in ^user_ids)
     |> preload([d], [:owner])
     |> order_by(:date)
     |> Repo.all()

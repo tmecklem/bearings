@@ -44,7 +44,7 @@ defmodule BearingsWeb.DailyController do
     render(conn, "edit.html", changeset: changeset, daily: daily)
   end
 
-  def index(conn, %{"username" => username}, %{supporter: %Supporter{include_private: false}}) do
+  def index(conn, %{"username" => username}, %{supporter: %Supporter{}}) do
     dailies =
       username
       |> Dailies.list_dailies()
@@ -56,8 +56,9 @@ defmodule BearingsWeb.DailyController do
   def index(conn, %{"username" => username}, assigns) do
     dailies =
       username
-      |> Dailies.list_dailies()
+      |> Dailies.list_dailies(include_supports: true)
       |> Enum.map(fn daily -> maybe_strip_private(daily, assigns) end)
+      |> Enum.map(&Daily.strip_private_markdown/1)
 
     render(conn, "index.html", dailies: dailies)
   end

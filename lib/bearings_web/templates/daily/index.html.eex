@@ -1,16 +1,25 @@
 <div class="container daily-list">
   <h4 class="text-primary">Daily Plans</h4>
+  <h5>
+    <%= if @conn.assigns.current_user.username == @conn.params["username"] do %>
+      You and your supports
+    <% else %>
+      <%= @conn.assigns.supporter.user.name || @conn.assigns.supporter.user.username %>
+    <% end %>
+  </h5>
 
   <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
     <div class="row">
-      <%= for {day, daily} <- week do %>
+      <%= for {day, dailies} <- week do %>
         <div class="col-sm daily-card">
           <div class="bg-secondary text-light">
             <%= Timex.format!(day, "{M}/{D}") %>
           </div>
-          <%= if daily do %>
-            <%= link to: daily_path(@conn, :show, @conn.params["username"], daily), "data-test": "daily" do %>
-              <%= img_tag "#{daily.owner.avatar}&size=120", class: "avatar" %>
+          <%= if Enum.count(dailies) > 0 do %>
+            <%= for daily <- dailies do %>
+              <%= link to: daily_path(@conn, :show, daily.owner.username, daily, return_page: daily_path(@conn, :index, @conn.params["username"])), "data-test": "daily" do %>
+                <%= img_tag "#{daily.owner.avatar}&size=120", class: "avatar" %>
+              <% end %>
             <% end %>
           <% end %>
         </div>
