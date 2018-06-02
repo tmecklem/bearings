@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/tmecklem/bearings.svg?style=svg)](https://circleci.com/gh/tmecklem/bearings) [![Coverage Status](https://coveralls.io/repos/github/tmecklem/bearings/badge.svg?branch=master)](https://coveralls.io/github/tmecklem/bearings?branch=master)
+
+
 # Bearings
 
 Bearings is a personal goal tracker for setting daily goals, communicating those goals, and allowing an accountability partner or other interested party have access to give support.
