@@ -1,7 +1,7 @@
 defmodule BearingsWeb.DailyControllerTest do
   use BearingsWeb.ConnCase
 
-  import BearingsWeb.Router.Helpers, only: [daily_path: 3, daily_path: 4]
+  import BearingsWeb.Router.Helpers, only: [dailies_path: 2, daily_path: 3, daily_path: 4]
 
   setup %{conn: conn} do
     user = insert(:user)
@@ -13,8 +13,8 @@ defmodule BearingsWeb.DailyControllerTest do
   end
 
   describe "as owner" do
-    test "index", %{conn: conn, user: %{username: username}} do
-      conn = get(conn, "/#{username}/dailies")
+    test "index", %{conn: conn} do
+      conn = get(conn, dailies_path(conn, :index))
 
       assert 4 == length(conn.assigns.dailies)
     end
@@ -46,7 +46,7 @@ defmodule BearingsWeb.DailyControllerTest do
 
     test "delete", %{conn: conn, user: user} do
       daily = insert(:daily, owner_id: user.id)
-      conn = delete(conn, daily_path(conn, :update, user, daily))
+      conn = delete(conn, daily_path(conn, :delete, user, daily))
 
       assert redirected_to(conn) =~ ~r[/dailies]
       assert get_flash(conn, :info) != nil
@@ -62,14 +62,22 @@ defmodule BearingsWeb.DailyControllerTest do
       {:ok, conn: conn, other_user: other, other_dailies: other_dailies}
     end
 
-    test "can see index with private markdown", %{
+    test "can see index", %{
       conn: conn,
-      other_user: %{username: username}
+      other_dailies: other_dailies
     } do
-      conn = get(conn, "/#{username}/dailies")
+      conn = get(conn, dailies_path(conn, :index))
 
-      assert 4 == length(conn.assigns.dailies)
-      assert hd(conn.assigns.dailies).personal_journal != nil
+      other_ids =
+        other_dailies
+        |> Enum.map(& &1.id)
+
+      actual_ids =
+        conn.assigns.dailies
+        |> Enum.map(& &1.id)
+
+      assert 8 == length(conn.assigns.dailies)
+      assert 4 == length(actual_ids -- other_ids)
     end
 
     test "create", %{conn: conn, other_user: user} do
@@ -108,14 +116,27 @@ defmodule BearingsWeb.DailyControllerTest do
       {:ok, conn: conn, other_user: other, other_dailies: other_dailies}
     end
 
-    test "can see index without private section", %{
+    test "can see index without private journal", %{
       conn: conn,
-      other_user: %{username: username}
+      other_dailies: other_dailies,
+      other_user: user
     } do
-      conn = get(conn, "/#{username}/dailies")
+      conn = get(conn, dailies_path(conn, :index))
 
-      assert 4 == length(conn.assigns.dailies)
-      assert hd(conn.assigns.dailies).personal_journal == nil
+      other_ids =
+        other_dailies
+        |> Enum.map(& &1.id)
+
+      actual_ids =
+        conn.assigns.dailies
+        |> Enum.map(& &1.id)
+
+      scrubbed_daily = Enum.find(conn.assigns.dailies, fn daily -> daily.owner == user end)
+
+      assert 8 == length(conn.assigns.dailies)
+      assert 4 == length(actual_ids -- other_ids)
+      refute is_nil(scrubbed_daily)
+      assert is_nil(scrubbed_daily.personal_journal)
     end
 
     test "create", %{conn: conn, other_user: user} do
@@ -152,11 +173,6 @@ defmodule BearingsWeb.DailyControllerTest do
       other_daily = insert(:daily, owner_id: other.id)
 
       {:ok, other_user: other, other_daily: other_daily}
-    end
-
-    test "cannot see index", %{conn: conn, other_user: user} do
-      conn = get(conn, daily_path(conn, :index, user))
-      assert html_response(conn, 404)
     end
 
     test "cannot create", %{conn: conn, other_user: user} do

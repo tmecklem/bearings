@@ -19,7 +19,7 @@ defmodule BearingsWeb.DailyView do
   end
 
   defp add_dailies_for_day(day, dailies) do
-    {day, Enum.filter(dailies, fn(daily) -> Date.to_erl(daily.date) == Date.to_erl(day) end)}
+    {day, Enum.filter(dailies, fn daily -> Date.to_erl(daily.date) == Date.to_erl(day) end)}
   end
 
   defp dailies_range(nil), do: nil

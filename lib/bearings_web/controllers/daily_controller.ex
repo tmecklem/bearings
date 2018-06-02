@@ -8,7 +8,7 @@ defmodule BearingsWeb.DailyController do
 
   plug(:authenticate)
   plug(:authorize_owner when action in [:new, :create, :edit, :update, :delete])
-  plug(:authorize_supporter_or_owner when action in [:index, :show])
+  plug(:authorize_supporter_or_owner when action in [:show])
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [
@@ -44,20 +44,15 @@ defmodule BearingsWeb.DailyController do
     render(conn, "edit.html", changeset: changeset, daily: daily)
   end
 
-  def index(conn, %{"username" => username}, %{supporter: %Supporter{}}) do
-    dailies =
-      username
-      |> Dailies.list_dailies()
-      |> Enum.map(&Daily.strip_private_markdown/1)
-
-    render(conn, "index.html", dailies: dailies)
+  # temporary redirect for old /username/dailies path
+  def index(conn, %{"username" => _}, _assigns) do
+    redirect(conn, to: dailies_path(conn, :index))
   end
 
-  def index(conn, %{"username" => username}, assigns) do
+  def index(conn, _params, %{user: user}) do
     dailies =
-      username
+      user
       |> Dailies.list_dailies(include_supports: true)
-      |> Enum.map(fn daily -> maybe_strip_private(daily, assigns) end)
       |> Enum.map(&Daily.strip_private_markdown/1)
 
     render(conn, "index.html", dailies: dailies)
@@ -101,7 +96,7 @@ defmodule BearingsWeb.DailyController do
     end
   end
 
-  def delete(conn, %{"id" => date_string, "username" => username}, %{user: user}) do
+  def delete(conn, %{"id" => date_string, "username" => username}, _) do
     date_string
     |> parse_date()
     |> Dailies.get_daily!(username)
@@ -110,12 +105,12 @@ defmodule BearingsWeb.DailyController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Daily successfully deleted")
-        |> redirect(to: daily_path(conn, :index, user))
+        |> redirect(to: dailies_path(conn, :index))
 
-      {:error, changeset} ->
+      {:error, _} ->
         conn
         |> put_flash(:error, "Could not delete daily")
-        |> redirect(to: daily_path(conn, :index, user, changeset.id))
+        |> redirect(to: dailies_path(conn, :index))
     end
   end
 

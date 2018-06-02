@@ -18,7 +18,7 @@ defmodule Bearings.Dailies do
   [%Daily{}, ...]
 
   """
-  def list_dailies(username, options \\ []) do
+  def list_dailies(%User{id: user_id}, options \\ []) do
     include_supports = Keyword.get(options, :include_supports, false)
 
     user_ids =
@@ -26,7 +26,7 @@ defmodule Bearings.Dailies do
         true ->
           user =
             User
-            |> where([u], u.username == ^username)
+            |> where([u], u.id == ^user_id)
             |> preload(:supports_users)
             |> Repo.one()
 
@@ -34,12 +34,7 @@ defmodule Bearings.Dailies do
           |> Enum.map(& &1.id)
 
         false ->
-          user =
-            User
-            |> where([u], u.username == ^username)
-            |> Repo.one()
-
-          [user.id]
+          [user_id]
       end
 
     Daily

@@ -21,7 +21,7 @@ defmodule ViewingDailiesFromOtherUsersTest do
     insert(:daily, owner_id: other_user.id)
 
     session
-    |> DailiesIndexPage.visit_page(other_user)
+    |> DailiesIndexPage.visit_page()
     |> assert_has(DailiesIndexPage.dailies(count: 1))
   end
 end

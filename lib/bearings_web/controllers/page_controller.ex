@@ -9,7 +9,7 @@ defmodule BearingsWeb.PageController do
     render(conn, "index.html")
   end
 
-  def index(conn, _params, user) do
-    redirect(conn, to: daily_path(conn, :index, user))
+  def index(conn, _params, _) do
+    redirect(conn, to: dailies_path(conn, :index))
   end
 end
