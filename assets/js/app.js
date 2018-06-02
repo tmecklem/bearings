@@ -6,5 +6,6 @@ import DailyForm from './daily-form'
 
 if (document.getElementById('add-goal-btn')) {
   const dailyForm = new DailyForm()
+
   dailyForm.joinDailyChannel()
 }

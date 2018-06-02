@@ -1,13 +1,12 @@
 import { Socket } from 'phoenix'
 
 export default class DailyForm {
-
-  constructor() {
+  constructor () {
     this.channel = this.initChannel()
     this.goalsForm = document.querySelector('.goals-form')
   }
 
-  initChannel() {
+  initChannel () {
     let socket = new Socket('/socket', {})
     socket.connect()
 
@@ -15,7 +14,7 @@ export default class DailyForm {
     return channel
   }
 
-  getDailyId() {
+  getDailyId () {
     // Gets the date from the location, allowing
     // us to get the daily ID to connect to the
     // right channel.
@@ -23,23 +22,23 @@ export default class DailyForm {
     return location.match(/(\d{4})-(\d{1,2})-(\d{1,2})/)[0]
   }
 
-  getUserName() {
+  getUserName () {
     // Gets the username from location
     // The channel requires the username
     // to be passed in as a parameter
     return document.location.href.match(/\/(.*)\/(.*)\/dailies/)[2]
   }
 
-  joinDailyChannel() {
+  joinDailyChannel () {
     this.channel.join()
       .receive('ok', () => {
-       this.initAddGoalButton()
-       this.setChannelEventListeners()
-     })
+        this.initAddGoalButton()
+        this.setChannelEventListeners()
+      })
       .receive('error', resp => { console.log('Failed to join daily channel', resp) })
   }
 
-  initAddGoalButton() {
+  initAddGoalButton () {
     const addGoalButton = document.getElementById('add-goal-btn')
     if (addGoalButton) {
       addGoalButton.addEventListener('click', (event) => {
@@ -48,7 +47,7 @@ export default class DailyForm {
     }
   }
 
-  setChannelEventListeners() {
+  setChannelEventListeners () {
     this.channel.on('new_goal_form', (payload) => {
       console.log('Got new goal with ', payload)
       if (this.goalsForm) {
@@ -57,30 +56,16 @@ export default class DailyForm {
         }
         this.goalsForm.insertAdjacentHTML('beforeend', payload.html)
         this.attachRemoveBtnEventListeners()
-        this.attachSaveBtnEventListeners()
       }
     })
   }
 
-  attachRemoveBtnEventListeners() {
+  attachRemoveBtnEventListeners () {
     const btns = this.goalsForm.querySelectorAll('.remove-btn')
     if (btns && btns.length > 0) {
       btns.forEach((btn) => {
         btn.addEventListener('click', (e) => {
-          this.channel.push(btn.data.eventMessage)
-        }, false)
-      })
-    }
-  }
-
-  attachSaveBtnEventListeners() {
-    const btns = this.goalsForm.querySelectorAll('.save-btn')
-    if (btns && btns.length > 0) {
-      btns.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          const index = btn.data.index
-          const input = this.goalsForm.querySelector(`#goal-${index}`)
-          this.channel.push(btn.data.eventMessage, {body: input.value})
+          this.channel.push(btn.id)
         }, false)
       })
     }

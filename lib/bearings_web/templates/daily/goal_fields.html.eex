@@ -6,11 +6,7 @@
       <%= error_tag g, :body %>
     </div>
     <div class="col">
-      <%= if g.data.id do %>
-        <%= content_tag(:button, "Remove", class: "btn btn-danger remove-btn", "data-event-message": "remove_goal_#{g.data.id}", type: "button") %>
-      <% else %>
-        <%= content_tag(:button, "Save", class: "btn btn-danger save-btn", "data-event-message": "save_goal_#{g.index}", "data-index": "#{g.index}") %>
-      <% end %>
+      <%= content_tag(:button, "Remove", class: "btn btn-danger remove-btn", id: "remove_goal#{g.data.id}", type: "button") %>
     </div>
   </div>
 <% end %>

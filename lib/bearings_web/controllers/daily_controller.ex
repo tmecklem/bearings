@@ -59,7 +59,7 @@ defmodule BearingsWeb.DailyController do
   end
 
   def new(conn, _params, _) do
-    changeset = Dailies.change_daily(%Daily{})
+    changeset = Dailies.change_daily(%Daily{goals: [%Bearings.Dailies.Goal{}]})
     render(conn, "new.html", changeset: changeset)
   end
 

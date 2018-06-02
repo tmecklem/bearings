@@ -3,6 +3,7 @@ defmodule BearingsWeb.DailyView do
 
   alias Timex.Interval
   alias Bearings.Dailies.Daily
+  alias Phoenix.HTML.FormData
 
   def calendar(dailies) do
     case dailies_range(dailies) do
@@ -17,6 +18,15 @@ defmodule BearingsWeb.DailyView do
         )
         |> Enum.map(fn day -> add_dailies_for_day(day, dailies) end)
     end
+  end
+
+  def render_goal_fields(%Daily{} = daily) do
+    form =
+      daily
+      |> Daily.changeset(%{})
+      |> FormData.to_form([])
+
+    render_to_string(__MODULE__, "goal_fields.html", daily_form: form)
   end
 
   defp add_dailies_for_day(day, dailies) do
@@ -36,10 +46,5 @@ defmodule BearingsWeb.DailyView do
         {Enum.min_by([start_date, daily.date], &Date.to_erl/1),
          Enum.max_by([end_date, daily.date], &Date.to_erl/1)}
     end)
-
-  def render_goal_fields(%Daily{} = daily) do
-    form = Daily.changeset(daily, %{}) |> Phoenix.HTML.FormData.to_form([])
-
-    render_to_string(__MODULE__, "goal_fields.html", daily_form: form)
   end
 end

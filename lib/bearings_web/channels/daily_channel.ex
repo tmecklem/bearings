@@ -1,4 +1,9 @@
 defmodule BearingsWeb.DailyChannel do
+  @moduledoc """
+  A channel for dynamically updating
+  daily new/edit pages
+  """
+
   use Phoenix.Channel
 
   alias Bearings.Dailies
@@ -32,7 +37,7 @@ defmodule BearingsWeb.DailyChannel do
   end
 
   def handle_in("remove_goal" <> id, _params, socket) do
-    with {:ok, _} <- Dailies.get_goal!(id) |> Dailies.delete_goal() do
+    with {:ok, _} <- id |> Dailies.get_goal!() |> Dailies.delete_goal() do
       socket = update_daily(socket, :refetch)
       push(socket, "new_goal_form", %{html: DailyView.render_goal_fields(socket.assigns.daily)})
       {:noreply, socket}
@@ -46,8 +51,11 @@ defmodule BearingsWeb.DailyChannel do
   ############
 
   def handle_info({:after_join, daily_date, username}, socket) do
-    socket = assign(socket, :daily, Dailies.get_daily!(daily_date, username))
-    |> assign(:username, username)
+    socket =
+      socket
+      |> assign(:daily, Dailies.get_daily!(daily_date, username))
+      |> assign(:username, username)
+
     {:noreply, socket}
   end
 
@@ -56,13 +64,13 @@ defmodule BearingsWeb.DailyChannel do
   ####################
 
   defp update_daily(%{assigns: %{daily: daily}} = socket, :add_goal) do
-    assign(socket, :daily, %Daily{ daily | goals: daily.goals ++ [%Goal{}]})
+    assign(socket, :daily, %Daily{daily | goals: daily.goals ++ [%Goal{}]})
   end
 
   defp update_daily(%{assigns: %{daily: daily}} = socket, :refetch) do
     {_, unsaved} = unsaved_goals(daily)
     daily = Dailies.get_daily!(daily.date, socket.assigns.username)
-    assign(socket, :daily, %Daily{ daily | goals: daily.goals ++ unsaved})
+    assign(socket, :daily, %Daily{daily | goals: daily.goals ++ unsaved})
   end
 
   defp update_daily(%{assigns: %{daily: daily}} = socket, :remove_one_unsaved) do
@@ -70,11 +78,11 @@ defmodule BearingsWeb.DailyChannel do
   end
 
   defp unsaved_goals(daily) do
-    Enum.split_with(daily.goals, &(&1.id))
+    Enum.split_with(daily.goals, & &1.id)
   end
 
   defp drop_one_unsaved_goal(daily) do
     {saved, unsaved} = unsaved_goals(daily)
-    %Daily{ daily | goals: saved ++ Enum.drop(unsaved, 1)}
+    %Daily{daily | goals: saved ++ Enum.drop(unsaved, 1)}
   end
 end
