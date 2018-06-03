@@ -9,6 +9,12 @@
       <%= to_html(@daily.daily_plan) %>
     </div>
 
+    <ul>
+      <%= for goal <- @daily.goals do %>
+        <li><%= goal.body %></li>
+      <% end %>
+    </ul>
+
     <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.include_private == false do %>
       <div class="markdown-show bg-light">
         <%= to_html(@daily.personal_journal) %>
