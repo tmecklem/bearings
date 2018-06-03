@@ -50,9 +50,11 @@ defmodule BearingsWeb.DailyControllerTest do
     test "update removes goals marked for delete", %{conn: conn, user: user} do
       daily = insert(:daily, owner_id: user.id)
       goal = insert(:goal, daily: daily)
+
       params = %{
         "goals" => [%{"mark_for_delete" => "true", "id" => goal.id}]
       }
+
       conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
@@ -64,10 +66,14 @@ defmodule BearingsWeb.DailyControllerTest do
       daily = insert(:daily, owner_id: user.id)
       goal_1 = insert(:goal, daily: daily)
       goal_2 = insert(:goal, daily: daily)
-      params = %{"goals" => [
-                  %{"body" => "", "id" => goal_1.id},
-                  %{"body" => " ", "id" => goal_2.id}
-                ]}
+
+      params = %{
+        "goals" => [
+          %{"body" => "", "id" => goal_1.id},
+          %{"body" => " ", "id" => goal_2.id}
+        ]
+      }
+
       conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
@@ -78,14 +84,18 @@ defmodule BearingsWeb.DailyControllerTest do
 
     test "update adds new goals", %{conn: conn, user: user} do
       daily = insert(:daily, owner_id: user.id)
-      params = %{"goals" => [
-                  %{"body" => "Watch me succeed!"}
-                ]}
+
+      params = %{
+        "goals" => [
+          %{"body" => "Watch me succeed!"}
+        ]
+      }
+
       conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
       assert get_flash(conn, :info) != nil
-      refute is_nil(Bearings.Repo.one(from g in Goal, where: g.body == ^"Watch me succeed!"))
+      refute is_nil(Bearings.Repo.one(from(g in Goal, where: g.body == ^"Watch me succeed!")))
     end
 
     test "update ignores new goals with empty body", %{conn: conn, user: user} do
@@ -95,7 +105,12 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
       assert get_flash(conn, :info) != nil
-      assert is_nil(Bearings.Repo.one(from g in Goal, join: d in assoc(g, :daily), where: d.id == ^daily.id))
+
+      assert is_nil(
+               Bearings.Repo.one(
+                 from(g in Goal, join: d in assoc(g, :daily), where: d.id == ^daily.id)
+               )
+             )
     end
 
     test "delete", %{conn: conn, user: user} do

@@ -23,15 +23,6 @@ defmodule Bearings.Dailies.Goal do
     timestamps()
   end
 
-  def filter_attrs(%{"goals" => goals}) do
-    Enum.reduce(goals, %{}, fn {key, goal_attrs}, acc ->
-      case String.length(goal_attrs["body"]) > 0 do
-        true -> %{acc | key => goal_attrs}
-        false -> acc
-      end
-    end)
-  end
-
   def changeset(goal, attrs) do
     goal
     |> cast(attrs, [:body, :mark_for_delete])
@@ -41,8 +32,13 @@ defmodule Bearings.Dailies.Goal do
 
   defp maybe_mark_for_delete(changeset) do
     cond do
-      get_change(changeset, :mark_for_delete) && get_field(changeset, :id) ->
-        %{changeset | action: :delete}
+      get_change(changeset, :mark_for_delete) ->
+        if get_field(changeset, :id) do
+          %{changeset | action: :delete}
+        else
+          %{changeset | action: :ignore}
+        end
+
       get_field(changeset, :body) == nil || String.trim(get_field(changeset, :body)) == "" ->
         if get_field(changeset, :id) do
           changeset = delete_change(changeset, :body)
@@ -50,6 +46,7 @@ defmodule Bearings.Dailies.Goal do
         else
           %{changeset | action: :ignore}
         end
+
       true ->
         changeset
     end
