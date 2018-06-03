@@ -17,6 +17,7 @@ defmodule Bearings.Dailies.Goal do
   schema "goals" do
     field(:body, :string)
     field(:completed, :boolean)
+    field(:mark_for_delete, :boolean, virtual: true)
     belongs_to(:daily, Daily)
 
     timestamps()
@@ -33,7 +34,24 @@ defmodule Bearings.Dailies.Goal do
 
   def changeset(goal, attrs) do
     goal
-    |> cast(attrs, [:body])
+    |> cast(attrs, [:body, :mark_for_delete])
+    |> maybe_mark_for_delete()
     |> validate_required([:body])
+  end
+
+  defp maybe_mark_for_delete(changeset) do
+    cond do
+      get_change(changeset, :mark_for_delete) && get_field(changeset, :id) ->
+        %{changeset | action: :delete}
+      get_field(changeset, :body) == nil || String.trim(get_field(changeset, :body)) == "" ->
+        if get_field(changeset, :id) do
+          changeset = delete_change(changeset, :body)
+          %{changeset | action: :delete}
+        else
+          %{changeset | action: :ignore}
+        end
+      true ->
+        changeset
+    end
   end
 end

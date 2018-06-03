@@ -21,7 +21,7 @@ defmodule Bearings.Dailies.Daily do
     field(:personal_journal, Markdown)
     field(:daily_plan, Markdown)
     belongs_to(:owner, User)
-    has_many(:goals, Goal, on_delete: :delete_all, on_replace: :delete)
+    has_many(:goals, Goal, on_delete: :delete_all)
 
     timestamps()
   end

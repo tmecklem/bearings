@@ -48,7 +48,7 @@ defmodule Bearings.DailiesTest do
 
   test "get_daily!/2 returns the daily with given date and username" do
     user = insert(:user)
-    daily = insert(:daily, owner_id: user.id)
+    daily = insert(:daily, owner_id: user.id) |> Repo.preload(:goals)
     assert Dailies.get_daily!(daily.date, user.username) == daily
   end
 
@@ -81,7 +81,7 @@ defmodule Bearings.DailiesTest do
 
   test "update_daily/2 with invalid data returns error changeset" do
     user = insert(:user)
-    daily = insert(:daily, owner_id: user.id)
+    daily = insert(:daily, owner_id: user.id) |> Repo.preload(:goals)
     assert {:error, %Ecto.Changeset{}} = Dailies.update_daily(daily, @invalid_attrs)
     assert daily == Dailies.get_daily!(daily.date, user.username)
   end
