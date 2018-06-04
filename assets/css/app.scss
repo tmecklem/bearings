@@ -83,7 +83,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   border-radius: 50% 50% 50% 50%;
   transform: scale(0.90) translate(0px);
 }
-// How To Make Rounded Avatars http://wp.me/p1lTu0-9VQ
+
 .avatar {
   margin: 1em;
   width: 40px;
@@ -91,4 +91,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   border-radius: 50% 50% 50% 50%;
   transition:All 0.2s ease;
   transform: scale(1);
+}
+
+.goals-form > .row {
+  margin-top: 1em;
 }

@@ -22,6 +22,7 @@ defmodule BearingsWeb.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
+      import Bearings.Factory
 
       # The default endpoint for testing
       @endpoint BearingsWeb.Endpoint

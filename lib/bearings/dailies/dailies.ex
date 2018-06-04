@@ -7,7 +7,7 @@ defmodule Bearings.Dailies do
   alias Bearings.Repo
 
   alias Bearings.Account.User
-  alias Bearings.Dailies.Daily
+  alias Bearings.Dailies.{Daily, Goal}
 
   @doc """
   Returns the list of dailies for the user and anyone the user supports.
@@ -43,6 +43,7 @@ defmodule Bearings.Dailies do
     |> preload([d], [:owner])
     |> order_by(:date)
     |> Repo.all()
+    |> Repo.preload([:goals])
   end
 
   @doc """
@@ -54,6 +55,16 @@ defmodule Bearings.Dailies do
     |> where([d], d.date == ^date)
     |> where([_d, o], o.username == ^username)
     |> Repo.one!()
+    |> Repo.preload([:goals])
+  end
+
+  @doc """
+  Gets a single Goal
+  """
+  def get_goal!(id) do
+    Goal
+    |> Repo.get(id)
+    |> Repo.preload([:daily])
   end
 
   @doc """
@@ -106,6 +117,21 @@ defmodule Bearings.Dailies do
   """
   def delete_daily(%Daily{} = daily) do
     Repo.delete(daily)
+  end
+
+  @doc """
+  Deletes a Goal.
+
+  ## Examples
+
+      iex> delete_goal(goal)
+      {:ok, %Goal{}}
+
+      iex> delete_goal(goal)
+      {:error, %Ecto.Changeset{}}
+  """
+  def delete_goal(%Goal{} = goal) do
+    Repo.delete(goal)
   end
 
   @doc """

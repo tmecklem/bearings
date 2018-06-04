@@ -61,6 +61,11 @@ defmodule Bearings.DailiesTest do
     assert %Markdown{raw: "some daily_plan"} = daily.daily_plan
   end
 
+  test "create_daily/1 with invalid goal data returns error changeset" do
+    assert {:error, %Ecto.Changeset{}} =
+             Dailies.create_daily(Map.put(@valid_attrs, :goals, [%{body: ""}]))
+  end
+
   test "create_daily/1 with invalid data returns error changeset" do
     assert {:error, %Ecto.Changeset{}} = Dailies.create_daily(@invalid_attrs)
   end
