@@ -5,6 +5,7 @@ defmodule BearingsWeb.DailyControllerTest do
   import BearingsWeb.Router.Helpers, only: [dailies_path: 2, daily_path: 3, daily_path: 4]
 
   alias Bearings.Dailies.Goal
+  alias Bearings.Repo
 
   setup %{conn: conn} do
     user = insert(:user)
@@ -59,7 +60,7 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
       assert get_flash(conn, :info) != nil
-      assert is_nil(Bearings.Repo.get(Goal, goal.id))
+      assert is_nil(Repo.get(Goal, goal.id))
     end
 
     test "update removes goals with empty body", %{conn: conn, user: user} do
@@ -78,8 +79,8 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
       assert get_flash(conn, :info) != nil
-      assert is_nil(Bearings.Repo.get(Goal, goal_1.id))
-      assert is_nil(Bearings.Repo.get(Goal, goal_2.id))
+      assert is_nil(Repo.get(Goal, goal_1.id))
+      assert is_nil(Repo.get(Goal, goal_2.id))
     end
 
     test "update adds new goals", %{conn: conn, user: user} do
@@ -95,7 +96,7 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
       assert get_flash(conn, :info) != nil
-      refute is_nil(Bearings.Repo.one(from(g in Goal, where: g.body == ^"Watch me succeed!")))
+      refute is_nil(Repo.one(from(g in Goal, where: g.body == ^"Watch me succeed!")))
     end
 
     test "update ignores new goals with empty body", %{conn: conn, user: user} do
@@ -107,9 +108,7 @@ defmodule BearingsWeb.DailyControllerTest do
       assert get_flash(conn, :info) != nil
 
       assert is_nil(
-               Bearings.Repo.one(
-                 from(g in Goal, join: d in assoc(g, :daily), where: d.id == ^daily.id)
-               )
+               Repo.one(from(g in Goal, join: d in assoc(g, :daily), where: d.id == ^daily.id))
              )
     end
 
