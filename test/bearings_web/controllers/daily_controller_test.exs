@@ -1,7 +1,11 @@
 defmodule BearingsWeb.DailyControllerTest do
   use BearingsWeb.ConnCase
 
+  import Ecto.Query
   import BearingsWeb.Router.Helpers, only: [dailies_path: 2, daily_path: 3, daily_path: 4]
+
+  alias Bearings.Dailies.Goal
+  alias Bearings.Repo
 
   setup %{conn: conn} do
     user = insert(:user)
@@ -42,6 +46,70 @@ defmodule BearingsWeb.DailyControllerTest do
 
       assert redirected_to(conn) =~ ~r[/dailies/\d+]
       assert get_flash(conn, :info) != nil
+    end
+
+    test "update removes goals marked for delete", %{conn: conn, user: user} do
+      daily = insert(:daily, owner_id: user.id)
+      goal = insert(:goal, daily: daily)
+
+      params = %{
+        "goals" => [%{"mark_for_delete" => "true", "id" => goal.id}]
+      }
+
+      conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
+
+      assert redirected_to(conn) =~ ~r[/dailies/\d+]
+      assert get_flash(conn, :info) != nil
+      assert is_nil(Repo.get(Goal, goal.id))
+    end
+
+    test "update removes goals with empty body", %{conn: conn, user: user} do
+      daily = insert(:daily, owner_id: user.id)
+      goal_1 = insert(:goal, daily: daily)
+      goal_2 = insert(:goal, daily: daily)
+
+      params = %{
+        "goals" => [
+          %{"body" => "", "id" => goal_1.id},
+          %{"body" => " ", "id" => goal_2.id}
+        ]
+      }
+
+      conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
+
+      assert redirected_to(conn) =~ ~r[/dailies/\d+]
+      assert get_flash(conn, :info) != nil
+      assert is_nil(Repo.get(Goal, goal_1.id))
+      assert is_nil(Repo.get(Goal, goal_2.id))
+    end
+
+    test "update adds new goals", %{conn: conn, user: user} do
+      daily = insert(:daily, owner_id: user.id)
+
+      params = %{
+        "goals" => [
+          %{"body" => "Watch me succeed!", index: "0"}
+        ]
+      }
+
+      conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
+
+      assert redirected_to(conn) =~ ~r[/dailies/\d+]
+      assert get_flash(conn, :info) != nil
+      refute is_nil(Repo.one(from(g in Goal, where: g.body == ^"Watch me succeed!")))
+    end
+
+    test "update ignores new goals with empty body", %{conn: conn, user: user} do
+      daily = insert(:daily, owner_id: user.id)
+      params = %{"goals" => [%{"body" => " "}]}
+      conn = put(conn, daily_path(conn, :update, user, daily), daily: params)
+
+      assert redirected_to(conn) =~ ~r[/dailies/\d+]
+      assert get_flash(conn, :info) != nil
+
+      assert is_nil(
+               Repo.one(from(g in Goal, join: d in assoc(g, :daily), where: d.id == ^daily.id))
+             )
     end
 
     test "delete", %{conn: conn, user: user} do

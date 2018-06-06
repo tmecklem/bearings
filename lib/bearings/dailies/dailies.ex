@@ -43,7 +43,7 @@ defmodule Bearings.Dailies do
     |> preload([d], [:owner])
     |> order_by(:date)
     |> Repo.all()
-    |> Repo.preload([:goals])
+    |> Repo.preload(goals: from(g in Goal, order_by: g.index))
   end
 
   @doc """
@@ -54,8 +54,9 @@ defmodule Bearings.Dailies do
     |> join(:inner, [d], o in User, o.id == d.owner_id)
     |> where([d], d.date == ^date)
     |> where([_d, o], o.username == ^username)
+    |> order_by(:date)
     |> Repo.one!()
-    |> Repo.preload([:goals])
+    |> Repo.preload(goals: from(g in Goal, order_by: g.index))
   end
 
   @doc """

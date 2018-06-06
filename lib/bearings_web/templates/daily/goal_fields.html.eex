@@ -1,12 +1,16 @@
 <%= content_tag(:label, "Goals", for: "goals") %>
-<%= inputs_for @daily_form, :goals, fn g -> %>
+<%= inputs_for @daily_form, :goals, [append: Enum.map((1..5), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
   <div class="row">
-    <div class="col-10 goal-input">
-      <%= text_input g, :body, class: "form-control", id: "goal-#{g.index}" %>
+    <%= hidden_input g, :index, value: g.index %>
+    <div class="col">
+      <%= checkbox g, :completed, class: "form-control", "data-test": "goal_completed", "data-test-id": g.data.id %>
+    </div>
+    <div class="col-8 goal-input">
+      <%= text_input g, :body, class: "form-control", "data-test": "goal_body", "data-test-id": g.data.id %>
       <%= error_tag g, :body %>
     </div>
-    <div class="col">
-      <%= content_tag(:button, "Remove", class: "btn btn-danger remove-btn", id: "remove_goal#{g.data.id}", type: "button") %>
+    <div class="col-3">
+      <%= checkbox g, :mark_for_delete %> Delete
     </div>
   </div>
 <% end %>
