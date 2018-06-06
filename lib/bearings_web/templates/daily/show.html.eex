@@ -9,11 +9,23 @@
       <%= to_html(@daily.daily_plan) %>
     </div>
 
-    <ul>
-      <%= for goal <- @daily.goals do %>
-        <li><%= goal.body %></li>
-      <% end %>
-    </ul>
+    <%= if Enum.count(@daily.goals) > 0 do %>
+      <div class="goals-list">
+        <h4> Goals </h4>
+        <%= for goal <- @daily.goals do %>
+          <div data-test="goal" data-test-id="<%= goal.id %>">
+            <span data-test="completed">
+              <%= if goal.completed do %>
+                ☑
+              <% else %>
+                ☐
+              <% end %>
+            </span>
+            <span data-test="body"><%= goal.body %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
 
     <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.include_private == false do %>
       <div class="markdown-show bg-light">

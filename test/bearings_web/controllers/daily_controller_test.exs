@@ -88,7 +88,7 @@ defmodule BearingsWeb.DailyControllerTest do
 
       params = %{
         "goals" => [
-          %{"body" => "Watch me succeed!"}
+          %{"body" => "Watch me succeed!", index: "0"}
         ]
       }
 
