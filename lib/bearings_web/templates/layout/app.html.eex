@@ -9,7 +9,7 @@
 
     <title></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <link href="https://fonts.googleapis.com/css?family=Lato|Sorts+Mill+Goudy" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans|IBM+Plex+Serif" rel="stylesheet">
   </head>
 
   <body>
@@ -48,7 +48,7 @@
         </div>
       </nav>
     </header>
-    <div class="container">
+    <div class="container px-0 px-lg-auto">
 
       <%= if get_flash(@conn, :info) do %>
         <p class="alert alert-info" role="alert" data-test="flash_info"><%= get_flash(@conn, :info) %></p>

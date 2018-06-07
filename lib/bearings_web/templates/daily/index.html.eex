@@ -1,12 +1,14 @@
 <div class="container daily-list">
-  <h4 class="text-primary">Daily Plans</h4>
+  <div class="row">
+    <h4 class="col-12 text-primary mb-3 text-center">Daily Plans</h4>
+  </div>
 
   <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
     <div class="row">
       <%= for {day, dailies} <- week do %>
         <div class="col-sm daily-card">
-          <div class="bg-secondary text-light">
-            <%= Timex.format!(day, "{M}/{D}") %>
+          <div class="bg-secondary text-light text-center">
+            <%= Timex.format!(day, "%b %d", :strftime) %>
           </div>
           <%= if Enum.count(dailies) > 0 do %>
             <%= for daily <- dailies do %>
@@ -20,10 +22,10 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col-sm-11 text-right">
+  <div class="row my-3">
+    <div class="col-12">
       <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
-        <%= link "New", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-secondary" %>
+        <%= link "Plan a New Day", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-secondary float-right" %>
       <% else %>
         <% inspect @conn.assigns.supporter %>
       <% end %>

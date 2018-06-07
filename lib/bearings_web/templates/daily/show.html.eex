@@ -1,19 +1,18 @@
-<div class="container daily">
+<div class="container daily px-0 mt-0 mt-md-4">
   <div class="container">
     <div class="row text-light daily-title">
-      <div class="col-sm-9">Daily Plan</div>
-      <div class="col-sm-3 text-right"><%= @daily.date %></div>
+      <div class="col-12">Daily Plan <span class="float-right"><%= @daily.date %></span></div>
     </div>
 
-    <div class="markdown-show">
+    <div class="markdown-show px-4 px-md-5 pt-3">
       <%= to_html(@daily.daily_plan) %>
     </div>
 
     <%= if Enum.count(@daily.goals) > 0 do %>
-      <div class="goals-list">
+      <div class="goals-list px-4 px-md-5">
         <h4> Goals </h4>
         <%= for goal <- @daily.goals do %>
-          <div data-test="goal" data-test-id="<%= goal.id %>">
+          <div data-test="goal" data-test-id="<%= goal.id %>" class="pl-4">
             <span data-test="completed">
               <%= if goal.completed do %>
                 ☑
@@ -28,13 +27,13 @@
     <% end %>
 
     <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.include_private == false do %>
-      <div class="markdown-show bg-light">
+      <div class="markdown-show bg-light px-4 px-md-5 py-5">
         <%= to_html(@daily.personal_journal) %>
       </div>
     <% end %>
   </div>
 
-  <div class="row daily-footer">
+  <div class="row mt-1" daily-footer">
     <div class="col-sm text-right">
       <%= link "Back to List", to: dailies_path(@conn, :index), class: "btn btn-secondary-outline" %>
       <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
