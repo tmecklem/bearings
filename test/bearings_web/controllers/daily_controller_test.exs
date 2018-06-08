@@ -39,6 +39,17 @@ defmodule BearingsWeb.DailyControllerTest do
       assert conn.assigns.daily.id == daily.id
     end
 
+    test "show includes next and previous daily ids", %{conn: conn, user: user} do
+      daily = insert(:daily, owner_id: user.id)
+      yesterday = insert(:daily, owner_id: user.id, date: Timex.shift(daily.date, days: -1))
+      tomorrow = insert(:daily, owner_id: user.id, date: Timex.shift(daily.date, days: 1))
+      conn = get(conn, daily_path(conn, :show, user, daily))
+
+      assert html_response(conn, 200)
+      assert yesterday.id == conn.assigns.previous_daily.id
+      assert tomorrow.id == conn.assigns.next_daily.id
+    end
+
     test "update", %{conn: conn, user: user} do
       daily = insert(:daily, owner_id: user.id)
       params = params_for(:daily, owner_id: nil)

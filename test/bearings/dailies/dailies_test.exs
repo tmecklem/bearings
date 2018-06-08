@@ -100,4 +100,18 @@ defmodule Bearings.DailiesTest do
     daily = insert(:daily)
     assert %Ecto.Changeset{} = Dailies.change_daily(daily)
   end
+
+  test "get_adjacent/1 returns the previous and next daily ids for the daily's owner" do
+    owner = insert(:user)
+
+    %Daily{id: yesterday_id} =
+      yesterday = insert(:daily, date: ~D[2015-05-01], owner_id: owner.id)
+
+    %Daily{id: tomorrow_id} = tomorrow = insert(:daily, date: ~D[2015-05-03], owner_id: owner.id)
+    %Daily{id: today_id} = today = insert(:daily, date: ~D[2015-05-02], owner_id: owner.id)
+
+    assert {nil, %Daily{id: ^today_id}} = Dailies.get_adjacent(yesterday)
+    assert {%Daily{id: ^yesterday_id}, %Daily{id: ^tomorrow_id}} = Dailies.get_adjacent(today)
+    assert {%Daily{id: ^today_id}, nil} = Dailies.get_adjacent(tomorrow)
+  end
 end

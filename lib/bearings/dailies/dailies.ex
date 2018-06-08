@@ -10,6 +10,35 @@ defmodule Bearings.Dailies do
   alias Bearings.Dailies.{Daily, Goal}
 
   @doc """
+  Returns the adjacent daily ids for the given user
+  """
+  def get_adjacent(%Daily{} = daily) do
+    before_daily =
+      Repo.one(
+        from(
+          d in Daily,
+          where: d.owner_id == ^daily.owner_id and d.date < ^daily.date,
+          preload: [:goals],
+          order_by: [desc: d.date],
+          limit: 1
+        )
+      )
+
+    after_daily =
+      Repo.one(
+        from(
+          d in Daily,
+          where: d.owner_id == ^daily.owner_id and d.date > ^daily.date,
+          preload: [:goals],
+          order_by: [asc: d.date],
+          limit: 1
+        )
+      )
+
+    {before_daily, after_daily}
+  end
+
+  @doc """
   Returns the list of dailies for the user and anyone the user supports.
 
   ## Examples

@@ -70,7 +70,8 @@ defmodule BearingsWeb.DailyController do
     |> case do
       %Daily{} = daily ->
         daily = maybe_strip_private(daily, assigns)
-        render(conn, "show.html", daily: daily)
+        {previous, next} = Dailies.get_adjacent(daily)
+        render(conn, "show.html", daily: daily, previous_daily: previous, next_daily: next)
 
       nil ->
         render(conn, BearingsWeb.ErrorView, "404.html")

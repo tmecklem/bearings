@@ -40,10 +40,6 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   min-height: 120px;
 }
 
-.daily {
-  max-width: 700px;
-}
-
 .daily > .container {
   overflow: auto; //prevent margin collapsing of inside elements with outside container
   border: 1px solid $primary;
