@@ -20,6 +20,9 @@ defmodule BearingsWeb.DailyView do
     end
   end
 
+  def daily_card_class([]), do: "col-sm daily-card d-none d-md-block"
+  def daily_card_class(_), do: "col-sm daily-card"
+
   def render_goal_fields(%Daily{} = daily) do
     form =
       daily

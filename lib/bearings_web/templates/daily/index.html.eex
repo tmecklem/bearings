@@ -6,7 +6,7 @@
   <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
     <div class="row">
       <%= for {day, dailies} <- week do %>
-        <div class="col-sm daily-card">
+        <div class="<%= daily_card_class(dailies) %>">
           <div class="bg-secondary text-light text-center">
             <%= Timex.format!(day, "%b %d", :strftime) %>
           </div>
