@@ -7,7 +7,19 @@
   </div>
 
   <div class="form-group goals-form">
-    <%= render "goal_fields.html", Map.put(assigns, :daily_form, f) %>
+    <%= content_tag(:label, "Goals", for: "goals") %>
+    <%= inputs_for f, :goals, [append: Enum.map((1..10), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
+      <%= hidden_input g, :index, value: g.index %>
+      <div class="col-12">
+        <%= checkbox g, :completed, class: "form-check-input", "data-test": "goal_completed", "data-test-id": g.data.id %>
+        <%= text_input g, :body, class: "form-control", "data-test": "goal_body", "data-test-id": g.data.id %>
+        <%= error_tag g, :body %>
+        <span class="float-right">
+          <%= checkbox g, :mark_for_delete, class: "form-check-input" %> Delete
+        </span>
+      </div>
+      <div class="clearfix"></div>
+    <% end %>
   </div>
 
   <div class="form-group">

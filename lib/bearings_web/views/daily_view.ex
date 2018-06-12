@@ -20,8 +20,17 @@ defmodule BearingsWeb.DailyView do
     end
   end
 
-  def daily_card_class([]), do: "col-sm daily-card d-none d-md-block"
-  def daily_card_class(_), do: "col-sm daily-card"
+  def daily_card_class({_, [_, _]}), do: "col-sm daily-card"
+
+  def daily_card_class({day, _}) do
+    case Timex.before?(Timex.shift(Timex.today(), days: -3), day) do
+      true ->
+        "col-sm daily-card"
+
+      false ->
+        "col-sm daily-card d-none d-md-block"
+    end
+  end
 
   def render_goal_fields(%Daily{} = daily) do
     form =

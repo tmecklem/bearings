@@ -48,7 +48,7 @@
         </div>
       </nav>
     </header>
-    <div class="container-fluid px-0 px-lg-auto">
+    <div class="container-fluid px-lg-auto">
 
       <%= if get_flash(@conn, :info) do %>
         <p class="alert alert-info" role="alert" data-test="flash_info"><%= get_flash(@conn, :info) %></p>
@@ -57,9 +57,7 @@
         <p class="alert alert-danger" role="alert" data-test="flash_danger"><%= get_flash(@conn, :error) %></p>
       <% end %>
 
-      <main role="main" class="main clearfix">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+      <%= render @view_module, @view_template, assigns %>
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

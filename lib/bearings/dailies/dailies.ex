@@ -12,12 +12,12 @@ defmodule Bearings.Dailies do
   @doc """
   Returns the adjacent daily ids for the given user
   """
-  def get_adjacent(%Daily{} = daily) do
+  def get_adjacent(owner_id: owner_id, date: date) do
     before_daily =
       Repo.one(
         from(
           d in Daily,
-          where: d.owner_id == ^daily.owner_id and d.date < ^daily.date,
+          where: d.owner_id == ^owner_id and d.date < ^date,
           preload: [:goals],
           order_by: [desc: d.date],
           limit: 1
@@ -28,7 +28,7 @@ defmodule Bearings.Dailies do
       Repo.one(
         from(
           d in Daily,
-          where: d.owner_id == ^daily.owner_id and d.date > ^daily.date,
+          where: d.owner_id == ^owner_id and d.date > ^date,
           preload: [:goals],
           order_by: [asc: d.date],
           limit: 1

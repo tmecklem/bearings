@@ -110,8 +110,13 @@ defmodule Bearings.DailiesTest do
     %Daily{id: tomorrow_id} = tomorrow = insert(:daily, date: ~D[2015-05-03], owner_id: owner.id)
     %Daily{id: today_id} = today = insert(:daily, date: ~D[2015-05-02], owner_id: owner.id)
 
-    assert {nil, %Daily{id: ^today_id}} = Dailies.get_adjacent(yesterday)
-    assert {%Daily{id: ^yesterday_id}, %Daily{id: ^tomorrow_id}} = Dailies.get_adjacent(today)
-    assert {%Daily{id: ^today_id}, nil} = Dailies.get_adjacent(tomorrow)
+    assert {nil, %Daily{id: ^today_id}} =
+             Dailies.get_adjacent(owner_id: yesterday.owner_id, date: yesterday.date)
+
+    assert {%Daily{id: ^yesterday_id}, %Daily{id: ^tomorrow_id}} =
+             Dailies.get_adjacent(owner_id: today.owner_id, date: today.date)
+
+    assert {%Daily{id: ^today_id}, nil} =
+             Dailies.get_adjacent(owner_id: tomorrow.owner_id, date: tomorrow.date)
   end
 end

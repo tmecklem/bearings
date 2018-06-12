@@ -29,7 +29,14 @@ defmodule BearingsWeb.DailyController do
         |> redirect(to: daily_path(conn, :show, user, daily))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        date =
+          case Timex.parse(daily_params["date"], "%Y-%m-%d", :strftime) do
+            {:ok, date_time} -> Timex.to_date(date_time)
+            _ -> Timex.today()
+          end
+
+        {previous, next} = Dailies.get_adjacent(owner_id: user.id, date: date)
+        render(conn, "new.html", changeset: changeset, previous_daily: previous, next_daily: next)
     end
   end
 
@@ -41,7 +48,16 @@ defmodule BearingsWeb.DailyController do
 
     changeset = Dailies.change_daily(daily)
 
-    render(conn, "edit.html", changeset: changeset, daily: daily)
+    {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+
+    render(
+      conn,
+      "edit.html",
+      changeset: changeset,
+      daily: daily,
+      previous_daily: previous,
+      next_daily: next
+    )
   end
 
   # temporary redirect for old /username/dailies path
@@ -58,9 +74,16 @@ defmodule BearingsWeb.DailyController do
     render(conn, "index.html", dailies: dailies)
   end
 
-  def new(conn, _params, _) do
-    changeset = Dailies.change_daily(%Daily{})
-    render(conn, "new.html", changeset: changeset)
+  def new(conn, params, %{user: user}) do
+    date =
+      case Timex.parse(params["date"], "%Y-%m-%d", :strftime) do
+        {:ok, date_time} -> Timex.to_date(date_time)
+        _ -> Timex.today()
+      end
+
+    changeset = Dailies.change_daily(%Daily{date: date})
+    {previous, next} = Dailies.get_adjacent(owner_id: user.id, date: date)
+    render(conn, "new.html", changeset: changeset, previous_daily: previous, next_daily: next)
   end
 
   def show(conn, %{"id" => date_string, "username" => username}, assigns) do
@@ -70,7 +93,7 @@ defmodule BearingsWeb.DailyController do
     |> case do
       %Daily{} = daily ->
         daily = maybe_strip_private(daily, assigns)
-        {previous, next} = Dailies.get_adjacent(daily)
+        {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
         render(conn, "show.html", daily: daily, previous_daily: previous, next_daily: next)
 
       nil ->
@@ -93,7 +116,16 @@ defmodule BearingsWeb.DailyController do
         |> redirect(to: daily_path(conn, :show, user, daily))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", changeset: changeset, daily: daily)
+        {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+
+        render(
+          conn,
+          "edit.html",
+          changeset: changeset,
+          daily: daily,
+          previous_daily: previous,
+          next_daily: next
+        )
     end
   end
 
