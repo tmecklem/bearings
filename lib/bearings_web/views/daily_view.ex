@@ -5,6 +5,8 @@ defmodule BearingsWeb.DailyView do
   alias Bearings.Dailies.Daily
   alias Phoenix.HTML.FormData
 
+  @default_card_class "col-md daily-card"
+
   def calendar(dailies) do
     case dailies_range(dailies) do
       nil ->
@@ -20,15 +22,15 @@ defmodule BearingsWeb.DailyView do
     end
   end
 
-  def daily_card_class({_, [_, _]}), do: "col-sm daily-card"
+  def daily_card_class({_, [_ | _]}), do: @default_card_class
 
   def daily_card_class({day, _}) do
     case Timex.before?(Timex.shift(Timex.today(), days: -3), day) do
       true ->
-        "col-sm daily-card"
+        @default_card_class
 
       false ->
-        "col-sm daily-card d-none d-md-block"
+        "#{@default_card_class} d-none d-md-block"
     end
   end
 

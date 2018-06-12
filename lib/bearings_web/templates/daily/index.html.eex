@@ -7,8 +7,10 @@
     <div class="row">
       <%= for calendar_day = {day, dailies} <- week do %>
         <div class="<%= daily_card_class(calendar_day) %>">
-          <div class="bg-secondary text-light text-center">
+          <div class="bg-secondary text-light text-center py-2">
             <%= Timex.format!(day, "%b %d", :strftime) %>
+            <%= if Enum.empty?(dailies) do %>
+            <% end %>
           </div>
           <%= if Enum.count(dailies) > 0 do %>
             <%= for daily <- dailies do %>
