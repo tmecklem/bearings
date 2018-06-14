@@ -119,4 +119,68 @@ defmodule Bearings.DailiesTest do
     assert {%Daily{id: ^today_id}, nil} =
              Dailies.get_adjacent(owner_id: tomorrow.owner_id, date: tomorrow.date)
   end
+
+  describe "templates" do
+    alias Bearings.Dailies.Template
+
+    @valid_attrs %{daily_plan: "some daily_plan", owner_id: 42, personal_journal: "some personal_journal"}
+    @update_attrs %{daily_plan: "some updated daily_plan", owner_id: 43, personal_journal: "some updated personal_journal"}
+    @invalid_attrs %{daily_plan: nil, owner_id: nil, personal_journal: nil}
+
+    def template_fixture(attrs \\ %{}) do
+      {:ok, template} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Dailies.create_template()
+
+      template
+    end
+
+    test "list_templates/0 returns all templates" do
+      template = template_fixture()
+      assert Dailies.list_templates() == [template]
+    end
+
+    test "get_template!/1 returns the template with given id" do
+      template = template_fixture()
+      assert Dailies.get_template!(template.id) == template
+    end
+
+    test "create_template/1 with valid data creates a template" do
+      assert {:ok, %Template{} = template} = Dailies.create_template(@valid_attrs)
+      assert template.daily_plan == "some daily_plan"
+      assert template.owner_id == 42
+      assert template.personal_journal == "some personal_journal"
+    end
+
+    test "create_template/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Dailies.create_template(@invalid_attrs)
+    end
+
+    test "update_template/2 with valid data updates the template" do
+      template = template_fixture()
+      assert {:ok, template} = Dailies.update_template(template, @update_attrs)
+      assert %Template{} = template
+      assert template.daily_plan == "some updated daily_plan"
+      assert template.owner_id == 43
+      assert template.personal_journal == "some updated personal_journal"
+    end
+
+    test "update_template/2 with invalid data returns error changeset" do
+      template = template_fixture()
+      assert {:error, %Ecto.Changeset{}} = Dailies.update_template(template, @invalid_attrs)
+      assert template == Dailies.get_template!(template.id)
+    end
+
+    test "delete_template/1 deletes the template" do
+      template = template_fixture()
+      assert {:ok, %Template{}} = Dailies.delete_template(template)
+      assert_raise Ecto.NoResultsError, fn -> Dailies.get_template!(template.id) end
+    end
+
+    test "change_template/1 returns a template changeset" do
+      template = template_fixture()
+      assert %Ecto.Changeset{} = Dailies.change_template(template)
+    end
+  end
 end
