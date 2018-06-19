@@ -1,4 +1,4 @@
-<div class="container">
+<div>
   <div class="row text-light daily-title">
     <div class="col-12">Daily Plan <span class="float-right"><%= Timex.format!(@daily.date, "%a, %B %e", :strftime) %></span></div>
   </div>

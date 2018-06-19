@@ -119,4 +119,59 @@ defmodule Bearings.DailiesTest do
     assert {%Daily{id: ^today_id}, nil} =
              Dailies.get_adjacent(owner_id: tomorrow.owner_id, date: tomorrow.date)
   end
+
+  describe "templates" do
+    alias Bearings.Dailies.Template
+
+    @invalid_attrs %{daily_plan: nil, personal_journal: nil}
+
+    setup do
+      {:ok, owner: insert(:user)}
+    end
+
+    test "get_template/1 returns the template with given owner", %{owner: owner} do
+      template = insert(:template, owner: owner)
+      assert Dailies.get_template(owner).id == template.id
+    end
+
+    test "create_template/1 with valid data creates a template", %{owner: owner} do
+      attrs = params_for(:template, owner: owner)
+      assert {:ok, %Template{} = template} = Dailies.create_template(attrs)
+      assert template.daily_plan == attrs.daily_plan
+      assert template.owner_id == owner.id
+      assert template.personal_journal == attrs.personal_journal
+    end
+
+    test "create_template/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Dailies.create_template(@invalid_attrs)
+    end
+
+    test "update_template/2 with valid data updates the template", %{owner: owner} do
+      template = insert(:template, owner: owner)
+      attrs = params_for(:template) |> Map.delete(:owner)
+      assert {:ok, template} = Dailies.update_template(template, attrs)
+      assert %Template{} = template
+      assert template.daily_plan == attrs.daily_plan
+      assert template.owner_id == owner.id
+      assert template.personal_journal == attrs.personal_journal
+    end
+
+    test "update_template/2 with invalid data returns error changeset", %{owner: owner} do
+      insert(:template, owner: owner)
+      template = Dailies.get_template(owner)
+      assert {:error, %Ecto.Changeset{}} = Dailies.update_template(template, @invalid_attrs)
+      assert template == Dailies.get_template(owner)
+    end
+
+    test "delete_template/1 deletes the template", %{owner: owner} do
+      template = insert(:template, owner: owner)
+      assert {:ok, %Template{}} = Dailies.delete_template(template)
+      assert Dailies.get_template(owner) == nil
+    end
+
+    test "change_template/1 returns a template changeset", %{owner: owner} do
+      template = insert(:template, owner: owner)
+      assert %Ecto.Changeset{} = Dailies.change_template(template)
+    end
+  end
 end

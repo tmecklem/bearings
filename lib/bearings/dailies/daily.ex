@@ -10,10 +10,11 @@ defmodule Bearings.Dailies.Daily do
   alias Bearings.Dailies.{Markdown, Goal}
 
   @type t :: %__MODULE__{
-          date: Date.t(),
-          personal_journal: Markdown.t(),
           daily_plan: Markdown.t(),
-          goals: list(Goal.t())
+          date: Date.t(),
+          goals: list(Goal.t()),
+          owner_id: User.t(),
+          personal_journal: Markdown.t()
         }
 
   schema "dailies" do
