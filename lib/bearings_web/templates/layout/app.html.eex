@@ -34,6 +34,7 @@
                   <%= @current_user.name %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <%= link "Edit Template", to: template_path(@conn, :edit), class: "dropdown-item" %>
                   <%= link "Logout", to: auth_path(@conn, :delete), method: "delete", class: "dropdown-item" %>
                 </div>
               </li>

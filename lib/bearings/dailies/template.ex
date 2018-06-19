@@ -11,10 +11,10 @@ defmodule Bearings.Dailies.Template do
   alias Bearings.Dailies.Markdown
 
   @type t :: %__MODULE__{
-    daily_plan: Markdown.t(),
-    owner_id: User.t(),
-    personal_journal: Markdown.t()
-  }
+          daily_plan: Markdown.t(),
+          owner_id: User.t(),
+          personal_journal: Markdown.t()
+        }
 
   schema "templates" do
     belongs_to(:owner, User)

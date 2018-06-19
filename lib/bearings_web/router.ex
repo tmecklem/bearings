@@ -18,6 +18,7 @@ defmodule BearingsWeb.Router do
     pipe_through(:browser)
 
     resources("/dailies", DailyController, as: :dailies, only: [:index])
+    resources("/template", TemplateController, only: [:edit, :create, :update], singleton: true)
 
     get("/", PageController, :index)
   end

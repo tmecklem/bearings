@@ -10,12 +10,12 @@ defmodule Bearings.Account.User do
   alias Bearings.Account.Supporter
 
   @type t :: %__MODULE__{
-    avatar: binary(),
-    email: binary(),
-    github_id: binary(),
-    username: binary(),
-    name: binary()
-  }
+          avatar: binary(),
+          email: binary(),
+          github_id: binary(),
+          username: binary(),
+          name: binary()
+        }
 
   schema "users" do
     field(:avatar, :string)

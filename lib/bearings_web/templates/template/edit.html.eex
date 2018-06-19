@@ -1,0 +1,31 @@
+<div class="row px-3">
+  <div class="template-form px-0 mx-auto mt-0 mt-md-4 px-3 col-lg-6">
+    <h3 class="text-primary">Edit Template</h3>
+
+    <%= form_for @changeset, template_path(@conn, :update), [class: "form"], fn(f) -> %>
+
+    <div class="form-group">
+      <%= label f, :daily_plan, "Daily Plan" %>
+      <p class="form-text text-muted">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
+      <%= textarea(f, :daily_plan, class: "markdown form-control", "data-test": "daily_plan") %>
+      <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
+      <%= error_tag f, :daily_plan %>
+    </div>
+
+    <div class="form-group">
+      <%= label f, :personal_journal, "Personal Journal" %>
+      <p class="form-text text-muted"><i>Optional</i> <br/> This is a journal area for you. It will be only be visible to you by default.</p>
+      <%= textarea(f, :personal_journal, class: "markdown form-control", "data-test": "personal_journal") %>
+      <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
+      <%= error_tag f, :personal_journal %>
+    </div>
+
+    <div class="row">
+      <div class="col-sm text-right">
+        <%= submit "Submit", class: "btn btn-primary", "data-test": "save_template" %>
+      </div>
+    </div>
+  <% end %>
+
+  </div>
+</div>

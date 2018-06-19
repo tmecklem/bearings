@@ -4,7 +4,7 @@ defmodule BearingsWeb.DailyController do
   alias Bearings.Account
   alias Bearings.Account.Supporter
   alias Bearings.Dailies
-  alias Bearings.Dailies.Daily
+  alias Bearings.Dailies.{Daily, Template}
 
   plug(:authenticate)
   plug(:authorize_owner when action in [:new, :create, :edit, :update, :delete])
@@ -81,7 +81,15 @@ defmodule BearingsWeb.DailyController do
         _ -> Timex.today()
       end
 
-    changeset = Dailies.change_daily(%Daily{date: date})
+    template = Dailies.get_template(user) || %Template{}
+
+    changeset =
+      Dailies.change_daily(%Daily{
+        date: date,
+        daily_plan: template.daily_plan,
+        personal_journal: template.personal_journal
+      })
+
     {previous, next} = Dailies.get_adjacent(owner_id: user.id, date: date)
     render(conn, "new.html", changeset: changeset, previous_daily: previous, next_daily: next)
   end

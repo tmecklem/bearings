@@ -195,18 +195,13 @@ defmodule Bearings.Dailies do
   @doc """
   Gets a single template.
 
-  Raises `Ecto.NoResultsError` if the Template does not exist.
-
-  ## Examples
-
-      iex> get_template!(123)
-      %Template{}
-
-      iex> get_template!(456)
-      ** (Ecto.NoResultsError)
-
+  Returns nil if the Template does not exist.
   """
-  def get_template!(id), do: Repo.get!(Template, id)
+  def get_template(%User{id: id}) do
+    Template
+    |> where([t], t.owner_id == ^id)
+    |> Repo.one()
+  end
 
   @doc """
   Creates a template.
