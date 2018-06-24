@@ -1,6 +1,8 @@
-<div class="row px-3">
-  <div class="template-form px-0 mx-auto mt-0 mt-md-4 px-3 col-lg-6">
-    <h3 class="text-primary">Edit Template</h3>
+<div class="row">
+  <div class="template-form px-0 mx-auto mt-0 mt-md-4 col-lg-6">
+    <div class="bg-secondary">
+      <h3 class="text-light p-3">Edit Template</h3>
+    </div>
 
     <%= form_for @changeset, template_path(@conn, :update), [class: "form"], fn(f) -> %>
 

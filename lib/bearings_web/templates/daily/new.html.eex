@@ -1,4 +1,8 @@
-<div class="daily-form px-0 mt-0 mt-md-4 mx-auto px-3 col-lg-6">
-  <h3 class="text-primary">Plan a New Day</h3>
-  <%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :create, @conn.assigns.current_user)) %>
+<div class="row">
+  <div class="daily-form px-0 mt-0 mt-md-4 mx-auto col-lg-9">
+    <div class="bg-secondary">
+      <h3 class="text-light p-3">Plan a New Day</h3>
+    </div>
+    <%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :create, @conn.assigns.current_user)) %>
+  </div>
 </div>

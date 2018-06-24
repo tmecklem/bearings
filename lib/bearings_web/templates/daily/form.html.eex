@@ -1,14 +1,22 @@
 <%= form_for @changeset, @action, [class: "form"], fn(f) -> %>
 
-  <div class="form-group">
-    <%= label f, :date %>
+<div class="form-group row">
+  <%= label f, :date, class: "col-sm-3 col-form-label text-sm-right" %>
+  <div class="col-sm-9">
     <%= date_input f, :date, class: "form-control", "data-test": "date" %>
+  </div>
+  <div class="col-12">
     <%= error_tag f, :date %>
   </div>
+</div>
 
-  <%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 do %>
-    <div class="my-4">
-      <label> Previous Goals </label>
+<%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 do %>
+  <div class="my-4 row">
+    <div class="col-sm-3 text-sm-right">
+      <label>Previous Goals</label>
+      <div class="text-muted"><%= Timex.format!(@previous_daily.date, "%A, %B %e", :strftime) %></div>
+    </div>
+    <div class="col-sm-9 mt-3 mt-sm-0">
       <%= for {goal, i} <- Enum.with_index(@previous_daily.goals) do %>
         <input type="hidden" name="previous_daily[goals][<%= i %>][id]" value="<%= goal.id %>" />
         <input type="hidden" name="previous_daily[goals][<%= i %>][index]" value="<%= goal.index %>" />
@@ -25,43 +33,53 @@
         </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
-  <div class="form-group">
-    <%= label f, :daily_plan, "Daily Plan" %>
+<div class="form-group goals-form row">
+  <%= content_tag(:label, "Goals", for: "goals", class: "col-sm-3 text-sm-right") %>
+  <div class="col-sm-9">
+    <%= inputs_for f, :goals, [append: Enum.map((1..10), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
+    <div class="row">
+      <%= hidden_input g, :index, value: g.index %>
+      <div class="col-9">
+        <div class="form-check">
+          <%= checkbox g, :completed, class: "form-check-input", "data-test": "goal_completed", "data-test-id": g.data.id %>
+          <%= text_input g, :body, class: "form-control", "data-test": "goal_body", "data-test-id": g.data.id %>
+        </div>
+      </div>
+      <div class="col-3">
+        <%= checkbox g, :mark_for_delete, class: "form-check-input" %> Delete
+      </div>
+      <%= error_tag g, :body %>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= label f, :daily_plan, "Plan", class: "col-sm-3 text-sm-right" %>
+  <div class="col-sm-9">
     <p class="form-text text-muted">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
     <%= textarea(f, :daily_plan, class: "markdown form-control", "data-test": "daily_plan") %>
     <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
     <%= error_tag f, :daily_plan %>
   </div>
+</div>
 
-  <div class="form-group goals-form">
-    <%= content_tag(:label, "Current Goals", for: "goals") %>
-    <%= inputs_for f, :goals, [append: Enum.map((1..10), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
-      <%= hidden_input g, :index, value: g.index %>
-      <div class="col-12">
-        <%= checkbox g, :completed, class: "form-check-input", "data-test": "goal_completed", "data-test-id": g.data.id %>
-        <%= text_input g, :body, class: "form-control", "data-test": "goal_body", "data-test-id": g.data.id %>
-        <%= error_tag g, :body %>
-        <span class="float-right">
-          <%= checkbox g, :mark_for_delete, class: "form-check-input" %> Delete
-        </span>
-      </div>
-      <div class="clearfix"></div>
-    <% end %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :personal_journal, "Personal Journal" %>
+<div class="form-group row">
+  <%= label f, :personal_journal, "Personal Journal", class: "col-sm-3 text-sm-right" %>
+  <div class="col-sm-9">
     <p class="form-text text-muted"><i>Optional</i> <br/> This is a journal area for you. It will be only be visible to you by default.</p>
     <%= textarea(f, :personal_journal, class: "markdown form-control", "data-test": "personal_journal") %>
     <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
     <%= error_tag f, :personal_journal %>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col-sm text-right">
-      <%= submit "Submit", class: "btn btn-primary", "data-test": "save_daily" %>
-    </div>
+<div class="row p-3">
+  <div class="col-12 text-right">
+    <%= submit "Submit", class: "btn btn-primary", "data-test": "save_daily" %>
   </div>
+</div>
 <% end %>

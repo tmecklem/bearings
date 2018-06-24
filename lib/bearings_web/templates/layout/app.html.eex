@@ -9,12 +9,12 @@
 
     <title></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans|EB+Garamond" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Chivo:400,700,900|EB+Garamond" rel="stylesheet">
   </head>
 
   <body>
     <header class="header">
-      <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <nav class="navbar navbar-expand-md navbar-dark">
         <a class="navbar-brand" href="#">Bearings</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

@@ -1,6 +1,6 @@
 <div class="container daily-list">
-  <div class="row">
-    <h4 class="col-12 text-primary mb-3 text-center">Daily Plans</h4>
+  <div class="bg-secondary row border-bottom border-light">
+    <h4 class="col-12 text-light my-3 text-center">Daily Plans</h4>
   </div>
 
   <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
@@ -24,7 +24,7 @@
     </div>
   <% end %>
 
-  <div class="row my-3">
+  <div class="row my-2">
     <div class="col-12">
       <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
         <%= link "Plan a New Day", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-secondary float-right" %>

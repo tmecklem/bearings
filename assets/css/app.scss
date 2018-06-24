@@ -8,8 +8,39 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 @import "fa-regular";
 @import "fa-solid";
 
-.navbar-light .navbar-brand {
-  color: $primary;
+body {
+  background-color: darkgray;
+}
+
+h3 {
+  font-weight: 700;
+  padding-bottom: 0.5em;
+}
+
+h4 {
+  font-weight: 700;
+}
+
+.navbar-brand {
+  font-size : 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0 2rem 0 0;
+  margin: 0;
+}
+
+nav.navbar {
+  background-color: $primary;
+}
+
+.template-form {
+  background-color: white;
+  border: 2px solid $secondary;
+}
+
+.daily-form {
+  background-color: white;
+  border: 2px solid $secondary;
 }
 
 .daily-form .form-group {
@@ -26,6 +57,8 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 }
 
 .daily-list {
+  background-color: white;
+  border: 2px solid $primary;
   margin-top: 2em;
 }
 
@@ -37,15 +70,29 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .daily {
   overflow: auto; //prevent margin collapsing of inside elements with outside container
-  border: 1px solid $primary;
-  padding: 0;
+  border: 2px solid $primary;
   margin: 0 auto;
+  background-color: white;
+
+  .row {
+    padding-right: 2em;
+  }
+}
+
+.sub {
+  color: darkgray;
+  font-size: 0.8rem;
 }
 
 .daily-title {
-  background-color: $primary;
-  padding: 1em 1.5em;
-  text-transform: uppercase;
+  background-color: $secondary;
+  color: white;
+  font-size: 1.5rem;
+  padding: 1.0rem 0.8rem 0.8rem 0.8rem;
+
+  h2 {
+    font-weight: 700;
+  }
 }
 
 .daily-footer {
@@ -58,26 +105,22 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .markdown-show {
   font-family: 'EB Garamond', serif;
+  font-size: 1.2rem;
 
   h1 {
-    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-    font-size : 1.5rem;
+    font-family: 'Chivo', 'Helvetica Neue', Arial, sans-serif;
   }
 
   h2 {
-    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-    font-size : 1.25rem;
+    font-family: 'Chivo', 'Helvetica Neue', Arial, sans-serif;
   }
 
   h3 {
-    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-    font-size : 1.15rem;
+    font-family: 'Chivo', 'Helvetica Neue', Arial, sans-serif;
   }
 
   h4 {
-    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
+    font-family: 'Chivo', 'Helvetica Neue', Arial, sans-serif;
   }
 }
 
@@ -102,4 +145,5 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .goal {
   font-family: 'EB Garamond', serif;
+  font-size: 1.2rem;
 }
