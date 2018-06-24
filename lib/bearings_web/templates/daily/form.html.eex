@@ -6,8 +6,37 @@
     <%= error_tag f, :date %>
   </div>
 
+  <%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 do %>
+    <div class="my-4">
+      <label> Previous Goals </label>
+      <%= for {goal, i} <- Enum.with_index(@previous_daily.goals) do %>
+        <input type="hidden" name="previous_daily[goals][<%= i %>][id]" value="<%= goal.id %>" />
+        <input type="hidden" name="previous_daily[goals][<%= i %>][index]" value="<%= goal.index %>" />
+        <input type="hidden" name="previous_daily[goals][<%= i %>][completed]" value="false" />
+        <div data-test="goal" data-test-id="<%= goal.id %>">
+          <span data-test="completed">
+            <%= if goal.completed do %>
+              <input type="checkbox" name="previous_daily[goals][<%= i %>][completed]" data-test="goal_completed" data-test-id="<%= goal.id %>" value="true" checked></input>
+            <% else %>
+              <input type="checkbox" name="previous_daily[goals][<%= i %>][completed]" data-test="goal_completed" data-test-id="<%= goal.id %>" value="true"></input>
+            <% end %>
+          </span>
+          <span data-test="body"><%= goal.body %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :daily_plan, "Daily Plan" %>
+    <p class="form-text text-muted">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
+    <%= textarea(f, :daily_plan, class: "markdown form-control", "data-test": "daily_plan") %>
+    <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
+    <%= error_tag f, :daily_plan %>
+  </div>
+
   <div class="form-group goals-form">
-    <%= content_tag(:label, "Goals", for: "goals") %>
+    <%= content_tag(:label, "Current Goals", for: "goals") %>
     <%= inputs_for f, :goals, [append: Enum.map((1..10), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
       <%= hidden_input g, :index, value: g.index %>
       <div class="col-12">
@@ -20,14 +49,6 @@
       </div>
       <div class="clearfix"></div>
     <% end %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :daily_plan, "Daily Plan" %>
-    <p class="form-text text-muted">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
-    <%= textarea(f, :daily_plan, class: "markdown form-control", "data-test": "daily_plan") %>
-    <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
-    <%= error_tag f, :daily_plan %>
   </div>
 
   <div class="form-group">

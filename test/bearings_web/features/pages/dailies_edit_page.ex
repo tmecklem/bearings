@@ -19,16 +19,19 @@ defmodule BearingsWeb.DailiesEditPage do
     visit(session, daily_path(Endpoint, :edit, user, daily))
   end
 
+  def complete_goal(session, %Goal{} = goal) do
+    click(session, css("[data-test='goal_completed'][data-test-id='#{goal.id}']"))
+  end
+
   def daily_plan(%Markdown{raw: value}) do
     css("[data-test='daily_plan']", text: value)
   end
 
-  def fill_form(session, %Daily{} = daily, goals \\ []) do
+  def fill_form(session, %Daily{} = daily) do
     session
     |> fill_in(css("[data-test='date']"), with: Timex.format!(daily.date, "%F", :strftime))
     |> fill_in(css("[data-test='personal_journal']"), with: daily.personal_journal.raw)
     |> fill_in(css("[data-test='daily_plan']"), with: daily.daily_plan.raw)
-    |> fill_goals(goals)
   end
 
   def fill_goals(session, goals) do
@@ -46,6 +49,5 @@ defmodule BearingsWeb.DailiesEditPage do
   defp fill_goal(%Goal{} = goal, session) do
     session
     |> fill_in(css("[data-test='goal_body'][data-test-id='#{goal.id}']"), with: goal.body)
-    |> fill_in(css("[data-test='goal_completed'][data-test-id='#{goal.id}']"), with: goal.body)
   end
 end

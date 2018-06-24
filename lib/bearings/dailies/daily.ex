@@ -7,7 +7,7 @@ defmodule Bearings.Dailies.Daily do
   import Ecto.Changeset
 
   alias Bearings.Account.User
-  alias Bearings.Dailies.{Markdown, Goal}
+  alias Bearings.Dailies.{Goal, Markdown}
 
   @type t :: %__MODULE__{
           daily_plan: Markdown.t(),
@@ -29,6 +29,13 @@ defmodule Bearings.Dailies.Daily do
 
   def strip_private_markdown(%__MODULE__{} = daily) do
     %{daily | personal_journal: nil}
+  end
+
+  @doc false
+  def goals_changeset(daily, attrs) do
+    daily
+    |> cast(attrs, [])
+    |> cast_assoc(:goals)
   end
 
   @doc false

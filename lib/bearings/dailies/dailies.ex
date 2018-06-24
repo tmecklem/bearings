@@ -18,7 +18,7 @@ defmodule Bearings.Dailies do
         from(
           d in Daily,
           where: d.owner_id == ^owner_id and d.date < ^date,
-          preload: [:goals],
+          preload: [goals: ^preload_goals()],
           order_by: [desc: d.date],
           limit: 1
         )
@@ -29,7 +29,7 @@ defmodule Bearings.Dailies do
         from(
           d in Daily,
           where: d.owner_id == ^owner_id and d.date > ^date,
-          preload: [:goals],
+          preload: [goals: ^preload_goals()],
           order_by: [asc: d.date],
           limit: 1
         )
@@ -79,13 +79,21 @@ defmodule Bearings.Dailies do
   Gets a single daily.
   """
   def get_daily!(date, username) do
-    Daily
-    |> join(:inner, [d], o in User, o.id == d.owner_id)
-    |> where([d], d.date == ^date)
-    |> where([_d, o], o.username == ^username)
-    |> order_by(:date)
-    |> Repo.one!()
-    |> Repo.preload(goals: from(g in Goal, order_by: g.index))
+    Repo.one!(
+      from(
+        d in Daily,
+        join: o in User,
+        on: o.id == d.owner_id,
+        where: d.date == ^date,
+        where: o.username == ^username,
+        order_by: :date,
+        preload: [goals: ^preload_goals()]
+      )
+    )
+  end
+
+  defp preload_goals do
+    from(g in Goal, order_by: g.index)
   end
 
   @doc """
@@ -130,6 +138,12 @@ defmodule Bearings.Dailies do
   def update_daily(%Daily{} = daily, attrs) do
     daily
     |> Daily.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_goals(%Daily{} = daily, attrs) do
+    daily
+    |> Daily.goals_changeset(attrs)
     |> Repo.update()
   end
 

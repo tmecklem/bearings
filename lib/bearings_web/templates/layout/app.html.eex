@@ -9,7 +9,7 @@
 
     <title></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans|IBM+Plex+Serif" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans|EB+Garamond" rel="stylesheet">
   </head>
 
   <body>

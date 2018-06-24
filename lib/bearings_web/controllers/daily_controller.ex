@@ -18,12 +18,17 @@ defmodule BearingsWeb.DailyController do
     ])
   end
 
-  def create(conn, %{"daily" => daily_params}, %{user: user}) do
+  def create(conn, %{"daily" => daily_params} = params, %{user: user}) do
     daily_params
     |> Map.put("owner_id", user.id)
     |> Dailies.create_daily()
     |> case do
       {:ok, daily} ->
+        if params["previous_daily"] do
+          {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+          {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
+        end
+
         conn
         |> put_flash(:info, "Created Successfully")
         |> redirect(to: daily_path(conn, :show, user, daily))
@@ -109,16 +114,25 @@ defmodule BearingsWeb.DailyController do
     end
   end
 
-  def update(conn, %{"daily" => daily_params, "id" => date_string, "username" => username}, %{
-        user: user
-      }) do
+  def update(
+        conn,
+        %{"daily" => daily_params, "id" => date_string, "username" => username} = params,
+        %{
+          user: user
+        }
+      ) do
     daily =
       date_string
       |> parse_date()
       |> Dailies.get_daily!(username)
 
     case Dailies.update_daily(daily, daily_params) do
-      {:ok, daily} ->
+      {:ok, _daily_changeset} ->
+        if params["previous_daily"] do
+          {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+          {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
+        end
+
         conn
         |> put_flash(:info, "Updated Successfully")
         |> redirect(to: daily_path(conn, :show, user, daily))

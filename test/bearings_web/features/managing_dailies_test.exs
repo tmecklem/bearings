@@ -24,6 +24,21 @@ defmodule ManagingDailiesTest do
     |> assert_has(Page.flash_info())
   end
 
+  test "marking previous day's goal as completed on create", %{session: session, user: user} do
+    daily = build(:daily)
+    previous_daily = insert(:daily, owner_id: user.id, date: Timex.shift(daily.date, days: -1))
+    goal = %{insert(:goal, daily: previous_daily) | completed: true}
+
+    session
+    |> DailiesEditPage.visit_add_page(user)
+    |> DailiesEditPage.complete_goal(goal)
+    |> DailiesEditPage.fill_form(daily)
+    |> DailiesEditPage.save()
+    |> assert_has(Page.flash_info())
+    |> assert_has(DailiesShowPage.goal_body(goal))
+    |> assert_has(DailiesShowPage.goal_completed(goal))
+  end
+
   test "editing a day's plan", %{session: session, user: user} do
     daily = insert(:daily, owner_id: user.id)
 
@@ -34,15 +49,27 @@ defmodule ManagingDailiesTest do
     |> assert_has(Page.flash_info())
   end
 
-  test "marking a goal as completed", %{session: session, user: user} do
+  test "marking previous day's goal as completed on edit", %{session: session, user: user} do
     daily = insert(:daily, owner_id: user.id)
-    goal = insert(:goal, daily: daily)
-
-    daily = %{daily | goals: [%{goal | completed: true}]}
+    previous_daily = insert(:daily, owner_id: user.id, date: Timex.shift(daily.date, days: -1))
+    goal = %{insert(:goal, daily: previous_daily) | completed: true}
 
     session
     |> DailiesEditPage.visit_edit_page(user, daily)
-    |> DailiesEditPage.fill_form(daily)
+    |> DailiesEditPage.complete_goal(goal)
+    |> DailiesEditPage.save()
+    |> assert_has(Page.flash_info())
+    |> assert_has(DailiesShowPage.goal_body(goal))
+    |> assert_has(DailiesShowPage.goal_completed(goal))
+  end
+
+  test "marking a goal as completed", %{session: session, user: user} do
+    daily = insert(:daily, owner_id: user.id)
+    goal = %{insert(:goal, daily: daily) | completed: true}
+
+    session
+    |> DailiesEditPage.visit_edit_page(user, daily)
+    |> DailiesEditPage.complete_goal(goal)
     |> DailiesEditPage.save()
     |> assert_has(Page.flash_info())
     |> assert_has(DailiesShowPage.goal_body(goal))

@@ -35,7 +35,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   min-height: 120px;
 }
 
-.daily > .container {
+.daily {
   overflow: auto; //prevent margin collapsing of inside elements with outside container
   border: 1px solid $primary;
   padding: 0;
@@ -51,7 +51,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
   h4 {
     margin-top: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
   }
 }
 
@@ -70,9 +70,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 }
 
 .markdown-show {
-  font-family: 'IBM Plex Serif', serif;
-  /* padding: 2.75em 3.5em; */
-  border-top: 1px solid lightgrey;
+  font-family: 'EB Garamond', serif;
 }
 
 .avatar:hover{
@@ -94,7 +92,6 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   margin-top: 1em;
 }
 
-.goals-list {
-  font-family: 'IBM Plex Serif', serif;
-  padding: 2.75em 3.5em;
+.goal {
+  font-family: 'EB Garamond', serif;
 }
