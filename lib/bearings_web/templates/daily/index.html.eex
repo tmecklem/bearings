@@ -27,7 +27,7 @@
   <div class="row my-2">
     <div class="col-12">
       <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
-        <%= link "Plan a New Day", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-secondary float-right" %>
+        <%= link "Plan a New Day", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-light float-right" %>
       <% else %>
         <% inspect @conn.assigns.supporter %>
       <% end %>

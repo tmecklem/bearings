@@ -66,13 +66,13 @@
 </div>
 
 <div class="row mt-1 daily-footer py-2 px-4">
-  <div class="col-6">
+  <div class="col-12">
     <%= link "Back to List", to: dailies_path(@conn, :index), class: "btn btn-secondary-outline" %>
-  </div>
-  <div class="col-6 text-right">
-    <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
-      <%= link "Delete", method: :delete, to: daily_path(@conn, :delete, @conn.params["username"], @daily), class: "btn btn-danger" %>
-      <%= link "Edit", to: daily_path(@conn, :edit, @conn.params["username"], @daily), class: "btn btn-secondary ml-3" %>
-    <% end %>
+    <span class="float-right">
+      <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
+        <%= link "Delete", method: :delete, to: daily_path(@conn, :delete, @conn.params["username"], @daily), class: "btn btn-danger" %>
+        <%= link "Edit", to: daily_path(@conn, :edit, @conn.params["username"], @daily), class: "btn btn-secondary ml-3" %>
+      <% end %>
+    </span>
   </div>
 </div>
