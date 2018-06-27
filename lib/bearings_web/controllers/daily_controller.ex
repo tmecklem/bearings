@@ -2,7 +2,7 @@ defmodule BearingsWeb.DailyController do
   use BearingsWeb, :controller
 
   alias Bearings.Account
-  alias Bearings.Account.Supporter
+  alias Bearings.Account.Alliance
   alias Bearings.Dailies
   alias Bearings.Dailies.{Daily, Template}
 
@@ -197,7 +197,7 @@ defmodule BearingsWeb.DailyController do
         conn
 
       supporter =
-          Account.find_supporter(
+          Account.find_alliance(
             supporter: conn.assigns.current_user,
             owner_username: conn.params["username"]
           ) ->
@@ -211,7 +211,7 @@ defmodule BearingsWeb.DailyController do
     end
   end
 
-  defp maybe_strip_private(daily, %{supporter: %Supporter{include_private: false}}) do
+  defp maybe_strip_private(daily, %{supporter: %Alliance{include_private: false}}) do
     Daily.strip_private_markdown(daily)
   end
 

@@ -1,6 +1,6 @@
-defmodule Bearings.Account.Supporter do
+defmodule Bearings.Account.Alliance do
   @moduledoc """
-  Struct and functions to repesent supporters.
+  Struct and functions to repesent an alliance between a user and a supporter.
   """
 
   use Ecto.Schema
@@ -8,7 +8,7 @@ defmodule Bearings.Account.Supporter do
 
   alias Bearings.Account.User
 
-  schema "supporters" do
+  schema "alliances" do
     belongs_to(:user, User)
     belongs_to(:supporter, User)
     field(:include_private, :boolean, default: false)
@@ -17,8 +17,8 @@ defmodule Bearings.Account.Supporter do
   end
 
   @doc false
-  def changeset(supporter, attrs) do
-    supporter
+  def changeset(alliance, attrs) do
+    alliance
     |> cast(attrs, [:user_id, :supporter_id, :include_private])
     |> validate_required([:user_id, :supporter_id, :include_private])
   end

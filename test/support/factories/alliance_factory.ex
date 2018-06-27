@@ -1,9 +1,9 @@
-defmodule Bearings.SupporterFactory do
+defmodule Bearings.AllianceFactory do
   @moduledoc false
   defmacro __using__(_opts) do
     quote do
-      def supporter_factory do
-        %Bearings.Account.Supporter{
+      def alliance_factory do
+        %Bearings.Account.Alliance{
           user: insert(:user),
           supporter: insert(:user)
         }

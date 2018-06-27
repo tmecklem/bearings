@@ -7,7 +7,7 @@ defmodule Bearings.Account.User do
 
   import Ecto.Changeset
 
-  alias Bearings.Account.Supporter
+  alias Bearings.Account.Alliance
 
   @type t :: %__MODULE__{
           avatar: binary(),
@@ -24,8 +24,8 @@ defmodule Bearings.Account.User do
     field(:username, :string)
     field(:name, :string)
 
-    # relationships where this user is the supporter
-    has_many(:supports, Supporter, foreign_key: :supporter_id)
+    # alliances where this user is the supporter
+    has_many(:supports, Alliance, foreign_key: :supporter_id)
     # users that this user supports
     has_many(:supports_users, through: [:supports, :user])
 

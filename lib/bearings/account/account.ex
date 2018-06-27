@@ -112,7 +112,7 @@ defmodule Bearings.Account do
     User.changeset(user, %{})
   end
 
-  alias Bearings.Account.Supporter
+  alias Bearings.Account.Alliance
 
   @doc """
   Returns the list of supporters.
@@ -120,31 +120,37 @@ defmodule Bearings.Account do
   ## Examples
 
       iex> list_supporters()
-      [%Supporter{}, ...]
+      [Alliance{}, ...]
 
   """
-  def list_supporters do
-    Repo.all(Supporter)
+  def list_supporter_alliances(%User{} = user) do
+    Repo.all(
+      from s in Alliance,
+      where: s.user_id == ^user.id,
+      join: supporter in assoc(s, :supporter),
+      preload: [:supporter, :user],
+      order_by: supporter.username
+    )
   end
 
   @doc """
-  Gets a single supporter.
+  Gets a single alliance.
 
-  Raises `Ecto.NoResultsError` if the Supporter does not exist.
+  Raises `Ecto.NoResultsError` if the Alliance does not exist.
 
   ## Examples
 
-      iex> get_supporter!(123)
-      %Supporter{}
+      iex> get_alliance!(123)
+      %Alliance{}
 
-      iex> get_supporter!(456)
+      iex> get_alliance!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_supporter!(id), do: Repo.get!(Supporter, id)
+  def get_alliance!(id), do: Repo.get!(Alliance, id)
 
-  def find_supporter(supporter: %User{id: supporter_id}, owner_username: owner_username) do
-    Supporter
+  def find_alliance(supporter: %User{id: supporter_id}, owner_username: owner_username) do
+    Alliance
     |> join(:inner, [s], u in assoc(s, :user))
     |> where([s, u], s.supporter_id == ^supporter_id and u.username == ^owner_username)
     |> preload([s], [:user])
@@ -152,67 +158,67 @@ defmodule Bearings.Account do
   end
 
   @doc """
-  Creates a supporter.
+  Creates an alliance.
 
   ## Examples
 
-      iex> create_supporter(%{field: value})
-      {:ok, %Supporter{}}
+      iex> create_alliance(%{field: value})
+      {:ok, %Alliance{}}
 
-      iex> create_supporter(%{field: bad_value})
+      iex> create_alliance(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_supporter(attrs \\ %{}) do
-    %Supporter{}
-    |> Supporter.changeset(attrs)
+  def create_alliance(attrs \\ %{}) do
+    %Alliance{}
+    |> Alliance.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a supporter.
+  Updates an alliance.
 
   ## Examples
 
-      iex> update_supporter(supporter, %{field: new_value})
-      {:ok, %Supporter{}}
+      iex> update_alliance(alliance, %{field: new_value})
+      {:ok, %Alliance{}}
 
-      iex> update_supporter(supporter, %{field: bad_value})
+      iex> update_alliance(alliance, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_supporter(%Supporter{} = supporter, attrs) do
-    supporter
-    |> Supporter.changeset(attrs)
+  def update_alliance(%Alliance{} = alliance, attrs) do
+    alliance
+    |> Alliance.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a Supporter.
+  Deletes an Alliance.
 
   ## Examples
 
-      iex> delete_supporter(supporter)
-      {:ok, %Supporter{}}
+      iex> delete_alliance(alliance)
+      {:ok, %Alliance{}}
 
-      iex> delete_supporter(supporter)
+      iex> delete_alliance(alliance)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_supporter(%Supporter{} = supporter) do
-    Repo.delete(supporter)
+  def delete_alliance(%Alliance{} = alliance) do
+    Repo.delete(alliance)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking supporter changes.
+  Returns an `%Ecto.Changeset{}` for tracking alliance changes.
 
   ## Examples
 
-      iex> change_supporter(supporter)
-      %Ecto.Changeset{source: %Supporter{}}
+      iex> change_alliance(alliance)
+      %Ecto.Changeset{source: %Alliance{}}
 
   """
-  def change_supporter(%Supporter{} = supporter) do
-    Supporter.changeset(supporter, %{})
+  def change_alliance(%Alliance{} = alliance) do
+    Alliance.changeset(alliance, %{})
   end
 end

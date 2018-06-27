@@ -9,7 +9,7 @@ defmodule ViewingDailiesFromOtherUsersTest do
     other_user = insert(:user)
     user = insert(:user)
 
-    insert(:supporter, user: other_user, supporter: user)
+    insert(:alliance, user: other_user, supporter: user)
 
     FakeOAuthServer.set_user_response(auth_server, user)
     Page.login(session, user)

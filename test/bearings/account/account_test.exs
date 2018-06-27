@@ -75,67 +75,62 @@ defmodule Bearings.AccountTest do
     end
   end
 
-  describe "supporters" do
-    alias Bearings.Account.Supporter
+  describe "alliances" do
+    alias Bearings.Account.Alliance
 
     @valid_attrs %{include_private: true, supporter_id: 42, user_id: 42}
     @update_attrs %{include_private: false, supporter_id: 43, user_id: 43}
     @invalid_attrs %{include_private: nil, supporter_id: nil, user_id: nil}
 
-    def supporter_fixture(attrs \\ %{}) do
-      {:ok, supporter} =
+    def alliance_fixture(attrs \\ %{}) do
+      {:ok, alliance} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Account.create_supporter()
+        |> Account.create_alliance()
 
-      supporter
+      alliance
     end
 
-    test "list_supporters/0 returns all supporters" do
-      supporter = supporter_fixture()
-      assert Account.list_supporters() == [supporter]
+    test "get_alliance!/1 returns the alliance with given id" do
+      alliance = alliance_fixture()
+      assert Account.get_alliance!(alliance.id) == alliance
     end
 
-    test "get_supporter!/1 returns the supporter with given id" do
-      supporter = supporter_fixture()
-      assert Account.get_supporter!(supporter.id) == supporter
+    test "create_alliance/1 with valid data creates a alliance" do
+      assert {:ok, %Alliance{} = alliance} = Account.create_alliance(@valid_attrs)
+      assert alliance.include_private == true
+      assert alliance.supporter_id == 42
+      assert alliance.user_id == 42
     end
 
-    test "create_supporter/1 with valid data creates a supporter" do
-      assert {:ok, %Supporter{} = supporter} = Account.create_supporter(@valid_attrs)
-      assert supporter.include_private == true
-      assert supporter.supporter_id == 42
-      assert supporter.user_id == 42
+    test "create_alliance/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Account.create_alliance(@invalid_attrs)
     end
 
-    test "create_supporter/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Account.create_supporter(@invalid_attrs)
+    test "update_alliance/2 with valid data updates the alliance" do
+      alliance = alliance_fixture()
+      assert {:ok, alliance} = Account.update_alliance(alliance, @update_attrs)
+      assert %Alliance{} = alliance
+      assert alliance.include_private == false
+      assert alliance.supporter_id == 43
+      assert alliance.user_id == 43
     end
 
-    test "update_supporter/2 with valid data updates the supporter" do
-      supporter = supporter_fixture()
-      assert {:ok, supporter} = Account.update_supporter(supporter, @update_attrs)
-      assert %Supporter{} = supporter
-      assert supporter.include_private == false
-      assert supporter.supporter_id == 43
-      assert supporter.user_id == 43
+    test "update_alliance/2 with invalid data returns error changeset" do
+      alliance = alliance_fixture()
+      assert {:error, %Ecto.Changeset{}} = Account.update_alliance(alliance, @invalid_attrs)
+      assert alliance == Account.get_alliance!(alliance.id)
     end
 
-    test "update_supporter/2 with invalid data returns error changeset" do
-      supporter = supporter_fixture()
-      assert {:error, %Ecto.Changeset{}} = Account.update_supporter(supporter, @invalid_attrs)
-      assert supporter == Account.get_supporter!(supporter.id)
+    test "delete_alliance/1 deletes the alliance" do
+      alliance = alliance_fixture()
+      assert {:ok, %Alliance{}} = Account.delete_alliance(alliance)
+      assert_raise Ecto.NoResultsError, fn -> Account.get_alliance!(alliance.id) end
     end
 
-    test "delete_supporter/1 deletes the supporter" do
-      supporter = supporter_fixture()
-      assert {:ok, %Supporter{}} = Account.delete_supporter(supporter)
-      assert_raise Ecto.NoResultsError, fn -> Account.get_supporter!(supporter.id) end
-    end
-
-    test "change_supporter/1 returns a supporter changeset" do
-      supporter = supporter_fixture()
-      assert %Ecto.Changeset{} = Account.change_supporter(supporter)
+    test "change_alliance/1 returns a alliance changeset" do
+      alliance = alliance_fixture()
+      assert %Ecto.Changeset{} = Account.change_alliance(alliance)
     end
   end
 end

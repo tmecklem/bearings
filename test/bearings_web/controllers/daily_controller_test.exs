@@ -135,7 +135,7 @@ defmodule BearingsWeb.DailyControllerTest do
   describe "as accountability partner" do
     setup %{conn: conn, user: user} do
       other = insert(:user)
-      insert(:supporter, supporter: user, user: other, include_private: true)
+      insert(:alliance, supporter: user, user: other, include_private: true)
       other_dailies = insert_list(4, :daily, owner_id: other.id)
 
       {:ok, conn: conn, other_user: other, other_dailies: other_dailies}
@@ -189,7 +189,7 @@ defmodule BearingsWeb.DailyControllerTest do
   describe "as supporter" do
     setup %{conn: conn, user: user} do
       other = insert(:user)
-      insert(:supporter, supporter: user, user: other, include_private: false)
+      insert(:alliance, supporter: user, user: other, include_private: false)
       other_dailies = insert_list(4, :daily, owner_id: other.id)
 
       {:ok, conn: conn, other_user: other, other_dailies: other_dailies}

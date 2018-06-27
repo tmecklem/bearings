@@ -21,7 +21,7 @@ defmodule Bearings.DailiesTest do
     setup do
       user = insert(:user)
       other_user = insert(:user)
-      insert(:supporter, user: other_user, supporter: user)
+      insert(:alliance, user: other_user, supporter: user)
 
       daily_id = insert(:daily, owner_id: user.id).id
       other_id = insert(:daily, owner_id: other_user.id).id
