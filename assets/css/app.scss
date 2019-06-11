@@ -1,12 +1,6 @@
 
 @import "./variables";
-@import "node_modules/bootstrap/scss/bootstrap";
-
-$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
-@import "fontawesome";
-@import "fa-brands";
-@import "fa-regular";
-@import "fa-solid";
+@import "../node_modules/bootstrap/scss/bootstrap";
 
 body {
   background-color: darkgray;

@@ -18,4 +18,6 @@ config :bearings, Bearings.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :wallaby, screenshot_on_failure: true
+config :hound,
+  driver: "chrome_driver",
+  browser: "chrome_headless"

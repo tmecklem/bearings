@@ -2,15 +2,15 @@ defmodule BearingsWeb.FeatureCase do
   @moduledoc false
 
   use ExUnit.CaseTemplate
+  use Hound.Helpers
 
   alias Bearings.Repo
   alias BearingsWeb.{Endpoint, FakeOAuthServer}
   alias Ecto.Adapters.SQL.Sandbox
-  alias Wallaby.Browser
 
   using do
     quote do
-      use Wallaby.DSL
+      use Hound.Helpers
 
       alias Bearings.Repo
       import Ecto
@@ -22,15 +22,15 @@ defmodule BearingsWeb.FeatureCase do
   end
 
   setup tags do
+    Hound.start_session()
+
+    set_window_size(current_window_handle(), 1400, 900)
+
     :ok = Sandbox.checkout(Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Bearings.Repo, {:shared, self()})
+      Sandbox.mode(Repo, {:shared, self()})
     end
-
-    metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Bearings.Repo, self())
-    {:ok, session} = Wallaby.start_session(metadata: metadata)
-    session = Browser.resize_window(session, 1400, 900)
 
     auth_server = FakeOAuthServer.open()
 
@@ -45,6 +45,6 @@ defmodule BearingsWeb.FeatureCase do
 
     Application.put_env(:bearings, Bearings.OAuth.GitHub, settings)
 
-    {:ok, session: session, auth_server: auth_server}
+    {:ok, auth_server: auth_server}
   end
 end

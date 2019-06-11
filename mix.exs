@@ -47,17 +47,18 @@ defmodule Bearings.Mixfile do
       {:earmark, "~> 1.2"},
       {:ex_machina, "~> 2.2", only: [:dev, :test]},
       {:gettext, "~> 0.11"},
+      {:hound, "~> 1.0", [runtime: false, only: :test]},
       {:oauth2, "~> 0.9.2"},
-      {:phoenix, "~> 1.3.2"},
+      {:phoenix, "~> 1.4.3"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
       {:phoenix_pubsub, "~> 1.0"},
       {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:timex, "~> 3.1"},
-      {:wallaby, "~> 0.20.0", [runtime: false, only: :test]}
+      {:timex, "~> 3.1"}
     ]
   end
 

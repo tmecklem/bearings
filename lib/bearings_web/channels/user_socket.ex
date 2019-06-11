@@ -3,8 +3,6 @@ defmodule BearingsWeb.UserSocket do
 
   channel("dailies:*", BearingsWeb.DailyChannel)
 
-  transport(:websocket, Phoenix.Transports.WebSocket, timeout: 45_000)
-
   def connect(_params, socket) do
     {:ok, socket}
   end
