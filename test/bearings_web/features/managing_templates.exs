@@ -6,36 +6,34 @@ defmodule ManagingDailiesTest do
   alias BearingsWeb.Page
   alias BearingsWeb.TemplateEditPage
 
-  setup %{auth_server: auth_server, session: session} do
+  setup %{auth_server: auth_server} do
     user = insert(:user)
     FakeOAuthServer.set_user_response(auth_server, user)
-    Page.login(session, user)
+    Page.login(user)
 
     {:ok, user: user}
   end
 
-  test "creating a template", %{session: session, user: user} do
+  test "creating a template", %{user: user} do
     template = build(:template, owner: user.id)
 
-    session
-    |> TemplateEditPage.visit_page()
-    |> TemplateEditPage.fill_form(template)
-    |> TemplateEditPage.save()
-    |> DailiesEditPage.visit_add_page(user)
-    |> assert_has(DailiesEditPage.daily_plan(template.daily_plan))
-    |> assert_has(DailiesEditPage.personal_journal(template.personal_journal))
+    TemplateEditPage.visit_page()
+    TemplateEditPage.fill_form(template)
+    TemplateEditPage.save()
+    DailiesEditPage.visit_add_page(user)
+    assert DailiesEditPage.daily_plan() == template.daily_plan.raw
+    assert DailiesEditPage.personal_journal() == template.personal_journal.raw
   end
 
-  test "updating a template", %{session: session, user: user} do
+  test "updating a template", %{user: user} do
     insert(:template, owner: user)
     template = build(:template)
 
-    session
-    |> TemplateEditPage.visit_page()
-    |> TemplateEditPage.fill_form(template)
-    |> TemplateEditPage.save()
-    |> DailiesEditPage.visit_add_page(user)
-    |> assert_has(DailiesEditPage.daily_plan(template.daily_plan))
-    |> assert_has(DailiesEditPage.personal_journal(template.personal_journal))
+    TemplateEditPage.visit_page()
+    TemplateEditPage.fill_form(template)
+    TemplateEditPage.save()
+    DailiesEditPage.visit_add_page(user)
+    assert DailiesEditPage.daily_plan() == template.daily_plan.raw
+    assert DailiesEditPage.personal_journal() == template.personal_journal.raw
   end
 end
