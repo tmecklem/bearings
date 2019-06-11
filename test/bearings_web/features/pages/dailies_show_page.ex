@@ -18,7 +18,9 @@ defmodule BearingsWeb.DailiesShowPage do
   end
 
   def goal_completed(goal) do
-    case visible_text({:css, "[data-test='goal'][data-test-id='#{goal.id}'] [data-test='completed']"}) do
+    case visible_text(
+           {:css, "[data-test='goal'][data-test-id='#{goal.id}'] [data-test='completed']"}
+         ) do
       "☑" -> true
       "☐" -> false
     end
