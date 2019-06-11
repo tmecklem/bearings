@@ -2,8 +2,7 @@ defmodule Bearings.DailiesTest do
   use Bearings.DataCase
 
   alias Bearings.Dailies
-  alias Bearings.Dailies.Markdown
-  alias Bearings.Dailies.Daily
+  alias Bearings.Dailies.{Daily, Markdown}
 
   @valid_attrs %{
     date: ~D[2010-04-17],
