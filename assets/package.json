@@ -2,7 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "parcel build ./js/app.js --out-dir ../priv/static/js",
+    "build": "parcel build ./js/app.js --out-dir ../priv/static/js",
     "watch": "parcel watch ./js/app.js --out-dir ../priv/static/js",
     "eslint": "eslint js/**"
   },
