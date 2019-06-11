@@ -7,11 +7,11 @@ config :bearings, BearingsWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch",
-      cd: Path.expand("../assets", __DIR__)
+      "./assets/node_modules/parcel-bundler/bin/cli.js",
+      "watch",
+      "./assets/js/app.js",
+      "--out-dir",
+      "priv/static/js"
     ]
   ]
 
@@ -21,7 +21,8 @@ config :bearings, BearingsWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/bearings_web/views/.*(ex)$},
-      ~r{lib/bearings_web/templates/.*(eex)$}
+      ~r{lib/bearings_web/templates/.*(eex)$},
+      ~r{lib/bearings_web/live/.*(ex)$}
     ]
   ]
 

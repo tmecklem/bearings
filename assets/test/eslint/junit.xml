@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="/Users/tmecklem/src/goals/bearings/assets/js/app.js">
+<testcase time="0" name="org.eslint.quotes"><failure message="Strings must use singlequote."><![CDATA[line 2, col 8, Error - Strings must use singlequote. (quotes)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="0" name="/Users/tmecklem/src/goals/bearings/assets/js/socket.js">
+<testcase time="0" name="/Users/tmecklem/src/goals/bearings/assets/js/socket.js" />
+</testsuite>
+</testsuites>

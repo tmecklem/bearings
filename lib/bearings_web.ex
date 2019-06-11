@@ -23,6 +23,7 @@ defmodule BearingsWeb do
       import Plug.Conn
       import BearingsWeb.Router.Helpers
       import BearingsWeb.Gettext
+      import Phoenix.LiveView.Controller, only: [live_render: 3]
     end
   end
 
@@ -42,6 +43,7 @@ defmodule BearingsWeb do
       import BearingsWeb.ErrorHelpers
       import BearingsWeb.Gettext
       import BearingsWeb.MarkdownHelper
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
@@ -50,6 +52,7 @@ defmodule BearingsWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

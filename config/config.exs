@@ -13,7 +13,10 @@ config :bearings, BearingsWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "6cbA2wX7JGHPv6PHCXyy81kG3RdNpb/b1k4gXEFyEgma4mMr+jZvNa/KH3GeJSQX",
   render_errors: [view: BearingsWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Bearings.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Bearings.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "mk5mb/ayxJPqufC6TcYE1tm+qdUqU4Qo"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

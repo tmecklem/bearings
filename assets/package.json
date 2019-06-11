@@ -2,41 +2,28 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "webpack --mode production",
-    "watch": "webpack --mode development --watch",
-    "build": "webpack --mode development",
+    "deploy": "parcel build ./js/app.js --out-dir ../priv/static/js",
+    "watch": "parcel watch ./js/app.js --out-dir ../priv/static/js",
     "eslint": "eslint js/**"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",
+    "autoprefixer": "^9.5.1",
     "bootstrap": "^4.3.1",
     "core-js": "^3.0.1",
-    "jquery": "^3.4.1",
+    "normalize.css": "^8.0.1",
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
-    "popper.js": "^1.15.0"
+    "phoenix_live_view": "file:../deps/phoenix_live_view",
+    "popper.js": "^1.15.0",
+    "sass": "^1.17.2"
   },
+  "assetsPath": "file:./static",
   "devDependencies": {
-    "@babel/polyfill": "^7.4.4",
-    "autoprefixer": "^8.6.5",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "copy-webpack-plugin": "^4.6.0",
-    "css-loader": "^0.28.11",
-    "eslint": "^4.19.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.17.3",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "file-loader": "^1.1.11",
-    "node-sass": "^4.12.0",
-    "postcss-loader": "^2.1.6",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.21.0",
-    "webpack": "^4.33.0",
-    "webpack-cli": "^2.1.5"
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "babel-preset-env": "^1.7.0"
   }
 }

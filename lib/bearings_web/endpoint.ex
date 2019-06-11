@@ -5,7 +5,7 @@ defmodule BearingsWeb.Endpoint do
     plug(Phoenix.Ecto.SQL.Sandbox)
   end
 
-  socket("/socket", BearingsWeb.UserSocket)
+  socket("/live", Phoenix.LiveView.Socket, websocket: [timeout: 45_000])
 
   # Serve at "/" the static files from "priv/static" directory.
   #

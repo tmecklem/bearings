@@ -186,7 +186,8 @@ defmodule BearingsWeb.DailyController do
     else
       conn
       |> put_status(:not_found)
-      |> render(BearingsWeb.ErrorView, "404.html")
+      |> put_view(BearingsWeb.ErrorView)
+      |> render("404.html")
       |> halt()
     end
   end
@@ -206,7 +207,8 @@ defmodule BearingsWeb.DailyController do
       true ->
         conn
         |> put_status(:not_found)
-        |> render(BearingsWeb.ErrorView, "404.html")
+        |> put_view(BearingsWeb.ErrorView)
+        |> render("404.html")
         |> halt()
     end
   end
