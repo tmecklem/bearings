@@ -29,7 +29,7 @@ defmodule BearingsWeb.FeatureCase do
     :ok = Sandbox.checkout(Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Bearings.Repo, {:shared, self()})
+      Sandbox.mode(Repo, {:shared, self()})
     end
 
     auth_server = FakeOAuthServer.open()
