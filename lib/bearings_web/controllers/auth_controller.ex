@@ -1,8 +1,8 @@
 defmodule BearingsWeb.AuthController do
   use BearingsWeb, :controller
 
-  alias Bearings.OAuth.GitHub
   alias Bearings.Account
+  alias Bearings.OAuth.GitHub
   alias OAuth2.Client
 
   @doc """

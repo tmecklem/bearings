@@ -1,8 +1,8 @@
 defmodule BearingsWeb.DailyView do
   use BearingsWeb, :view
 
-  alias Timex.Interval
   alias Bearings.Dailies.Daily
+  alias Timex.Interval
   alias Phoenix.HTML.FormData
 
   @default_card_class "col-md daily-card"
