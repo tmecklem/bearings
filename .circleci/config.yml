@@ -26,7 +26,7 @@ jobs:
           working_directory: assets
       - run:
           name: build assets
-          command: node node_modules/webpack/bin/webpack.js --mode development
+          command: npm install && npm run deploy
           working_directory: assets
       - run: mix ecto.create
       - run: MIX_ENV=test mix coveralls.circle
