@@ -11,6 +11,10 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run:
+         name: Start Chrome Driver
+         command: /usr/local/bin/chromedriver
+         background: true
 
       - run: mix local.hex --force
       - run: mix local.rebar --force
