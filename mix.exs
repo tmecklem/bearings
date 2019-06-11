@@ -43,7 +43,6 @@ defmodule Bearings.Mixfile do
     [
       {:bypass, "~> 0.8", only: :test},
       {:excoveralls, "~> 0.8", only: :test},
-      {:cowboy, "~> 1.0"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.2"},
       {:ex_machina, "~> 2.2", only: [:dev, :test]},
@@ -54,6 +53,7 @@ defmodule Bearings.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
+      {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, ">= 0.0.0"},
       {:timex, "~> 3.1"},
