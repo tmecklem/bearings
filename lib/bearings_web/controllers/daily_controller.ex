@@ -25,7 +25,7 @@ defmodule BearingsWeb.DailyController do
     |> case do
       {:ok, daily} ->
         if params["previous_daily"] do
-          {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+          {previous, _next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
           {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
         end
 
@@ -129,7 +129,7 @@ defmodule BearingsWeb.DailyController do
     case Dailies.update_daily(daily, daily_params) do
       {:ok, _daily_changeset} ->
         if params["previous_daily"] do
-          {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+          {previous, _next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
           {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
         end
 
