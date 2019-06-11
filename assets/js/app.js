@@ -6,5 +6,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import '../css/app.scss'
 import 'phoenix_html'
 import './live-view.js'
+import 'bootstrap'
 
 library.add(fas, far, fab)
