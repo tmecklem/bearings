@@ -6,8 +6,10 @@ defmodule BearingsWeb.DailyControllerTest do
 
   alias Bearings.Dailies.Goal
   alias Bearings.Repo
+  alias ExMachina.Sequence
 
   setup %{conn: conn} do
+    Sequence.reset(:date)
     user = insert(:user)
     conn = assign(conn, :current_user, user)
     my_dailies = insert_list(4, :daily, owner_id: user.id)

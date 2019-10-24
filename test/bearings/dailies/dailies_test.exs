@@ -3,6 +3,7 @@ defmodule Bearings.DailiesTest do
 
   alias Bearings.Dailies
   alias Bearings.Dailies.{Daily, Markdown}
+  alias ExMachina.Sequence
 
   @valid_attrs %{
     date: ~D[2010-04-17],
@@ -15,6 +16,10 @@ defmodule Bearings.DailiesTest do
     daily_plan: "some updated daily_plan"
   }
   @invalid_attrs %{date: nil, personal_journal: nil, daily_plan: nil}
+
+  setup do
+    Sequence.reset(:date)
+  end
 
   describe "list_dailies/2" do
     setup do

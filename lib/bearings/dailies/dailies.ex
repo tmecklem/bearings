@@ -49,6 +49,7 @@ defmodule Bearings.Dailies do
   """
   def list_dailies(%User{id: user_id}, options \\ []) do
     include_supports = Keyword.get(options, :include_supports, false)
+    days = Keyword.get(options, :days, 3650)
 
     user_ids =
       case include_supports do
@@ -66,9 +67,12 @@ defmodule Bearings.Dailies do
           [user_id]
       end
 
+    earliest_date = Timex.shift(Date.utc_today, days: (-1 * days))
+
     Daily
     |> join(:inner, [d], o in assoc(d, :owner))
     |> where([_d, o], o.id in ^user_ids)
+    |> where([d], d.date >= ^earliest_date)
     |> preload([d], [:owner])
     |> order_by(:date)
     |> Repo.all()

@@ -73,7 +73,7 @@ defmodule BearingsWeb.DailyController do
   def index(conn, _params, %{user: user}) do
     dailies =
       user
-      |> Dailies.list_dailies(include_supports: true)
+      |> Dailies.list_dailies(include_supports: true, days: 60)
       |> Enum.map(&Daily.strip_private_markdown/1)
 
     render(conn, "index.html", dailies: dailies)
