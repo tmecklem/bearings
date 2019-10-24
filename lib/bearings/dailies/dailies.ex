@@ -67,7 +67,7 @@ defmodule Bearings.Dailies do
           [user_id]
       end
 
-    earliest_date = Timex.shift(Date.utc_today, days: (-1 * days))
+    earliest_date = Timex.shift(Date.utc_today(), days: -1 * days)
 
     Daily
     |> join(:inner, [d], o in assoc(d, :owner))
