@@ -28,7 +28,6 @@ defmodule BearingsWeb.Router do
     pipe_through(:browser)
 
     resources("/dailies", DailyController, as: :daily)
-    delete("/goals/:id", GoalController, :delete)
   end
 
   scope "/auth", BearingsWeb do

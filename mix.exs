@@ -53,7 +53,7 @@ defmodule Bearings.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
+      {:phoenix_live_view, "~> 0.3"},
       {:phoenix_pubsub, "~> 1.0"},
       {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 3.1.0"},
