@@ -36,7 +36,8 @@ jobs:
       - run: MIX_ENV=test mix coveralls.circle
       - store_test_results:
           path: test-results
-  deploy:
+
+  deploy_staging:
     docker:
       - image: circleci/elixir:1.9.1-node-browsers
       - image: circleci/postgres:11.3
@@ -44,9 +45,21 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy Master to Heroku
+          name: Deploy master to Staging
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_STAGING_APP_NAME.git master
+
+  deploy_production:
+    docker:
+      - image: circleci/elixir:1.9.1-node-browsers
+      - image: circleci/postgres:11.3
+
+    steps:
+      - checkout
+      - run:
+          name: Deploy Release to Production
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION_APP_NAME.git master
 
 workflows:
   version: 2
@@ -59,3 +72,11 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy_production:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v.*/
