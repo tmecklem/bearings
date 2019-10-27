@@ -1,10 +1,9 @@
 
-@import "./variables";
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-/* body { */
-/*   background-color: darkgray; */
-/* } */
+@import "./variables";
+@import "./base";
+@import "./daily-card";
 
 /* h3 { */
 /*   font-weight: 700; */
@@ -124,10 +123,10 @@
 /*   transform: scale(0.90) translate(0px); */
 /* } */
 
-/* .avatar { */
-/*   margin: 0.4em; */
-/*   width: 40px; */
-/*   height: 40px; */
+.avatar {
+  width: 40px;
+  height: 40px;
+}
 /*   border-radius: 50% 50% 50% 50%; */
 /*   transition:All 0.2s ease; */
 /*   transform: scale(1); */
