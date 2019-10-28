@@ -1,13 +1,13 @@
 <div class="container daily-list">
-  <div class="bg-secondary row border-bottom border-light">
+  <div class="row border-bottom border-light">
     <h4 class="col-12 text-light my-3 text-center">Daily Plans</h4>
   </div>
 
   <%= for week <- calendar(@dailies) |> Enum.chunk_every(7, 7) do %>
-    <div class="row">
+    <div class="row border-bottom border-light">
       <%= for calendar_day = {day, dailies} <- week do %>
         <div class="<%= daily_card_class(calendar_day) %>">
-          <div class="bg-secondary text-light text-center py-2">
+          <div class="text-light text-center py-2">
             <%= Timex.format!(day, "%b %d", :strftime) %>
             <%= if Enum.empty?(dailies) do %>
             <% end %>
