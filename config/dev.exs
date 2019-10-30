@@ -11,7 +11,9 @@ config :bearings, BearingsWeb.Endpoint,
       "watch",
       "./assets/js/app.js",
       "--out-dir",
-      "priv/static/js"
+      "priv/static/js",
+      "--public-url",
+      "./"
     ]
   ]
 
