@@ -2,8 +2,8 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "build": "parcel build ./js/app.js --out-dir ../priv/static/js",
-    "watch": "parcel watch ./js/app.js --out-dir ../priv/static/js",
+    "build": "parcel build ./js/app.js --out-dir ../priv/static/js --public-url ./",
+    "watch": "parcel watch ./js/app.js --out-dir ../priv/static/js --public-url ./",
     "eslint": "eslint js/**"
   },
   "dependencies": {
