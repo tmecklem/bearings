@@ -40,7 +40,7 @@
   <%= content_tag(:label, "Goals", for: "goals", class: "col-sm-3 text-sm-right") %>
   <div class="col-sm-9">
     <%= inputs_for f, :goals, [append: Enum.map((1..10), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
-    <div class="row">
+    <div class="row test">
       <%= hidden_input g, :index, value: g.index %>
       <div class="col-9">
         <div class="form-check">
