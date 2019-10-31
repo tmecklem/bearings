@@ -1,8 +1,8 @@
 <%= form_for @changeset, @action, [class: "form"], fn(f) -> %>
 
-<div class="form-group row">
+<div class="form-group row u-push-lg-top">
   <%= label f, :date, class: "col-sm-3 col-form-label text-sm-right" %>
-  <div class="col-sm-9">
+  <div class="col-sm-8">
     <%= date_input f, :date, class: "form-control", "data-test": "date" %>
   </div>
   <div class="col-12">
@@ -40,7 +40,7 @@
   <%= content_tag(:label, "Goals", for: "goals", class: "col-sm-3 text-sm-right") %>
   <div class="col-sm-9">
     <%= inputs_for f, :goals, [append: Enum.map((1..10), fn _ -> %Bearings.Dailies.Goal{} end)], fn g -> %>
-    <div class="row test">
+    <div class="row u-push-sm-top">
       <%= hidden_input g, :index, value: g.index %>
       <div class="col-9">
         <div class="form-check">
@@ -48,7 +48,7 @@
           <%= text_input g, :body, class: "form-control", "data-test": "goal_body", "data-test-id": g.data.id %>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-3 u-push-xs-top">
         <%= checkbox g, :mark_for_delete, class: "form-check-input" %> Delete
       </div>
       <%= error_tag g, :body %>
@@ -59,7 +59,7 @@
 
 <div class="form-group row">
   <%= label f, :daily_plan, "Plan", class: "col-sm-3 text-sm-right" %>
-  <div class="col-sm-9">
+  <div class="col-sm-8">
     <p class="form-text text-muted">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
     <%= textarea(f, :daily_plan, class: "markdown form-control", "data-test": "daily_plan") %>
     <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>
@@ -69,7 +69,7 @@
 
 <div class="form-group row">
   <%= label f, :personal_journal, "Personal Journal", class: "col-sm-3 text-sm-right" %>
-  <div class="col-sm-9">
+  <div class="col-sm-8">
     <p class="form-text text-muted"><i>Optional</i> <br/> This is a journal area for you. It will be only be visible to you by default.</p>
     <%= textarea(f, :personal_journal, class: "markdown form-control", "data-test": "personal_journal") %>
     <p class="form-text text-muted">This field accepts Markdown. For a quick reference, see <a href="http://commonmark.org/help/" class="text-muted">http://commonmark.org/help/</a></p>

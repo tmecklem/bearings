@@ -1,3 +1,10 @@
 .daily-form {
   background-color: white;
+  margin: 20px;
+
+  .form-check {
+    & input[type="checkbox"] {
+      margin-top: 10px;
+    }
+  }
 }
