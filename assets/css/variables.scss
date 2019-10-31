@@ -12,5 +12,18 @@ $font-size-h3: 1.2rem;
 $font-size-h4: 1.2rem;
 $font-size-small: .8rem;
 
+//       Measurements
+
+
+$spacer: 1rem;
+$radius: .3rem;
+
+$spacer-xs: $spacer*0.25;
+$spacer-sm: $spacer*0.5;
+$spacer-md: $spacer;
+$spacer-lg: $spacer*2;
+$spacer-xl: $spacer*3;
+$spacer-xxl: $spacer*4;
+
 // $font-family-sans-serif: -apple-system, 'Chivo', BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 // $font-family-monospace: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
