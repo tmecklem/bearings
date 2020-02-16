@@ -19,7 +19,7 @@ defmodule BearingsWeb.Router do
   scope "/", BearingsWeb do
     pipe_through(:browser)
 
-    resources("/dailies", DailyController, as: :dailies, only: [:index])
+    live "/dailies", DailiesLive.Index
     resources("/template", TemplateController, only: [:edit, :create, :update], singleton: true)
 
     get("/", PageController, :index)
@@ -30,8 +30,7 @@ defmodule BearingsWeb.Router do
 
     live "/dailies/new", DailiesLive.New
     live "/dailies/:id/edit", DailiesLive.Edit
-    live "/dailies/:id/show", DailiesLive.Show
-    resources("/dailies", DailyController, as: :daily, except: [:new, :edit, :show, :create, :update])
+    live "/dailies/:id", DailiesLive.Show
   end
 
   scope "/auth", BearingsWeb do

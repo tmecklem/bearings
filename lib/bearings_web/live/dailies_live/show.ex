@@ -1,4 +1,4 @@
-defmodule BearingsWeb.DailiesLive.Edit do
+defmodule BearingsWeb.DailiesLive.Show do
   use Phoenix.LiveView
 
   alias Bearings.Account
@@ -29,7 +29,7 @@ defmodule BearingsWeb.DailiesLive.Edit do
     {:ok, assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)}
   end
 
-  def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "edit.html", assigns)
+  def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "show.html", assigns)
 
   def handle_event("validate", %{"daily" => daily_params}, socket) do
     changeset =
@@ -40,27 +40,21 @@ defmodule BearingsWeb.DailiesLive.Edit do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("save", %{"daily" => daily_params} = params, socket) do
-    daily = socket.assigns[:daily]
-
+  def handle_event("delete", _, socket) do
     socket =
-      case Dailies.update_daily(daily, daily_params) do
-        {:ok, _daily_changeset} ->
-          if params["previous_daily"] do
-            {previous, _next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
-            {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
-          end
+      socket.assigns[:daily]
+      |> Dailies.delete_daily()
+      |> case do
+           {:ok, _} ->
+              socket
+              |> put_flash(:info, "Daily successfully deleted")
+              |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Index))
 
-          socket
-          |> put_flash(:info, "Updated Successfully")
-          |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, socket.assigns[:current_user], daily))
-
-        {:error, %Ecto.Changeset{} = changeset} ->
-          {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
-
-          assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)
-      end
-
+           {:error, _} ->
+             socket
+             |> put_flash(:error, "Could not delete daily")
+             |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Index))
+         end
     {:noreply, socket}
   end
 
