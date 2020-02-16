@@ -45,12 +45,13 @@ defmodule Bearings.Mixfile do
       {:excoveralls, "~> 0.8", only: :test},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.2"},
+      {:ecto_sql, "~> 3.3"},
       {:ex_machina, "~> 2.2", only: [:dev, :test]},
       {:gettext, "~> 0.11"},
       {:hound, "~> 1.0", [runtime: false, only: :test]},
       {:oauth2, "~> 0.9.2"},
       {:phoenix, "~> 1.4.3"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_ecto, "~> 4.1"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_live_view, "~> 0.3"},
@@ -58,7 +59,7 @@ defmodule Bearings.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:timex, "~> 3.1"}
+      {:timex, "~> 3.6"}
     ]
   end
 

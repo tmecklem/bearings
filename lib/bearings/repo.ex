@@ -1,5 +1,7 @@
 defmodule Bearings.Repo do
-  use Ecto.Repo, otp_app: :bearings
+  use Ecto.Repo,
+    otp_app: :bearings,
+    adapter: Ecto.Adapters.Postgres
 
   @doc """
   Dynamically loads the repository url from the

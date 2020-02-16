@@ -30,6 +30,13 @@ defmodule Bearings.Dailies.Markdown do
   def dump(_), do: :error
 
   @impl Ecto.Type
+  def embed_as(_), do: :self
+
+  @impl Ecto.Type
+  def equal?(%__MODULE__{raw: raw}, %__MODULE__{raw: raw}), do: true
+  def equal?(_, _), do: false
+
+  @impl Ecto.Type
   def load(raw) do
     {:ok, %__MODULE__{raw: raw}}
   end

@@ -43,7 +43,6 @@ defmodule BearingsWeb do
       import BearingsWeb.ErrorHelpers
       import BearingsWeb.Gettext
       import BearingsWeb.MarkdownHelper
-      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
