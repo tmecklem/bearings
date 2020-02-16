@@ -27,7 +27,8 @@ defmodule BearingsWeb.Router do
   scope "/:username", BearingsWeb do
     pipe_through(:browser)
 
-    resources("/dailies", DailyController, as: :daily)
+    live "/dailies/new", DailiesLive.New
+    resources("/dailies", DailyController, as: :daily, except: [:new])
   end
 
   scope "/auth", BearingsWeb do
