@@ -5,17 +5,18 @@ defmodule BearingsWeb.DailiesEditPage do
 
   use Hound.Helpers
 
-  import BearingsWeb.Router.Helpers, only: [daily_path: 3, daily_path: 4]
+  import BearingsWeb.Router.Helpers
 
   alias Bearings.Dailies.{Daily, Goal}
+  alias BearingsWeb.DailiesLive.{Edit, New}
   alias BearingsWeb.Endpoint
 
   def visit_add_page(user) do
-    navigate_to(daily_path(Endpoint, :new, user))
+    navigate_to(live_path(Endpoint, New, user))
   end
 
   def visit_edit_page(user, daily) do
-    navigate_to(daily_path(Endpoint, :edit, user, daily))
+    navigate_to(live_path(Endpoint, Edit, user, daily))
   end
 
   def complete_goal(%Goal{} = goal) do

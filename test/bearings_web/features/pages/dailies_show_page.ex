@@ -5,12 +5,12 @@ defmodule BearingsWeb.DailiesShowPage do
 
   use Hound.Helpers
 
-  import BearingsWeb.Router.Helpers, only: [dailies_path: 3]
+  import BearingsWeb.Router.Helpers
 
   alias BearingsWeb.Endpoint
 
   def visit_page(daily) do
-    navigate_to(dailies_path(Endpoint, :show, daily))
+    navigate_to(live_path(Endpoint, BearingsWeb.DailiesLive.Show, daily))
   end
 
   def goal_body(goal) do
