@@ -1,5 +1,6 @@
 defmodule BearingsWeb.Router do
   use BearingsWeb, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -28,7 +29,9 @@ defmodule BearingsWeb.Router do
     pipe_through(:browser)
 
     live "/dailies/new", DailiesLive.New
-    resources("/dailies", DailyController, as: :daily, except: [:new])
+    live "/dailies/:id/edit", DailiesLive.Edit
+    live "/dailies/:id/show", DailiesLive.Show
+    resources("/dailies", DailyController, as: :daily, except: [:new, :edit, :show, :create, :update])
   end
 
   scope "/auth", BearingsWeb do

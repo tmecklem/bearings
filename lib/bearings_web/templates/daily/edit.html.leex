@@ -3,6 +3,6 @@
     <div class="bg-secondary">
       <h3 class="text-light p-3">Edit Daily Plan</h3>
     </div>
-    <%= render "form.html", Map.put(assigns, :action, daily_path(@conn, :update, @conn.assigns.current_user, @daily)) %>
+    <%= render "form.html", assigns %>
   </div>
 </div>

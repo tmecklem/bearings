@@ -5,7 +5,7 @@ defmodule BearingsWeb.DailiesLive.New do
   alias Bearings.Dailies
   alias Bearings.Dailies.{Daily, Template}
 
-  # alias BearingsWeb.Router.Helpers, as: Routes
+  alias BearingsWeb.Router.Helpers, as: Routes
 
   def mount(params, session, socket) do
     user_id = session["user_id"]
@@ -28,9 +28,9 @@ defmodule BearingsWeb.DailiesLive.New do
     changeset =
       Dailies.change_daily(
         %Daily{
-            date: date,
-            daily_plan: template.daily_plan,
-            personal_journal: template.personal_journal
+          date: date,
+          daily_plan: template.daily_plan,
+          personal_journal: template.personal_journal
         }
       )
 
@@ -50,16 +50,32 @@ defmodule BearingsWeb.DailiesLive.New do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  # def handle_event("save", %{"user" => user_params}, socket) do
-  #   case Accounts.create_user(user_params) do
-  #     {:ok, user} ->
-  #       {:stop,
-  #        socket
-  #        |> put_flash(:info, "user created")
-  #        |> redirect(to: Routes.live_path(socket, UserLive.Show, user))}
+  def handle_event("save", %{"daily" => daily_params} = params, socket) do
+    user = socket.assigns[:current_user]
 
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       {:noreply, assign(socket, changeset: changeset)}
-  #   end
-  # end
+    daily_params
+    |> Map.put("owner_id", user.id)
+    |> Dailies.create_daily()
+    |> case do
+         {:ok, daily} ->
+           if params["previous_daily"] do
+             {previous, _next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+             {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
+           end
+
+           socket
+           |> put_flash(:info, "Created Successfully")
+           |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, user, daily))
+
+         {:error, %Ecto.Changeset{} = changeset} ->
+           date =
+             case Timex.parse(daily_params["date"], "%Y-%m-%d", :strftime) do
+               {:ok, date_time} -> Timex.to_date(date_time)
+               _ -> Timex.today()
+             end
+
+           {previous, next} = Dailies.get_adjacent(owner_id: user.id, date: date)
+           {:noreply, assign(socket, changeset: changeset, previous_daily: previous, next_daily: next)}
+       end
+  end
 end

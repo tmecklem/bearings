@@ -4,10 +4,10 @@ defmodule BearingsWeb.DailyController do
   alias Bearings.Account
   alias Bearings.Account.Supporter
   alias Bearings.Dailies
-  alias Bearings.Dailies.{Daily, Template}
+  alias Bearings.Dailies.Daily
 
   plug(:authenticate)
-  plug(:authorize_owner when action in [:new, :create, :edit, :update, :delete])
+  plug(:authorize_owner when action in [:create, :update, :delete])
   plug(:authorize_supporter_or_owner when action in [:show])
 
   def action(conn, _) do
@@ -45,26 +45,6 @@ defmodule BearingsWeb.DailyController do
     end
   end
 
-  def edit(conn, %{"id" => date_string, "username" => username}, _user) do
-    daily =
-      date_string
-      |> parse_date()
-      |> Dailies.get_daily!(username)
-
-    changeset = Dailies.change_daily(daily)
-
-    {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
-
-    render(
-      conn,
-      "edit.html",
-      changeset: changeset,
-      daily: daily,
-      previous_daily: previous,
-      next_daily: next
-    )
-  end
-
   # temporary redirect for old /username/dailies path
   def index(conn, %{"username" => _}, _assigns) do
     redirect(conn, to: dailies_path(conn, :index))
@@ -77,26 +57,6 @@ defmodule BearingsWeb.DailyController do
       |> Enum.map(&Daily.strip_private_markdown/1)
 
     render(conn, "index.html", dailies: dailies)
-  end
-
-  def new(conn, params, %{user: user}) do
-    date =
-      case Timex.parse(params["date"], "%Y-%m-%d", :strftime) do
-        {:ok, date_time} -> Timex.to_date(date_time)
-        _ -> Timex.today()
-      end
-
-    template = Dailies.get_template(user) || %Template{}
-
-    changeset =
-      Dailies.change_daily(%Daily{
-        date: date,
-        daily_plan: template.daily_plan,
-        personal_journal: template.personal_journal
-      })
-
-    {previous, next} = Dailies.get_adjacent(owner_id: user.id, date: date)
-    render(conn, "new.html", changeset: changeset, previous_daily: previous, next_daily: next)
   end
 
   def show(conn, %{"id" => date_string, "username" => username}, assigns) do
