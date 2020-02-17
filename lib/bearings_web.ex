@@ -43,6 +43,8 @@ defmodule BearingsWeb do
       import BearingsWeb.ErrorHelpers
       import BearingsWeb.Gettext
       import BearingsWeb.MarkdownHelper
+
+      alias BearingsWeb.Router.Helpers, as: Routes
     end
   end
 

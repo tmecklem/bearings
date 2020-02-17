@@ -14,7 +14,7 @@
           </div>
           <%= if Enum.count(dailies) > 0 do %>
             <%= for daily <- dailies do %>
-              <%= link to: daily_path(@conn, :show, daily.owner.username, daily), "data-test": "daily" do %>
+              <%= link to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Show, daily.owner.username, daily), "data-test": "daily" do %>
                 <%= img_tag "#{daily.owner.avatar}&size=120", class: "avatar" %>
               <% end %>
             <% end %>
@@ -26,10 +26,10 @@
 
   <div class="row my-2">
     <div class="col-12">
-      <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
-        <%= link "Plan a New Day", to: daily_path(@conn, :new, @conn.assigns.current_user), class: "btn btn-light float-right" %>
+      <%= unless Map.has_key?(@socket.assigns, :supporter) do %>
+        <%= link "Plan a New Day", to: live_path(@socket, BearingsWeb.DailiesLive.New, @socket.assigns.current_user), class: "btn btn-light float-right" %>
       <% else %>
-        <% inspect @conn.assigns.supporter %>
+        <% inspect @socket.assigns.supporter %>
       <% end %>
     </div>
   </div>

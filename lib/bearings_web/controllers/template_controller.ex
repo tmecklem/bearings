@@ -35,7 +35,7 @@ defmodule BearingsWeb.TemplateController do
       {:ok, _template} ->
         conn
         |> put_flash(:info, "Template Changed Successfully")
-        |> redirect(to: dailies_path(conn, :index))
+        |> redirect(to: live_path(conn, BearingsWeb.DailiesLive.Index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(
@@ -57,7 +57,7 @@ defmodule BearingsWeb.TemplateController do
       {:ok, _template} ->
         conn
         |> put_flash(:info, "Template Changed Successfully")
-        |> redirect(to: dailies_path(conn, :index))
+        |> redirect(to: live_path(conn, BearingsWeb.DailiesLive.Index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(

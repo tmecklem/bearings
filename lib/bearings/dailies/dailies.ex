@@ -191,8 +191,8 @@ defmodule Bearings.Dailies do
       %Ecto.Changeset{source: %Daily{}}
 
   """
-  def change_daily(%Daily{} = daily) do
-    Daily.changeset(daily, %{})
+  def change_daily(%Daily{} = daily, daily_params \\ %{}) do
+    Daily.changeset(daily, daily_params)
   end
 
   alias Bearings.Dailies.Template

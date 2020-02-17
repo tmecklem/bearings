@@ -5,17 +5,18 @@ defmodule BearingsWeb.DailiesEditPage do
 
   use Hound.Helpers
 
-  import BearingsWeb.Router.Helpers, only: [daily_path: 3, daily_path: 4]
+  import BearingsWeb.Router.Helpers
 
   alias Bearings.Dailies.{Daily, Goal}
+  alias BearingsWeb.DailiesLive.{Edit, New}
   alias BearingsWeb.Endpoint
 
   def visit_add_page(user) do
-    navigate_to(daily_path(Endpoint, :new, user))
+    navigate_to(live_path(Endpoint, New, user))
   end
 
   def visit_edit_page(user, daily) do
-    navigate_to(daily_path(Endpoint, :edit, user, daily))
+    navigate_to(live_path(Endpoint, Edit, user, daily))
   end
 
   def complete_goal(%Goal{} = goal) do
@@ -27,7 +28,8 @@ defmodule BearingsWeb.DailiesEditPage do
   end
 
   def fill_form(%Daily{} = daily) do
-    fill_field({:css, "[data-test='date']"}, Timex.format!(daily.date, "%m/%d/%Y", :strftime))
+    value = Timex.format!(daily.date, "%Y-%m-%d", :strftime)
+    execute_script("document.querySelector('[data-test=\"date\"]').value = '#{value}'")
     fill_field({:css, "[data-test='personal_journal']"}, daily.personal_journal.raw)
     fill_field({:css, "[data-test='daily_plan']"}, daily.daily_plan.raw)
   end

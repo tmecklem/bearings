@@ -57,7 +57,7 @@
     <div class="markdown-show col-12 col-sm-9"><%= to_html(@daily.daily_plan) %></div>
   </div>
 
-  <%= unless Map.has_key?(@conn.assigns, :supporter) && @conn.assigns.supporter.include_private == false do %>
+  <%= unless Map.has_key?(@socket.assigns, :supporter) && @socket.assigns.supporter.include_private == false do %>
     <div class="row border-top border-bottom pt-4 pl-3 pl-sm-0">
       <div class="col-sm-3 text-sm-right text-baseline pt-1">Journal</div>
       <div class="markdown-show col-sm-9 pt-3 pt-sm-0"><%= to_html(@daily.personal_journal) %></div>
@@ -67,11 +67,11 @@
 
 <div class="row mt-1 daily-footer py-2 px-4">
   <div class="col-12">
-    <%= link "Back to List", to: dailies_path(@conn, :index), class: "btn btn-secondary-outline" %>
+    <%= link "Back to List", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Index), class: "btn btn-secondary-outline" %>
     <span class="float-right">
-      <%= unless Map.has_key?(@conn.assigns, :supporter) do %>
-        <%= link "Delete", method: :delete, to: daily_path(@conn, :delete, @conn.params["username"], @daily), class: "btn btn-danger" %>
-        <%= link "Edit", to: daily_path(@conn, :edit, @conn.params["username"], @daily), class: "btn btn-secondary ml-3" %>
+      <%= unless Map.has_key?(@socket.assigns, :supporter) do %>
+      <button phx-click="delete" class="btn btn-danger">Delete</button>
+        <%= link "Edit", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily), class: "btn btn-secondary ml-3" %>
       <% end %>
     </span>
   </div>
