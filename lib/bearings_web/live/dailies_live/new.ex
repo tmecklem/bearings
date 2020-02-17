@@ -1,11 +1,17 @@
 defmodule BearingsWeb.DailiesLive.New do
+  @moduledoc """
+  This module is responsible to handle creating a new daily
+  """
+
   use Phoenix.LiveView
 
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.{Daily, Template}
-
+  alias BearingsWeb.DailyView
   alias BearingsWeb.Router.Helpers, as: Routes
+  alias Ecto.Changeset
+  alias Phoenix.View
 
   def mount(params, session, socket) do
     user_id = session["user_id"]
@@ -26,14 +32,13 @@ defmodule BearingsWeb.DailiesLive.New do
     template = Dailies.get_template(socket.assigns.current_user) || %Template{}
 
     changeset =
-      Dailies.change_daily(
-        %Daily{
-          date: date,
-          daily_plan: template.daily_plan,
-          personal_journal: template.personal_journal
-        }
-      )
-      |> Ecto.Changeset.put_assoc(:goals, [%Bearings.Dailies.Goal{}])
+      %Daily{
+        date: date,
+        daily_plan: template.daily_plan,
+        personal_journal: template.personal_journal
+      }
+      |> Dailies.change_daily()
+      |> Changeset.put_assoc(:goals, [%Bearings.Dailies.Goal{}])
 
     previous_changeset =
       case Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: date) do
@@ -45,7 +50,7 @@ defmodule BearingsWeb.DailiesLive.New do
     {:ok, assign(socket, changeset: changeset, previous_changeset: previous_changeset)}
   end
 
-  def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "new.html", assigns)
+  def render(assigns), do: View.render(DailyView, "new.html", assigns)
 
   def handle_event("validate", %{"daily" => daily_params} = params, socket) do
     changeset =
@@ -55,10 +60,10 @@ defmodule BearingsWeb.DailiesLive.New do
 
     changeset =
       changeset
-      |> Ecto.Changeset.put_assoc(:goals, Ecto.Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
+      |> Changeset.put_assoc(:goals, Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
 
     socket = case socket.assigns.previous_changeset do
-               %Ecto.Changeset{} ->
+               %Changeset{} ->
                  previous_changeset =
                    socket.assigns.previous_changeset
                    |> Daily.goals_changeset(params["previous_daily"])
@@ -88,7 +93,7 @@ defmodule BearingsWeb.DailiesLive.New do
              |> put_flash(:info, "Created Successfully")
              |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, user, daily))
 
-           {:error, %Ecto.Changeset{} = changeset} ->
+           {:error, %Changeset{} = changeset} ->
              assign(socket, changeset: changeset)
          end
       {:noreply, socket}

@@ -1,11 +1,16 @@
 defmodule BearingsWeb.DailiesLive.Edit do
+  @moduledoc """
+  This module is responsible to handle editing a daily
+  """
   use Phoenix.LiveView
 
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.Daily
-
+  alias BearingsWeb.DailyView
   alias BearingsWeb.Router.Helpers, as: Routes
+  alias Ecto.Changeset
+  alias Phoenix.View
 
   def mount(%{"id" => date_string, "username" => username}, session, socket) do
     user_id = session["user_id"]
@@ -24,8 +29,9 @@ defmodule BearingsWeb.DailiesLive.Edit do
     daily = Dailies.get_daily!(date, username)
 
     changeset =
-      Dailies.change_daily(daily)
-      |> Ecto.Changeset.put_assoc(:goals, daily.goals ++ [%Bearings.Dailies.Goal{}])
+      daily
+      |> Dailies.change_daily()
+      |> Changeset.put_assoc(:goals, daily.goals ++ [%Bearings.Dailies.Goal{}])
 
     previous_changeset =
       case Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: date) do
@@ -37,7 +43,7 @@ defmodule BearingsWeb.DailiesLive.Edit do
     {:ok, assign(socket, changeset: changeset, previous_changeset: previous_changeset, daily: daily)}
   end
 
-  def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "edit.html", assigns)
+  def render(assigns), do: View.render(DailyView, "edit.html", assigns)
 
   def handle_event("validate", %{"daily" => daily_params} = params, socket) do
     changeset =
@@ -47,7 +53,7 @@ defmodule BearingsWeb.DailiesLive.Edit do
 
     changeset =
       changeset
-      |> Ecto.Changeset.put_assoc(:goals, Ecto.Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
+      |> Changeset.put_assoc(:goals, Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
 
     socket = case params["previous_daily"] do
                nil ->
@@ -77,7 +83,7 @@ defmodule BearingsWeb.DailiesLive.Edit do
           |> put_flash(:info, "Updated Successfully")
           |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, socket.assigns[:current_user], daily))
 
-        {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, %Changeset{} = changeset} ->
           {previous, next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
 
           assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)

@@ -1,9 +1,14 @@
 defmodule BearingsWeb.DailiesLive.Index do
+  @moduledoc """
+  This module is responsible to handle listing dailies
+  """
   use Phoenix.LiveView
 
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.Daily
+  alias BearingsWeb.DailyView
+  alias Phoenix.View
 
   def mount(_params, session, socket) do
     user_id = session["user_id"]
@@ -23,5 +28,5 @@ defmodule BearingsWeb.DailiesLive.Index do
     {:ok, assign(socket, dailies: dailies)}
   end
 
-  def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "index.html", assigns)
+  def render(assigns), do: View.render(DailyView, "index.html", assigns)
 end

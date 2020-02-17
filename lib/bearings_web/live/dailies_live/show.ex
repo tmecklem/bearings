@@ -1,11 +1,15 @@
 defmodule BearingsWeb.DailiesLive.Show do
+  @moduledoc """
+  This module is responsible to display a daily
+  """
   use Phoenix.LiveView
 
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.Daily
-
+  alias BearingsWeb.DailyView
   alias BearingsWeb.Router.Helpers, as: Routes
+  alias Phoenix.View
 
   def mount(%{"id" => date_string, "username" => username}, session, socket) do
     user_id = session["user_id"]
@@ -29,7 +33,7 @@ defmodule BearingsWeb.DailiesLive.Show do
     {:ok, assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)}
   end
 
-  def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "show.html", assigns)
+  def render(assigns), do: View.render(DailyView, "show.html", assigns)
 
   def handle_event("validate", %{"daily" => daily_params}, socket) do
     changeset =
