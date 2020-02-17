@@ -17,25 +17,47 @@ defmodule BearingsWeb.DailiesLive.Edit do
       assign(socket, :current_user, user)
     end
 
-    daily =
+    date =
       date_string
       |> parse_date()
-      |> Dailies.get_daily!(username)
 
-    changeset = Dailies.change_daily(daily)
+    daily = Dailies.get_daily!(date, username)
 
-    {previous, next} = Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: daily.date)
+    changeset =
+      Dailies.change_daily(daily)
+      |> Ecto.Changeset.put_assoc(:goals, daily.goals ++ [%Bearings.Dailies.Goal{}])
 
-    {:ok, assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)}
+    previous_changeset =
+      case Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: date) do
+        {%Daily{} = previous, _} ->
+          Dailies.change_daily(previous)
+        _ -> nil
+      end
+
+    {:ok, assign(socket, changeset: changeset, previous_changeset: previous_changeset, daily: daily)}
   end
 
   def render(assigns), do: Phoenix.View.render(BearingsWeb.DailyView, "edit.html", assigns)
 
-  def handle_event("validate", %{"daily" => daily_params}, socket) do
+  def handle_event("validate", %{"daily" => daily_params} = params, socket) do
     changeset =
-      %Daily{}
+      socket.assigns[:daily]
       |> Dailies.change_daily(daily_params)
       |> Map.put(:action, :insert)
+
+    changeset =
+      changeset
+      |> Ecto.Changeset.put_assoc(:goals, Ecto.Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
+
+    socket = case params["previous_daily"] do
+               nil ->
+                 socket
+               _ ->
+                 previous_changeset =
+                   socket.assigns.previous_changeset
+                   |> Daily.goals_changeset(params["previous_daily"])
+                 assign(socket, previous_changeset: previous_changeset)
+             end
 
     {:noreply, assign(socket, changeset: changeset)}
   end

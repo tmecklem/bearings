@@ -28,7 +28,8 @@ defmodule BearingsWeb.DailiesEditPage do
   end
 
   def fill_form(%Daily{} = daily) do
-    fill_field({:css, "[data-test='date']"}, Timex.format!(daily.date, "%m/%d/%Y", :strftime))
+    value = Timex.format!(daily.date, "%Y-%m-%d", :strftime)
+    execute_script("document.querySelector('[data-test=\"date\"]').value = '#{value}'")
     fill_field({:css, "[data-test='personal_journal']"}, daily.personal_journal.raw)
     fill_field({:css, "[data-test='daily_plan']"}, daily.daily_plan.raw)
   end
