@@ -62,14 +62,14 @@ defmodule BearingsWeb.DailiesLive.New do
       changeset
       |> Changeset.put_assoc(:goals, Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
 
-    socket = case socket.assigns.previous_changeset do
-               %Changeset{} ->
+    socket = case params["previous_daily"] do
+               nil ->
+                 socket
+               _ ->
                  previous_changeset =
                    socket.assigns.previous_changeset
                    |> Daily.goals_changeset(params["previous_daily"])
                  assign(socket, previous_changeset: previous_changeset)
-               _ ->
-                 socket
              end
 
     {:noreply, assign(socket, changeset: changeset)}
