@@ -16,12 +16,13 @@ defmodule BearingsWeb.DailiesLive.New do
   def mount(params, session, socket) do
     user_id = session["user_id"]
 
-    socket = if socket.assigns[:current_user] do
-      socket
-    else
-      user = user_id && Account.get_user!(user_id)
-      assign(socket, :current_user, user)
-    end
+    socket =
+      if socket.assigns[:current_user] do
+        socket
+      else
+        user = user_id && Account.get_user!(user_id)
+        assign(socket, :current_user, user)
+      end
 
     date =
       case Timex.parse(params["date"], "%Y-%m-%d", :strftime) do
@@ -44,7 +45,9 @@ defmodule BearingsWeb.DailiesLive.New do
       case Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: date) do
         {%Daily{} = previous, _} ->
           Dailies.change_daily(previous)
-        _ -> nil
+
+        _ ->
+          nil
       end
 
     {:ok, assign(socket, changeset: changeset, previous_changeset: previous_changeset)}
@@ -60,17 +63,23 @@ defmodule BearingsWeb.DailiesLive.New do
 
     changeset =
       changeset
-      |> Changeset.put_assoc(:goals, Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}])
+      |> Changeset.put_assoc(
+        :goals,
+        Changeset.get_field(changeset, :goals) ++ [%Bearings.Dailies.Goal{}]
+      )
 
-    socket = case params["previous_daily"] do
-               nil ->
-                 socket
-               _ ->
-                 previous_changeset =
-                   socket.assigns.previous_changeset
-                   |> Daily.goals_changeset(params["previous_daily"])
-                 assign(socket, previous_changeset: previous_changeset)
-             end
+    socket =
+      case params["previous_daily"] do
+        nil ->
+          socket
+
+        _ ->
+          previous_changeset =
+            socket.assigns.previous_changeset
+            |> Daily.goals_changeset(params["previous_daily"])
+
+          assign(socket, previous_changeset: previous_changeset)
+      end
 
     {:noreply, assign(socket, changeset: changeset)}
   end
@@ -83,19 +92,20 @@ defmodule BearingsWeb.DailiesLive.New do
       |> Map.put("owner_id", user.id)
       |> Dailies.create_daily()
       |> case do
-           {:ok, daily} ->
-             if params["previous_daily"] do
-               {previous, _next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
-               {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
-             end
+        {:ok, daily} ->
+          if params["previous_daily"] do
+            {previous, _next} = Dailies.get_adjacent(owner_id: daily.owner_id, date: daily.date)
+            {:ok, _} = Dailies.update_goals(previous, params["previous_daily"])
+          end
 
-             socket
-             |> put_flash(:info, "Created Successfully")
-             |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, user, daily))
+          socket
+          |> put_flash(:info, "Created Successfully")
+          |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, user, daily))
 
-           {:error, %Changeset{} = changeset} ->
-             assign(socket, changeset: changeset)
-         end
-      {:noreply, socket}
+        {:error, %Changeset{} = changeset} ->
+          assign(socket, changeset: changeset)
+      end
+
+    {:noreply, socket}
   end
 end

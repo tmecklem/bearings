@@ -18,7 +18,7 @@ defmodule BearingsWeb.Router do
   scope "/", BearingsWeb do
     pipe_through(:browser)
 
-    live "/dailies", DailiesLive.Index
+    live("/dailies", DailiesLive.Index)
     resources("/template", TemplateController, only: [:edit, :create, :update], singleton: true)
 
     get("/", PageController, :index)
@@ -27,9 +27,9 @@ defmodule BearingsWeb.Router do
   scope "/:username", BearingsWeb do
     pipe_through(:browser)
 
-    live "/dailies/new", DailiesLive.New
-    live "/dailies/:id/edit", DailiesLive.Edit
-    live "/dailies/:id", DailiesLive.Show
+    live("/dailies/new", DailiesLive.New)
+    live("/dailies/:id/edit", DailiesLive.Edit)
+    live("/dailies/:id", DailiesLive.Show)
   end
 
   scope "/auth", BearingsWeb do

@@ -13,12 +13,13 @@ defmodule BearingsWeb.DailiesLive.Index do
   def mount(_params, session, socket) do
     user_id = session["user_id"]
 
-    socket = if socket.assigns[:current_user] do
-      socket
-    else
-      user = user_id && Account.get_user!(user_id)
-      assign(socket, :current_user, user)
-    end
+    socket =
+      if socket.assigns[:current_user] do
+        socket
+      else
+        user = user_id && Account.get_user!(user_id)
+        assign(socket, :current_user, user)
+      end
 
     dailies =
       socket.assigns[:current_user]

@@ -14,12 +14,13 @@ defmodule BearingsWeb.DailiesLive.Show do
   def mount(%{"id" => date_string, "username" => username}, session, socket) do
     user_id = session["user_id"]
 
-    socket = if socket.assigns[:current_user] do
-      socket
-    else
-      user = user_id && Account.get_user!(user_id)
-      assign(socket, :current_user, user)
-    end
+    socket =
+      if socket.assigns[:current_user] do
+        socket
+      else
+        user = user_id && Account.get_user!(user_id)
+        assign(socket, :current_user, user)
+      end
 
     daily =
       date_string
@@ -28,9 +29,11 @@ defmodule BearingsWeb.DailiesLive.Show do
 
     changeset = Dailies.change_daily(daily)
 
-    {previous, next} = Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: daily.date)
+    {previous, next} =
+      Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: daily.date)
 
-    {:ok, assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)}
+    {:ok,
+     assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)}
   end
 
   def render(assigns), do: View.render(DailyView, "show.html", assigns)
@@ -49,16 +52,17 @@ defmodule BearingsWeb.DailiesLive.Show do
       socket.assigns[:daily]
       |> Dailies.delete_daily()
       |> case do
-           {:ok, _} ->
-              socket
-              |> put_flash(:info, "Daily successfully deleted")
-              |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Index))
+        {:ok, _} ->
+          socket
+          |> put_flash(:info, "Daily successfully deleted")
+          |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Index))
 
-           {:error, _} ->
-             socket
-             |> put_flash(:error, "Could not delete daily")
-             |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Index))
-         end
+        {:error, _} ->
+          socket
+          |> put_flash(:error, "Could not delete daily")
+          |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Index))
+      end
+
     {:noreply, socket}
   end
 
