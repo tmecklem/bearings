@@ -27,7 +27,7 @@
   <div class="row my-2">
     <div class="col-12">
       <%= unless Map.has_key?(@socket.assigns, :supporter) do %>
-        <%= link "Plan a New Day", to: live_path(@socket, BearingsWeb.DailiesLive.New, @socket.assigns.current_user), class: "btn btn-light float-right" %>
+        <%= link "Plan a New Day", to: live_path(@socket, BearingsWeb.DailiesLive.New, @current_user), class: "btn btn-light float-right" %>
       <% else %>
         <% inspect @socket.assigns.supporter %>
       <% end %>
