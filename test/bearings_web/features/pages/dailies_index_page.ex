@@ -5,13 +5,13 @@ defmodule BearingsWeb.DailiesIndexPage do
 
   use Hound.Helpers
 
-  import BearingsWeb.Router.Helpers
+  alias BearingsWeb.Router.Helpers, as: Routes
 
   alias BearingsWeb.DailiesLive.Index
   alias BearingsWeb.Endpoint
 
   def visit_page do
-    navigate_to(live_path(Endpoint, Index))
+    navigate_to(Routes.live_path(Endpoint, Index))
   end
 
   def dailies do
