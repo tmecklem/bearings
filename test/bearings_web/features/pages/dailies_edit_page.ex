@@ -3,46 +3,45 @@ defmodule BearingsWeb.DailiesEditPage do
   Module to interact with dailies add/edit pages
   """
 
-  use Hound.Helpers
+  use Wallaby.DSL
 
-  alias BearingsWeb.Router.Helpers, as: Routes
+  import Wallaby.Query, only: [css: 1, css: 2]
 
-  alias Bearings.Dailies.{Daily, Goal}
+  alias Bearings.Dailies.{Daily, Goal, Markdown}
   alias BearingsWeb.DailiesLive.{Edit, New}
   alias BearingsWeb.Endpoint
+  alias BearingsWeb.Router.Helpers, as: Routes
 
-  def visit_add_page(user) do
-    navigate_to(Routes.live_path(Endpoint, New, user))
+  def visit_add_page(session, user) do
+    visit(session, Routes.live_path(Endpoint, New, user))
   end
 
-  def visit_edit_page(user, daily) do
-    navigate_to(Routes.live_path(Endpoint, Edit, user, daily))
+  def visit_edit_page(session, user, daily) do
+    visit(session, Routes.live_path(Endpoint, Edit, user, daily))
   end
 
-  def complete_goal(%Goal{} = goal) do
-    click({:css, "[data-test='goal_completed'][data-test-id='#{goal.id}']"})
+  def complete_goal(session, %Goal{} = goal) do
+    click(session, css("[data-test='goal_completed'][data-test-id='#{goal.id}']"))
   end
 
-  def daily_plan do
-    visible_text({:css, "[data-test='daily_plan']"})
+  def daily_plan(%Markdown{raw: value}) do
+    css("[data-test='daily_plan']", text: value)
   end
 
-  def fill_form(%Daily{} = daily) do
+  def fill_form(session, %Daily{} = daily) do
     value = Timex.format!(daily.date, "%Y-%m-%d", :strftime)
-    execute_script("document.querySelector('[data-test=\"date\"]').value = '#{value}'")
-    fill_field({:css, "[data-test='personal_journal']"}, daily.personal_journal.raw)
-    fill_field({:css, "[data-test='daily_plan']"}, daily.daily_plan.raw)
+
+    session
+    |> execute_script("document.querySelector('[data-test=\"date\"]').value = '#{value}'")
+    |> fill_in(css("[data-test='personal_journal']"), with: daily.personal_journal.raw)
+    |> fill_in(css("[data-test='daily_plan']"), with: daily.daily_plan.raw)
   end
 
-  def personal_journal do
-    visible_text({:css, "[data-test='personal_journal']"})
+  def personal_journal(%Markdown{raw: value}) do
+    css("[data-test='personal_journal']", text: value)
   end
 
-  def save do
-    click({:css, "[data-test='save_daily']"})
+  def save(session) do
+    click(session, css("[data-test='save_daily']"))
   end
-
-  # defp fill_goal(%Goal{} = goal) do
-  #   fill_field({:css, "[data-test='goal_body'][data-test-id='#{goal.id}']"}, goal.body)
-  # end
 end

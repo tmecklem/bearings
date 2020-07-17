@@ -11,12 +11,10 @@ defmodule BearingsWeb.MarkdownHelperTest do
       ### H3 ###
       """
 
-      expected_html = """
-      <h2>H2</h2>
-      <h3>H3</h3>
-      """
+      expected_html = "<h2>H2</h2><h3>H3</h3>"
 
-      assert {:safe, ^expected_html} = MarkdownHelper.to_html(%Markdown{raw: content})
+      {:safe, result} = MarkdownHelper.to_html(%Markdown{raw: content})
+      assert expected_html == String.replace(result, "\n", "")
     end
 
     test "it handles nil" do

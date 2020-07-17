@@ -1,17 +1,18 @@
 defmodule BearingsWeb.Page do
   @moduledoc false
 
-  use Hound.Helpers
+  use Wallaby.DSL
 
-  import ExUnit.Assertions
+  import Wallaby.Query, only: [css: 1, css: 2]
 
   def flash_info do
-    find_element(:css, "[data-test='flash_info']")
+    css("[data-test='flash_info']")
   end
 
-  def login(user) do
-    navigate_to("/")
-    click({:css, "[data-test='login']"})
-    assert visible_text({:css, "[data-test='current_user']"}) == user.name
+  def login(session, user) do
+    session
+    |> visit("/")
+    |> click(css("[data-test='login']"))
+    |> assert_has(css("[data-test='current_user']", text: user.name))
   end
 end

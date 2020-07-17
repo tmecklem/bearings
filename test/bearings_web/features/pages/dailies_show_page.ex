@@ -3,26 +3,28 @@ defmodule BearingsWeb.DailiesShowPage do
   Module to interact with dailies show pages
   """
 
-  use Hound.Helpers
+  use Wallaby.DSL
 
-  alias BearingsWeb.Router.Helpers, as: Routes
+  import Wallaby.Query, only: [css: 2]
 
   alias BearingsWeb.Endpoint
+  alias BearingsWeb.Router.Helpers, as: Routes
 
-  def visit_page(daily) do
-    navigate_to(Routes.live_path(Endpoint, BearingsWeb.DailiesLive.Show, daily))
+  def visit_page(session, daily) do
+    visit(session, Routes.live_path(Endpoint, BearingsWeb.DailiesLive.Show, daily))
   end
 
   def goal_body(goal) do
-    visible_text({:css, "[data-test='goal'][data-test-id='#{goal.id}'] [data-test='body']"})
+    css("[data-test='goal'][data-test-id='#{goal.id}'] [data-test='body']", text: goal.body)
   end
 
   def goal_completed(goal) do
-    case visible_text(
-           {:css, "[data-test='goal'][data-test-id='#{goal.id}'] [data-test='completed']"}
-         ) do
-      "☑" -> true
-      "☐" -> false
-    end
+    text =
+      case goal.completed do
+        true -> "☑"
+        false -> "☐"
+      end
+
+    css("[data-test='goal'][data-test-id='#{goal.id}'] [data-test='completed']", text: text)
   end
 end

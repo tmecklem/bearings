@@ -3,18 +3,19 @@ defmodule BearingsWeb.DailiesIndexPage do
   Module to interact with dailies index pages
   """
 
-  use Hound.Helpers
+  use Wallaby.DSL
 
-  alias BearingsWeb.Router.Helpers, as: Routes
+  import Wallaby.Query, only: [css: 2]
 
   alias BearingsWeb.DailiesLive.Index
   alias BearingsWeb.Endpoint
+  alias BearingsWeb.Router.Helpers, as: Routes
 
-  def visit_page do
-    navigate_to(Routes.live_path(Endpoint, Index))
+  def visit_page(session) do
+    visit(session, Routes.live_path(Endpoint, Index))
   end
 
-  def dailies do
-    find_all_elements(:css, "[data-test='daily']")
+  def dailies(count: count) do
+    css("[data-test='daily']", count: count)
   end
 end

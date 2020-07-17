@@ -48,7 +48,6 @@ defmodule Bearings.Mixfile do
       {:ecto_sql, "~> 3.3"},
       {:ex_machina, "~> 2.2", only: [:dev, :test]},
       {:gettext, "~> 0.11"},
-      {:hound, "~> 1.0", [runtime: false, only: :test]},
       {:oauth2, "~> 0.9.2"},
       {:phoenix, "~> 1.4.3"},
       {:phoenix_ecto, "~> 4.1"},
@@ -59,7 +58,8 @@ defmodule Bearings.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 3.1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:timex, "~> 3.6"}
+      {:timex, "~> 3.6"},
+      {:wallaby, "~> 0.26.0", runtime: false, only: :test}
     ]
   end
 
