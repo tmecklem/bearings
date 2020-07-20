@@ -15,7 +15,7 @@
     <header class="header">
       <nav class="navbar navbar-expand-md">
         <a class="navbar-brand" href="#">Bearings</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-dark navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -41,7 +41,7 @@
           <% else %>
             <div class="navbar-nav">
               <%= link to: auth_path(@conn, :index, :github), class: "nav-item nav-link", "data-test": "login" do %>
-                Login with <i class="fab fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
+                Login with <i class="fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
               <% end %>
             </div>
           <% end %>
