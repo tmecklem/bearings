@@ -7,6 +7,10 @@ jobs:
     docker:
       - image: circleci/elixir:1.9.1-node-browsers
       - image: circleci/postgres:12.3
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
 
     working_directory: ~/repo
     steps:
