@@ -7,7 +7,8 @@ defmodule BearingsWeb.DailiesLive.Show do
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.Daily
-  alias BearingsWeb.DailyView
+  alias BearingsWeb.{DailyView, Endpoint}
+  alias BearingsWeb.DailiesLive.Index
   alias BearingsWeb.Router.Helpers, as: Routes
   alias Phoenix.View
 
@@ -22,18 +23,40 @@ defmodule BearingsWeb.DailiesLive.Show do
         assign(socket, :current_user, user)
       end
 
-    daily =
+    socket =
       date_string
       |> parse_date()
-      |> Dailies.get_daily!(username)
+      |> Dailies.get_authorized_daily(username, socket.assigns[:current_user])
+      |> case do
+        {:error, :not_authorized} ->
+          socket
+          |> push_redirect(to: Routes.live_path(Endpoint, Index))
 
-    changeset = Dailies.change_daily(daily)
+        {:ok, %{daily: daily, supporter: supporter}} ->
+          changeset = Dailies.change_daily(daily)
 
-    {previous, next} =
-      Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: daily.date)
+          socket
+          |> assign(:daily, daily)
+          |> assign(:supporter, supporter)
+          |> assign(:changeset, changeset)
+          |> assign(:previous_daily, nil)
+          |> assign(:next_daily, nil)
 
-    {:ok,
-     assign(socket, changeset: changeset, daily: daily, previous_daily: previous, next_daily: next)}
+        {:ok, %{daily: daily}} ->
+          changeset = Dailies.change_daily(daily)
+
+          {previous, next} =
+            Dailies.get_adjacent(owner_id: socket.assigns.current_user.id, date: daily.date)
+
+          socket
+          |> assign(:daily, daily)
+          |> assign(:supporter, nil)
+          |> assign(:changeset, changeset)
+          |> assign(:previous_daily, previous)
+          |> assign(:next_daily, next)
+      end
+
+    {:ok, socket}
   end
 
   def render(assigns), do: View.render(DailyView, "show.html", assigns)

@@ -6,7 +6,7 @@ defmodule Bearings.Dailies do
   import Ecto.Query, warn: false
   alias Bearings.Repo
 
-  alias Bearings.Account.User
+  alias Bearings.Account.{Supporter, User}
   alias Bearings.Dailies.{Daily, Goal}
 
   @doc """
@@ -94,6 +94,47 @@ defmodule Bearings.Dailies do
         preload: [goals: ^preload_goals()]
       )
     )
+  end
+
+  @doc """
+  Gets a single daily.
+  """
+  def get_daily(date, username) do
+    Repo.one(
+      from(
+        d in Daily,
+        join: o in User,
+        on: o.id == d.owner_id,
+        where: d.date == ^date,
+        where: o.username == ^username,
+        order_by: :date,
+        preload: [goals: ^preload_goals()]
+      )
+    )
+  end
+
+  def get_authorized_daily(date, username, %{username: username}),
+    do: {:ok, %{daily: get_daily!(date, username)}}
+
+  def get_authorized_daily(date, username, other_user = %User{}) do
+    supporter =
+      Repo.one(
+        from(
+          s in Supporter,
+          join: u in User,
+          on: u.id == s.user_id,
+          where: u.username == ^username,
+          where: s.supporter_id == ^other_user.id
+        )
+      )
+
+    case supporter do
+      %Supporter{} ->
+        {:ok, %{daily: get_daily(date, username), supporter: supporter}}
+
+      _ ->
+        {:error, :not_authorized}
+    end
   end
 
   defp preload_goals do

@@ -76,4 +76,12 @@ defmodule ManagingDailiesTest do
     |> assert_has(DailiesShowPage.goal_body(goal))
     |> assert_has(DailiesShowPage.goal_completed(goal))
   end
+
+  test "viewing a daily as the ownder shows the journal", %{session: session, user: user} do
+    daily = insert(:daily, owner_id: user.id, personal_journal: "This is a personal thought")
+
+    session
+    |> DailiesShowPage.visit_page(user, daily)
+    |> assert_has(DailiesShowPage.personal_journal())
+  end
 end

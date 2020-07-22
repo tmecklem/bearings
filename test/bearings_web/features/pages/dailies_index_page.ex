@@ -15,6 +15,10 @@ defmodule BearingsWeb.DailiesIndexPage do
     visit(session, Routes.live_path(Endpoint, Index))
   end
 
+  def on_page?(session) do
+    current_path(session) == Routes.live_path(Endpoint, Index)
+  end
+
   def dailies(count: count) do
     css("[data-test='daily']", count: count)
   end
