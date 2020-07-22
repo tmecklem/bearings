@@ -44,10 +44,19 @@ jobs:
 
     steps:
       - checkout
+
+      - run
+          name: Install heroku-cli
+          command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
       - run:
           name: Deploy master to Staging
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_STAGING_APP_NAME.git master
+      - run
+          name: Execute post install scripts
+          command: |
+            /usr/local/bin/heroku run "POOL_SIZE=2 mix ecto.migrate"
 
   deploy_production:
     docker:
@@ -56,10 +65,19 @@ jobs:
 
     steps:
       - checkout
+
+      - run
+          name: Install heroku-cli
+          command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
       - run:
           name: Deploy Release to Production
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION_APP_NAME.git master
+      - run
+          name: Execute post install scripts
+          command: |
+            /usr/local/bin/heroku run "POOL_SIZE=2 mix ecto.migrate"
 
 workflows:
   version: 2
