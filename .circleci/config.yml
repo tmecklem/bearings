@@ -60,7 +60,7 @@ jobs:
       - run:
           name: Execute post install scripts
           command: |
-            /usr/local/bin/heroku run "POOL_SIZE=2 mix ecto.migrate"
+            /usr/local/bin/heroku run --app $HEROKU_STAGING_APP_NAME "POOL_SIZE=2 mix ecto.migrate"
 
   deploy_production:
     docker:
@@ -81,7 +81,7 @@ jobs:
       - run:
           name: Execute post install scripts
           command: |
-            /usr/local/bin/heroku run "POOL_SIZE=2 mix ecto.migrate"
+            /usr/local/bin/heroku run --app $HEROKU_PRODUCTION_APP_NAME "POOL_SIZE=2 mix ecto.migrate"
 
 workflows:
   version: 2
