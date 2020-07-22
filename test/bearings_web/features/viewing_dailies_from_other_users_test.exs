@@ -1,11 +1,11 @@
 defmodule ViewingDailiesFromOtherUsersTest do
   use BearingsWeb.FeatureCase
 
-  alias Ecto.Changeset
   alias Bearings.Repo
   alias BearingsWeb.{DailiesIndexPage, DailiesShowPage}
   alias BearingsWeb.FakeOAuthServer
   alias BearingsWeb.Page
+  alias Ecto.Changeset
 
   setup %{session: session, auth_server: auth_server} do
     other_user = insert(:user)

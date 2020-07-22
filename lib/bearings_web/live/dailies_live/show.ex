@@ -7,8 +7,8 @@ defmodule BearingsWeb.DailiesLive.Show do
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.Daily
-  alias BearingsWeb.{DailyView, Endpoint}
   alias BearingsWeb.DailiesLive.Index
+  alias BearingsWeb.{DailyView, Endpoint}
   alias BearingsWeb.Router.Helpers, as: Routes
   alias Phoenix.View
 

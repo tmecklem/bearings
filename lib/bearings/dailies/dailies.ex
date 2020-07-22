@@ -116,7 +116,7 @@ defmodule Bearings.Dailies do
   def get_authorized_daily(date, username, %{username: username}),
     do: {:ok, %{daily: get_daily!(date, username)}}
 
-  def get_authorized_daily(date, username, other_user = %User{}) do
+  def get_authorized_daily(date, username, %User{} = other_user) do
     supporter =
       Repo.one(
         from(
