@@ -52,13 +52,13 @@ defmodule Bearings.DailiesTest do
 
   test "get_daily!/2 returns the daily with given date and username" do
     user = insert(:user)
-    daily = insert(:daily, owner_id: user.id) |> Repo.preload(:goals)
+    daily = insert(:daily, owner_id: user.id) |> Repo.preload([:goals, :daily_views])
     assert Dailies.get_daily!(daily.date, user.username) == daily
   end
 
   test "get_authorized_daily/3 returns the full daily when the owner is the requesting user" do
     user = insert(:user)
-    daily = insert(:daily, owner_id: user.id) |> Repo.preload(:goals)
+    daily = insert(:daily, owner_id: user.id) |> Repo.preload([:goals, :daily_views])
     assert {:ok, %{daily: ^daily}} = Dailies.get_authorized_daily(daily.date, user.username, user)
   end
 
@@ -69,7 +69,7 @@ defmodule Bearings.DailiesTest do
     %{id: supporter_id} =
       insert(:supporter, user: owner, supporter: friend, include_private: true)
 
-    daily = insert(:daily, owner_id: owner.id) |> Repo.preload(:goals)
+    daily = insert(:daily, owner_id: owner.id) |> Repo.preload([:goals, :daily_views])
 
     assert {:ok, %{daily: ^daily, supporter: %{id: ^supporter_id}}} =
              Dailies.get_authorized_daily(daily.date, owner.username, friend)
@@ -82,11 +82,27 @@ defmodule Bearings.DailiesTest do
     %{id: supporter_id} =
       insert(:supporter, user: owner, supporter: friend, include_private: false)
 
-    daily = insert(:daily, owner_id: owner.id) |> Repo.preload(:goals)
+    daily = insert(:daily, owner_id: owner.id) |> Repo.preload([:goals, :daily_views])
     expected_response = %{daily | personal_journal: nil}
 
     assert {:ok, %{daily: ^expected_response, supporter: %{id: ^supporter_id}}} =
              Dailies.get_authorized_daily(daily.date, owner.username, friend)
+  end
+
+  test "get_authorized_daily/3 marks a journal as viewed" do
+    %{id: viewer_id} = friend = insert(:user)
+    owner = insert(:user)
+    insert(:supporter, user: owner, supporter: friend)
+
+    %{id: daily_id} =
+      daily = insert(:daily, owner_id: owner.id) |> Repo.preload([:goals, :daily_views])
+
+    Dailies.get_authorized_daily(daily.date, owner.username, friend)
+
+    {:ok, %{daily: %{daily_views: daily_views}}} =
+      Dailies.get_authorized_daily(daily.date, owner.username, owner)
+
+    assert [%{viewer_id: ^viewer_id, daily_id: ^daily_id}] = daily_views
   end
 
   test "create_daily/1 with valid data creates a daily" do
@@ -118,7 +134,7 @@ defmodule Bearings.DailiesTest do
 
   test "update_daily/2 with invalid data returns error changeset" do
     user = insert(:user)
-    daily = insert(:daily, owner_id: user.id) |> Repo.preload(:goals)
+    daily = insert(:daily, owner_id: user.id) |> Repo.preload([:goals, :daily_views])
     assert {:error, %Ecto.Changeset{}} = Dailies.update_daily(daily, @invalid_attrs)
     assert daily == Dailies.get_daily!(daily.date, user.username)
   end
@@ -203,7 +219,7 @@ defmodule Bearings.DailiesTest do
     test "delete_template/1 deletes the template", %{owner: owner} do
       template = insert(:template, owner: owner)
       assert {:ok, %Template{}} = Dailies.delete_template(template)
-      assert Dailies.get_template(owner) == nil
+      assert is_nil(Dailies.get_template(owner))
     end
 
     test "change_template/1 returns a template changeset", %{owner: owner} do

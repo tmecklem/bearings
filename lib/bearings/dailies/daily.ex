@@ -7,7 +7,7 @@ defmodule Bearings.Dailies.Daily do
   import Ecto.Changeset
 
   alias Bearings.Account.User
-  alias Bearings.Dailies.{Goal, Markdown}
+  alias Bearings.Dailies.{DailyView, Goal, Markdown}
 
   @type t :: %__MODULE__{
           daily_plan: Markdown.t(),
@@ -23,9 +23,15 @@ defmodule Bearings.Dailies.Daily do
     field(:daily_plan, Markdown)
     belongs_to(:owner, User)
     has_many(:goals, Goal, on_delete: :delete_all)
+    has_many(:daily_views, DailyView, on_delete: :delete_all)
 
     timestamps()
   end
+
+  def maybe_strip_private_markdown(%__MODULE__{} = daily, _include_private = true), do: daily
+
+  def maybe_strip_private_markdown(%__MODULE__{} = daily, _include_private),
+    do: strip_private_markdown(daily)
 
   def strip_private_markdown(%__MODULE__{} = daily) do
     %{daily | personal_journal: nil}

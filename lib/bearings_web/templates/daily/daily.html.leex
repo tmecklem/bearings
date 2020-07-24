@@ -2,6 +2,13 @@
   <div class="daily-title">
     <div class="col-12"><h2>Daily Plan</h2></div>
     <div class="col-12"><%= Timex.format!(@daily.date, "%a, %B %e", :strftime) %></div>
+    <div>
+      <%= if @current_user.id == @daily.owner_id && !is_nil(@daily.daily_views) do %>
+        <%= for daily_view <- @daily.daily_views do %>
+          <%= img_tag "#{daily_view.viewer.avatar}&size=120", class: "avatar", title: "#{daily_view.viewer.username} - #{Timex.format!(daily_view.date, "%Y-%m-%d", :strftime)}" %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 
   <%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 || Enum.count(@daily.goals) > 0 do %>

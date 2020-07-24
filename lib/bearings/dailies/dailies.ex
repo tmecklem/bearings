@@ -7,7 +7,7 @@ defmodule Bearings.Dailies do
   alias Bearings.Repo
 
   alias Bearings.Account.{Supporter, User}
-  alias Bearings.Dailies.{Daily, Goal}
+  alias Bearings.Dailies.{Daily, DailyView, Goal}
 
   @doc """
   Returns the adjacent daily ids for the given user
@@ -79,6 +79,18 @@ defmodule Bearings.Dailies do
     |> Repo.preload(goals: from(g in Goal, order_by: g.index))
   end
 
+  def list_daily_views(%Daily{id: daily_id}) do
+    Repo.all(
+      from(
+        dv in DailyView,
+        join: viewer in User,
+        on: viewer.id == dv.viewer_id,
+        where: dv.daily_id == ^daily_id,
+        order_by: :date
+      )
+    )
+  end
+
   @doc """
   Gets a single daily.
   """
@@ -91,6 +103,7 @@ defmodule Bearings.Dailies do
         where: d.date == ^date,
         where: o.username == ^username,
         order_by: :date,
+        preload: [daily_views: :viewer],
         preload: [goals: ^preload_goals()]
       )
     )
@@ -108,6 +121,7 @@ defmodule Bearings.Dailies do
         where: d.date == ^date,
         where: o.username == ^username,
         order_by: :date,
+        preload: [daily_views: :viewer],
         preload: [goals: ^preload_goals()]
       )
     )
@@ -129,16 +143,36 @@ defmodule Bearings.Dailies do
       )
 
     case supporter do
-      %Supporter{include_private: true} ->
-        daily = get_daily(date, username)
+      %Supporter{include_private: include_private} ->
+        daily = Daily.maybe_strip_private_markdown(get_daily(date, username), include_private)
+        maybe_insert_view(daily, supporter.supporter_id)
         {:ok, %{daily: daily, supporter: supporter}}
-
-      %Supporter{} ->
-        daily = get_daily(date, username)
-        {:ok, %{daily: %{daily | personal_journal: nil}, supporter: supporter}}
 
       _ ->
         {:error, :not_authorized}
+    end
+  end
+
+  defp maybe_insert_view(%Daily{id: daily_id}, viewer_id) do
+    view =
+      Repo.one(
+        from(
+          dv in DailyView,
+          where: dv.daily_id == ^daily_id,
+          where: dv.viewer_id == ^viewer_id
+        )
+      )
+
+    case view do
+      nil ->
+        Repo.insert!(%DailyView{
+          viewer_id: viewer_id,
+          daily_id: daily_id,
+          date: DateTime.truncate(DateTime.utc_now(), :second)
+        })
+
+      _ ->
+        nil
     end
   end
 
