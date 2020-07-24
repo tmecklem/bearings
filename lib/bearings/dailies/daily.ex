@@ -28,7 +28,7 @@ defmodule Bearings.Dailies.Daily do
     timestamps()
   end
 
-  def maybe_strip_private_markdown(%__MODULE__{} = daily, _include_private = true), do: daily
+  def maybe_strip_private_markdown(%__MODULE__{} = daily, true = _include_private), do: daily
 
   def maybe_strip_private_markdown(%__MODULE__{} = daily, _include_private),
     do: strip_private_markdown(daily)
