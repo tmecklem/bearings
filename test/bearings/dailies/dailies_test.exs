@@ -56,6 +56,39 @@ defmodule Bearings.DailiesTest do
     assert Dailies.get_daily!(daily.date, user.username) == daily
   end
 
+  test "get_authorized_daily/3 returns the full daily when the owner is the requesting user" do
+    user = insert(:user)
+    daily = insert(:daily, owner_id: user.id) |> Repo.preload(:goals)
+    assert {:ok, %{daily: ^daily}} = Dailies.get_authorized_daily(daily.date, user.username, user)
+  end
+
+  test "get_authorized_daily/3 returns the full daily when the requesting user is a supporter with personal journal access" do
+    friend = insert(:user)
+    owner = insert(:user)
+
+    %{id: supporter_id} =
+      insert(:supporter, user: owner, supporter: friend, include_private: true)
+
+    daily = insert(:daily, owner_id: owner.id) |> Repo.preload(:goals)
+
+    assert {:ok, %{daily: ^daily, supporter: %{id: ^supporter_id}}} =
+             Dailies.get_authorized_daily(daily.date, owner.username, friend)
+  end
+
+  test "get_authorized_daily/3 returns a redacted daily when the requesting user is a supporter without personal journal access" do
+    friend = insert(:user)
+    owner = insert(:user)
+
+    %{id: supporter_id} =
+      insert(:supporter, user: owner, supporter: friend, include_private: false)
+
+    daily = insert(:daily, owner_id: owner.id) |> Repo.preload(:goals)
+    expected_response = %{daily | personal_journal: nil}
+
+    assert {:ok, %{daily: ^expected_response, supporter: %{id: ^supporter_id}}} =
+             Dailies.get_authorized_daily(daily.date, owner.username, friend)
+  end
+
   test "create_daily/1 with valid data creates a daily" do
     user = insert(:user)
     attrs = Map.put(@valid_attrs, :owner_id, user.id)

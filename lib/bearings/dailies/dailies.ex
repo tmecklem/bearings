@@ -129,8 +129,13 @@ defmodule Bearings.Dailies do
       )
 
     case supporter do
+      %Supporter{include_private: true} ->
+        daily = get_daily(date, username)
+        {:ok, %{daily: daily, supporter: supporter}}
+
       %Supporter{} ->
-        {:ok, %{daily: get_daily(date, username), supporter: supporter}}
+        daily = get_daily(date, username)
+        {:ok, %{daily: %{daily | personal_journal: nil}, supporter: supporter}}
 
       _ ->
         {:error, :not_authorized}
