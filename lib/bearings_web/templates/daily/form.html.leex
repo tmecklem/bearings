@@ -36,7 +36,7 @@
 <% end %>
 
 <div class="form-group goals-form row">
-  <%= content_tag(:label, "Goals", for: "goals", class: "col-sm-3 text-sm-right") %>
+  <%= content_tag(:label, "Goals", for: "goals", class: "col-sm-3 col-form-label text-sm-right") %>
   <div class="col-sm-9">
     <%= inputs_for f, :goals, fn g -> %>
     <div class="row u-push-sm-top">
@@ -57,7 +57,7 @@
 </div>
 
 <div class="form-group row">
-  <div class="col-sm-3 text-sm-right u-push-md-left">
+  <div class="col-sm-3 text-sm-right">
     <%= label f, :daily_plan, "Plan" %>
     <p class="form-text text-muted small-text">Enter your daily plan here. This will be visible by you and anyone who is a supporter.</p>
   </div>
@@ -69,7 +69,7 @@
 </div>
 
 <div class="form-group row">
-  <div class="col-sm-3 text-sm-right u-push-md-left">
+  <div class="col-sm-3 text-sm-right">
     <%= label f, :personal_journal, "Personal Journal" %>
     <div class="text-muted">Optional</div>
     <p class="form-text text-muted small-text">This is a journal area for you. It will be only be visible to you by default.</p>
