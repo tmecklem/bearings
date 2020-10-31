@@ -1,11 +1,16 @@
 <div class="daily-title">
-  <div class="bg-secondary"><h3 class="text-light p-3">Daily Plan</h3></div>
-
-  <div class="col-12"><%= Timex.format!(@daily.date, "%a, %B %e", :strftime) %></div>
+  <div class="row">
+    <div class="col-12 u-flex">
+      <h3 class="col-9 text-light p-3 bg-secondary">Daily Plan</h3>
+      <h3 class="col-3 text-light p-3 bg-secondary u-text-right"><%= Timex.format!(@daily.date, "%a, %B %e", :strftime) %></h3>
+    </div>
+  </div>
   <div>
     <%= if @current_user.id == @daily.owner_id && !is_nil(@daily.daily_views) do %>
       <%= for daily_view <- @daily.daily_views do %>
-        <%= img_tag "#{daily_view.viewer.avatar}&size=120", class: "avatar", title: "#{daily_view.viewer.username} - #{Timex.format!(daily_view.date, "%Y-%m-%d", :strftime)}" %>
+        <div class="supporter">
+          <%= img_tag "#{daily_view.viewer.avatar}&size=120", class: "avatar", title: "#{daily_view.viewer.username} - #{Timex.format!(daily_view.date, "%Y-%m-%d", :strftime)}" %>
+        </div>
       <% end %>
     <% end %>
   </div>

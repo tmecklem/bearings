@@ -7,3 +7,12 @@
     }
   }
 }
+
+.supporter {
+  float: right;
+  margin: 15px;
+
+  & img {
+    border-radius: 50%;
+  }
+}
