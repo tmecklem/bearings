@@ -10,75 +10,76 @@
     <% end %>
   </div>
 </div>
+<div class="col-lg-12 mx-auto">
+  <%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 || Enum.count(@daily.goals) > 0 do %>
+    <div class="row pl-3 pl-sm-0 pt-4">
+      <h3 class="offset-sm-3 col-sm-9 col-12">Goals</h3>
+    </div>
+    <%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 do %>
+      <div class="row pl-3 pl-sm-0 pt-2 pt-sm-4">
+        <div class="col-sm-3 col-12 text-sm-right">
+          <div>Previous Goals</div>
+          <div class="sub text-muted"><%= Timex.format!(@previous_daily.date, "%A, %B %e", :strftime) %></div>
+        </div>
+        <div class="col-sm-9 col-12 mt-3 mt-sm-0 ml-3 ml-sm-0">
+          <%= for goal <- @previous_daily.goals do %>
+            <div data-test="goal" data-test-id="<%= goal.id %>" class="goal">
+              <span data-test="completed">
+                <%= if goal.completed do %>
+                  ☑
+                <% else %>
+                  ☐
+                <% end %>
+              </span>
+              <span data-test="body"><%= goal.body %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
 
-<%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 || Enum.count(@daily.goals) > 0 do %>
-  <div class="row pl-3 pl-sm-0 pt-4">
-    <h3 class="offset-sm-3 col-sm-9 col-12">Goals</h3>
+    <%= if Enum.count(@daily.goals) > 0 do %>
+      <div class="row pl-3 pl-sm-0 my-4 pb-4 border-bottom">
+        <div class="col-12 col-sm-3 text-sm-right">Goals</div>
+        <div class="goals-list col-12 col-sm-9 mt-3 mt-sm-0 ml-3 ml-sm-0">
+          <%= for goal <- @daily.goals do %>
+            <div data-test="goal" data-test-id="<%= goal.id %>" class="goal">
+              <span data-test="completed">
+                <%= if goal.completed do %>
+                  ☑
+                <% else %>
+                  ☐
+                <% end %>
+              </span>
+              <span data-test="body"><%= goal.body %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="row pl-3 pl-sm-0">
+    <div class="col-sm-3 text-right"></div>
+    <div class="markdown-show col-12 col-sm-9"><%= to_html(@daily.daily_plan) %></div>
   </div>
-  <%= if @previous_daily && Enum.count(@previous_daily.goals) > 0 do %>
-    <div class="row pl-3 pl-sm-0 pt-2 pt-sm-4">
-      <div class="col-sm-3 col-12 text-sm-right">
-        <div>Previous Goals</div>
-        <div class="sub text-muted"><%= Timex.format!(@previous_daily.date, "%A, %B %e", :strftime) %></div>
-      </div>
-      <div class="col-sm-9 col-12 mt-3 mt-sm-0 ml-3 ml-sm-0">
-        <%= for goal <- @previous_daily.goals do %>
-          <div data-test="goal" data-test-id="<%= goal.id %>" class="goal">
-            <span data-test="completed">
-              <%= if goal.completed do %>
-                ☑
-              <% else %>
-                ☐
-              <% end %>
-            </span>
-            <span data-test="body"><%= goal.body %></span>
-          </div>
-        <% end %>
-      </div>
+
+  <%= if @current_user.id == @daily.owner_id || @supporter.include_private == true do %>
+    <div class="row border-top border-bottom pt-4 pl-3 pl-sm-0" data-test="personal_journal">
+      <div class="col-sm-3 text-sm-right text-baseline pt-1">Journal</div>
+      <div class="markdown-show col-sm-9 pt-3 pt-sm-0"><%= to_html(@daily.personal_journal) %></div>
     </div>
   <% end %>
 
-  <%= if Enum.count(@daily.goals) > 0 do %>
-    <div class="row pl-3 pl-sm-0 my-4 pb-4 border-bottom">
-      <div class="col-12 col-sm-3 text-sm-right">Goals</div>
-      <div class="goals-list col-12 col-sm-9 mt-3 mt-sm-0 ml-3 ml-sm-0">
-        <%= for goal <- @daily.goals do %>
-          <div data-test="goal" data-test-id="<%= goal.id %>" class="goal">
-            <span data-test="completed">
-              <%= if goal.completed do %>
-                ☑
-              <% else %>
-                ☐
-              <% end %>
-            </span>
-            <span data-test="body"><%= goal.body %></span>
-          </div>
+  <div class="row mt-1 daily-footer py-2 px-4">
+    <div class="col-12">
+      <%= link "Back to List", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Index), class: "btn btn-secondary-outline" %>
+      <span class="float-right">
+        <%= if @current_user.id == @daily.owner_id do %>
+        <button phx-click="delete" class="btn btn-danger">Delete</button>
+          <%= link "Edit", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily), class: "btn btn-secondary ml-3" %>
         <% end %>
-      </div>
+      </span>
     </div>
-  <% end %>
-<% end %>
-
-<div class="row pl-3 pl-sm-0">
-  <div class="col-sm-3 text-right"></div>
-  <div class="markdown-show col-12 col-sm-9"><%= to_html(@daily.daily_plan) %></div>
-</div>
-
-<%= if @current_user.id == @daily.owner_id || @supporter.include_private == true do %>
-  <div class="row border-top border-bottom pt-4 pl-3 pl-sm-0" data-test="personal_journal">
-    <div class="col-sm-3 text-sm-right text-baseline pt-1">Journal</div>
-    <div class="markdown-show col-sm-9 pt-3 pt-sm-0"><%= to_html(@daily.personal_journal) %></div>
-  </div>
-<% end %>
-
-<div class="row mt-1 daily-footer py-2 px-4">
-  <div class="col-12">
-    <%= link "Back to List", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Index), class: "btn btn-secondary-outline" %>
-    <span class="float-right">
-      <%= if @current_user.id == @daily.owner_id do %>
-      <button phx-click="delete" class="btn btn-danger">Delete</button>
-        <%= link "Edit", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily), class: "btn btn-secondary ml-3" %>
-      <% end %>
-    </span>
   </div>
 </div>
