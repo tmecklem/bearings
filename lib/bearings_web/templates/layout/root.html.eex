@@ -14,7 +14,7 @@
   <body>
     <header class="header">
       <nav class="navbar navbar-expand-md">
-        <a class="navbar-brand" href="#">Bearings</a>
+        <span class="navbar-brand">Bearings</span>
         <button class="navbar-dark navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
