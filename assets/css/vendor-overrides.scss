@@ -1,0 +1,40 @@
+.navbar {
+  border-bottom: 1px solid white;
+  background-color: #2e375c;
+
+
+  & a {
+    color: white;
+  }
+
+  & a:hover {
+    color: #9fabdb;
+  }
+
+  &-brand {
+    font-weight: bold;
+  }
+}
+
+.nav-link {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.navbar-expand-md .navbar-collapse {
+  justify-content: flex-end;
+}
+
+.dropdown-menu {
+  right: 0px;
+  left: auto;
+  border-radius: 0px;
+  background-color: #2e375c;
+  margin-top: 9px;
+  border: none;
+
+}
+
+.dropdown-item:hover {
+  background-color: #2e375c;
+}
