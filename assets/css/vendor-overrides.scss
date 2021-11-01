@@ -1,0 +1,26 @@
+.navbar {
+  border-bottom: 1px solid white;
+  background-color: #2e375c;
+
+
+  & a {
+    color: white;
+  }
+
+  & a:hover {
+    color: #9fabdb;
+  }
+
+  &-brand {
+    font-weight: bold;
+  }
+}
+
+.nav-link {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.navbar-expand-md .navbar-collapse {
+  justify-content: flex-end;
+}
