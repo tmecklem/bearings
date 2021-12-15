@@ -37,9 +37,11 @@ defmodule BearingsWeb.FakeOAuthServer do
           login: user.username,
           name: user.name
         }
-        |> Poison.encode!()
+        |> Jason.encode!()
 
-      Conn.resp(conn, 200, body)
+      conn
+      |> Conn.put_resp_header("content-type", "application/json")
+      |> Conn.resp(200, body)
     end)
   end
 end

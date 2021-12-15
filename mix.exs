@@ -5,7 +5,7 @@ defmodule Bearings.Mixfile do
     [
       app: :bearings,
       version: "0.0.1",
-      elixir: "~> 1.4",
+      elixir: "~> 1.13",
       elixirc_options: [warnings_as_errors: true],
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -41,25 +41,25 @@ defmodule Bearings.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:bypass, "~> 0.8", only: :test},
-      {:excoveralls, "~> 0.8", only: :test},
-      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
-      {:earmark, "~> 1.2"},
-      {:ecto_sql, "~> 3.3"},
-      {:ex_machina, "~> 2.2", only: [:dev, :test]},
+      {:bypass, "~> 2.1", only: :test},
+      {:excoveralls, "~> 0.14", only: :test},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:earmark, "~> 1.4"},
+      {:ecto_sql, "~> 3.7"},
+      {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:gettext, "~> 0.11"},
-      {:oauth2, "~> 0.9.2"},
-      {:phoenix, "~> 1.4.3"},
-      {:phoenix_ecto, "~> 4.1"},
-      {:phoenix_html, "~> 2.10"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:phoenix_live_view, "~> 0.3"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:plug_cowboy, "~> 1.0"},
-      {:poison, "~> 3.1.0"},
-      {:postgrex, ">= 0.0.0"},
-      {:timex, "~> 3.6"},
-      {:wallaby, "~> 0.26.0", runtime: false, only: :test}
+      {:jason, "~> 1.2.2"},
+      {:oauth2, "~> 2.0"},
+      {:phoenix, "~> 1.6"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:phoenix_html, "~> 3.1"},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
+      {:phoenix_live_view, "~> 0.17"},
+      {:phoenix_pubsub, "~> 2.0"},
+      {:plug_cowboy, "~> 2.5.2"},
+      {:postgrex, "~> 0.15"},
+      {:timex, "~> 3.7"},
+      {:wallaby, "~> 0.29", runtime: false, only: :test}
     ]
   end
 

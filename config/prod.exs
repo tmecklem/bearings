@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :bearings, BearingsWeb.Endpoint,
   load_from_system_env: true,

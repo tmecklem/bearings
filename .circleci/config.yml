@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/elixir:1.9.1-node-browsers
+      - image: circleci/elixir:1.13-node-browsers
       - image: circleci/postgres:12.3
         environment:
           POSTGRES_USER: postgres
@@ -43,7 +43,7 @@ jobs:
 
   deploy_staging:
     docker:
-      - image: circleci/elixir:1.9.1-node-browsers
+      - image: circleci/elixir:1.13-node-browsers
       - image: circleci/postgres:11.3
 
     steps:
@@ -64,7 +64,7 @@ jobs:
 
   deploy_production:
     docker:
-      - image: circleci/elixir:1.9.1-node-browsers
+      - image: circleci/elixir:1.13-node-browsers
       - image: circleci/postgres:11.3
 
     steps:

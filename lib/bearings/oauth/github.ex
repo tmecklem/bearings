@@ -14,6 +14,8 @@ defmodule Bearings.OAuth.GitHub do
     Application.get_env(:bearings, __MODULE__)
     |> Keyword.merge(strategy: GitHub)
     |> Client.new()
+    |> Client.put_serializer("application/vnd.api+json", Jason)
+    |> Client.put_serializer("application/json", Jason)
   end
 
   def authorize_url!(params \\ []) do

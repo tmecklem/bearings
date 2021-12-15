@@ -3,7 +3,7 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
-use Mix.Config
+import Config
 
 # General application configuration
 config :bearings, ecto_repos: [Bearings.Repo]
@@ -13,7 +13,7 @@ config :bearings, BearingsWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "6cbA2wX7JGHPv6PHCXyy81kG3RdNpb/b1k4gXEFyEgma4mMr+jZvNa/KH3GeJSQX",
   render_errors: [view: BearingsWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Bearings.PubSub, adapter: Phoenix.PubSub.PG2],
+  pubsub_server: Bearings.PubSub,
   live_view: [
     signing_salt: "mk5mb/ayxJPqufC6TcYE1tm+qdUqU4Qo"
   ]
@@ -30,6 +30,8 @@ config :bearings, Bearings.OAuth.GitHub,
   site: "https://api.github.com",
   authorize_url: "https://github.com/login/oauth/authorize",
   token_url: "https://github.com/login/oauth/access_token"
+
+config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -5,11 +5,10 @@ defmodule Bearings.Application do
   alias BearingsWeb.Endpoint
 
   def start(_type, _args) do
-    import Supervisor.Spec
-
     children = [
-      supervisor(Bearings.Repo, []),
-      supervisor(BearingsWeb.Endpoint, [])
+      Bearings.Repo,
+      BearingsWeb.Endpoint,
+      {Phoenix.PubSub, [name: Bearings.PubSub, adapter: Phoenix.PubSub.PG2]}
     ]
 
     opts = [strategy: :one_for_one, name: Bearings.Supervisor]
