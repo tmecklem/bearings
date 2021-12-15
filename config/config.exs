@@ -24,9 +24,9 @@ config :logger, :console,
   metadata: [:user_id]
 
 config :bearings, Bearings.OAuth.GitHub,
-  client_id: System.get_env("GITHUB_CLIENT_ID"),
-  client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
-  redirect_uri: System.get_env("GITHUB_REDIRECT_URI"),
+  client_id: System.get_env("GITHUB_CLIENT_ID") || "",
+  client_secret: System.get_env("GITHUB_CLIENT_SECRET") || "",
+  redirect_uri: System.get_env("GITHUB_REDIRECT_URI") || "",
   site: "https://api.github.com",
   authorize_url: "https://github.com/login/oauth/authorize",
   token_url: "https://github.com/login/oauth/access_token"
@@ -35,4 +35,4 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"
