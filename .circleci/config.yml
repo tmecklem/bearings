@@ -29,10 +29,6 @@ jobs:
       - run: mix credo --strict
       - run: mix format --check-formatted
       - run:
-          name: eslint
-          command: ./node_modules/.bin/eslint --format=junit --output-file="../test-results/eslint/junit.xml" js/**/*.js
-          working_directory: assets
-      - run:
           name: build assets
           command: npm install && npm run build
           working_directory: assets
