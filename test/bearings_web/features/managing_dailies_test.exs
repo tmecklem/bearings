@@ -18,11 +18,14 @@ defmodule ManagingDailiesTest do
     daily = build(:daily)
 
     session
+    |> take_screenshot
     |> DailiesEditPage.visit_add_page(user)
+    |> take_screenshot
     |> DailiesEditPage.fill_form(daily)
+    |> take_screenshot
     |> DailiesEditPage.save()
-
-    assert Page.flash_info()
+    |> take_screenshot
+    |> assert_has(Page.flash_info())
   end
 
   test "marking previous day's goal as completed on create", %{session: session, user: user} do

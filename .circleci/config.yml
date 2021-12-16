@@ -30,7 +30,7 @@ jobs:
       - run: mix format --check-formatted
       - run:
           name: build assets
-          command: mix phx.digest
+          command: mix assets.deploy
       - run: mix ecto.create
       - run: MIX_ENV=test mix coveralls.circle
       - store_test_results:
