@@ -2,15 +2,13 @@ defmodule BearingsWeb.DailiesLive.Edit do
   @moduledoc """
   This module is responsible to handle editing a daily
   """
-  use Phoenix.LiveView
+  use BearingsWeb, :live_view
 
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.Daily
-  alias BearingsWeb.DailyView
   alias BearingsWeb.Router.Helpers, as: Routes
   alias Ecto.Changeset
-  alias Phoenix.View
 
   def mount(%{"id" => date_string, "username" => username}, session, socket) do
     user_id = session["user_id"]
@@ -46,8 +44,6 @@ defmodule BearingsWeb.DailiesLive.Edit do
     {:ok,
      assign(socket, changeset: changeset, previous_changeset: previous_changeset, daily: daily)}
   end
-
-  def render(assigns), do: View.render(DailyView, "edit.html", assigns)
 
   def handle_event("validate", %{"daily" => daily_params} = params, socket) do
     changeset =

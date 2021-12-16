@@ -1,0 +1,16 @@
+<main role="main" class="container">
+  <%= if live_flash(@flash, :info) do %>
+    <p class="alert alert-info" role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="info" data-test="flash_info"><%= live_flash(@flash, :info) %></p>
+  <% end %>
+
+  <%= if live_flash(@flash, :error) do %>
+    <p class="alert alert-danger" role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="error" data-test="flash_danger"><%= live_flash(@flash, :error) %></p>
+  <% end %>
+
+  HERE
+  <%= @inner_content %>
+</main>

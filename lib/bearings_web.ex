@@ -62,6 +62,20 @@ defmodule BearingsWeb do
     end
   end
 
+  # since this app came along from traditional through early liveview releases,
+  # some of the templating is not broken up ideally into components.
+  # This is largely a stopgap for that transition work
+  def live_view_subtemplate do
+    quote do
+      use Phoenix.View,
+        root: "lib/bearings_web",
+        namespace: BearingsWeb,
+        pattern: "**/*"
+
+      unquote(view_helpers())
+    end
+  end
+
   defp view_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)

@@ -3,15 +3,13 @@ defmodule BearingsWeb.DailiesLive.New do
   This module is responsible to handle creating a new daily
   """
 
-  use Phoenix.LiveView
+  use BearingsWeb, :live_view
 
   alias Bearings.Account
   alias Bearings.Dailies
   alias Bearings.Dailies.{Daily, Template}
-  alias BearingsWeb.DailyView
   alias BearingsWeb.Router.Helpers, as: Routes
   alias Ecto.Changeset
-  alias Phoenix.View
 
   def mount(params, session, socket) do
     user_id = session["user_id"]
@@ -52,8 +50,6 @@ defmodule BearingsWeb.DailiesLive.New do
 
     {:ok, assign(socket, changeset: changeset, previous_changeset: previous_changeset)}
   end
-
-  def render(assigns), do: View.render(DailyView, "new.html", assigns)
 
   def handle_event("validate", %{"daily" => daily_params} = params, socket) do
     changeset =
@@ -100,7 +96,9 @@ defmodule BearingsWeb.DailiesLive.New do
 
           socket
           |> put_flash(:info, "Created Successfully")
-          |> redirect(to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, user, daily))
+          |> push_redirect(
+            to: Routes.live_path(socket, BearingsWeb.DailiesLive.Show, user, daily)
+          )
 
         {:error, %Changeset{} = changeset} ->
           assign(socket, changeset: changeset)

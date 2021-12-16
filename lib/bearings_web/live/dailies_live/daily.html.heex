@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-9 col-12 mt-3 mt-sm-0 ml-3 ml-sm-0">
           <%= for goal <- @previous_daily.goals do %>
-            <div data-test="goal" data-test-id="<%= goal.id %>" class="goal">
+            <div data-test="goal" data-test-id={goal.id} class="goal">
               <span data-test="completed">
                 <%= if goal.completed do %>
                   ☑
@@ -48,7 +48,7 @@
         <div class="col-12 col-sm-3 text-sm-right">Goals</div>
         <div class="goals-list col-12 col-sm-9 mt-3 mt-sm-0 ml-3 ml-sm-0">
           <%= for goal <- @daily.goals do %>
-            <div data-test="goal" data-test-id="<%= goal.id %>" class="goal">
+            <div data-test="goal" data-test-id={goal.id} class="goal">
               <span data-test="completed">
                 <%= if goal.completed do %>
                   ☑
@@ -78,11 +78,11 @@
 
   <div class="row mt-1 daily-footer py-2 px-4">
     <div class="col-12">
-      <%= link "Back to List", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Index), class: "btn btn-secondary-outline" %>
+      <%= live_redirect "Back to List", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Index), class: "btn btn-secondary-outline" %>
       <span class="float-right">
         <%= if @current_user.id == @daily.owner_id do %>
         <button phx-click="delete" class="btn btn-danger">Delete</button>
-          <%= link "Edit", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily), class: "btn btn-secondary ml-3" %>
+          <%= live_redirect "Edit", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily), class: "btn btn-secondary ml-3" %>
         <% end %>
       </span>
     </div>
