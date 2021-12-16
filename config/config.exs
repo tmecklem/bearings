@@ -8,14 +8,25 @@ import Config
 # General application configuration
 config :bearings, ecto_repos: [Bearings.Repo]
 
+config :bearings, Bearings.Mailer, adapter: Swoosh.Adapters.Local
+config :swoosh, :api_client, false
+
 # Configures the endpoint
 config :bearings, BearingsWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "6cbA2wX7JGHPv6PHCXyy81kG3RdNpb/b1k4gXEFyEgma4mMr+jZvNa/KH3GeJSQX",
-  render_errors: [view: BearingsWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: BearingsWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Bearings.PubSub,
   live_view: [
     signing_salt: "mk5mb/ayxJPqufC6TcYE1tm+qdUqU4Qo"
+  ]
+
+config :esbuild,
+  version: "0.12.17",
+  default: [
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
 # Configures Elixir's Logger

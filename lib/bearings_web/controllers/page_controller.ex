@@ -10,6 +10,6 @@ defmodule BearingsWeb.PageController do
   end
 
   def index(conn, _params, _) do
-    redirect(conn, to: live_path(conn, BearingsWeb.DailiesLive.Index))
+    redirect(conn, to: Routes.live_path(conn, BearingsWeb.DailiesLive.Index))
   end
 end

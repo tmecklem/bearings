@@ -35,7 +35,7 @@ defmodule BearingsWeb.TemplateController do
       {:ok, _template} ->
         conn
         |> put_flash(:info, "Template Changed Successfully")
-        |> redirect(to: live_path(conn, BearingsWeb.DailiesLive.Index))
+        |> redirect(to: Routes.live_path(conn, BearingsWeb.DailiesLive.Index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(
@@ -57,7 +57,7 @@ defmodule BearingsWeb.TemplateController do
       {:ok, _template} ->
         conn
         |> put_flash(:info, "Template Changed Successfully")
-        |> redirect(to: live_path(conn, BearingsWeb.DailiesLive.Index))
+        |> redirect(to: Routes.live_path(conn, BearingsWeb.DailiesLive.Index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(
@@ -74,7 +74,7 @@ defmodule BearingsWeb.TemplateController do
     else
       conn
       |> put_flash(:error, "You must be logged in to manage dailies")
-      |> redirect(to: page_path(conn, :index))
+      |> redirect(to: Routes.page_path(conn, :index))
       |> halt()
     end
   end

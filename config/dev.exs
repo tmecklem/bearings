@@ -1,30 +1,27 @@
 import Config
 
 config :bearings, BearingsWeb.Endpoint,
-  http: [port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "./assets/node_modules/parcel-bundler/bin/cli.js",
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    npx: [
+      "gulp",
       "watch",
-      "./assets/js/app.js",
-      "--out-dir",
-      "priv/static/js",
-      "--public-url",
-      "./"
+      cd: Path.expand("../assets", __DIR__)
     ]
   ]
 
 config :bearings, BearingsWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
-      ~r{priv/gettext/.*(po)$},
-      ~r{lib/bearings_web/views/.*(ex)$},
-      ~r{lib/bearings_web/templates/.*(eex)$},
-      ~r{lib/bearings_web/live/.*(ex)$}
+      ~r"priv/static/.*(js|css|scss|sass|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/gettext/.*(po)$",
+      ~r"lib/bearings_web/(live|views)/.*(ex)$",
+      ~r"lib/bearings_web/templates/.*(eex)$"
     ]
   ]
 

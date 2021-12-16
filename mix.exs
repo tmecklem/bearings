@@ -45,6 +45,7 @@ defmodule Bearings.Mixfile do
       {:excoveralls, "~> 0.14", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.4"},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:ecto_sql, "~> 3.7"},
       {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:gettext, "~> 0.11"},
@@ -58,6 +59,7 @@ defmodule Bearings.Mixfile do
       {:phoenix_pubsub, "~> 2.0"},
       {:plug_cowboy, "~> 2.5.2"},
       {:postgrex, "~> 0.15"},
+      {:swoosh, "~> 1.3"},
       {:timex, "~> 3.7"},
       {:wallaby, "~> 0.29", runtime: false, only: :test}
     ]

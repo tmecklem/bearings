@@ -3,7 +3,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 // import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
-import '../css/app.scss'
 import 'phoenix_html'
 import './live-view.js'
 import 'bootstrap'

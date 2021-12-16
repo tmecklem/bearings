@@ -8,7 +8,9 @@
     <meta name="author" content="">
 
     <title></title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/js/app.css") %>">
+    <%= csrf_meta_tag() %>
+    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/assets/app.css") %>"/>
+    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/assets/app.js") %>"></script>
   </head>
 
   <body>
@@ -33,14 +35,14 @@
                   <%= @current_user.name %>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <%= link "Edit Template", to: template_path(@conn, :edit), class: "dropdown-item" %>
-                  <%= link "Logout", to: auth_path(@conn, :delete), method: "delete", class: "dropdown-item" %>
+                  <%= link "Edit Template", to: Routes.template_path(@conn, :edit), class: "dropdown-item" %>
+                  <%= link "Logout", to: Routes.auth_path(@conn, :delete), method: "delete", class: "dropdown-item" %>
                 </div>
               </li>
             </ul>
           <% else %>
             <div class="navbar-nav">
-              <%= link to: auth_path(@conn, :index, :github), class: "nav-item nav-link", "data-test": "login" do %>
+              <%= link to: Routes.auth_path(@conn, :index, :github), class: "nav-item nav-link", "data-test": "login" do %>
                 Login with <i class="fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
               <% end %>
             </div>
@@ -60,7 +62,5 @@
       <%= @inner_content %>
 
     </div> <!-- /container -->
-    <%= csrf_meta_tag() %>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

@@ -6,7 +6,7 @@
 
     <div class="col-lg-12 mx-auto">
 
-      <%= form_for @changeset, template_path(@conn, :update), [class: "form"], fn(f) -> %>
+      <%= form_for @changeset, Routes.template_path(@conn, :update), [class: "form"], fn(f) -> %>
 
       <div class="form-group row u-push-lg-top">
         <div class="col-sm-3 text-sm-right">

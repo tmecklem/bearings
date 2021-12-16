@@ -1,6 +1,5 @@
 defmodule BearingsWeb.Router do
   use BearingsWeb, :router
-  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -39,5 +38,13 @@ defmodule BearingsWeb.Router do
     get("/:provider", AuthController, :index)
     get("/:provider/callback", AuthController, :callback)
     delete("/logout", AuthController, :delete)
+  end
+
+  if Mix.env() == :dev do
+    scope "/dev" do
+      pipe_through(:browser)
+
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
+    end
   end
 end
