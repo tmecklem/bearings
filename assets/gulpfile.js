@@ -39,4 +39,6 @@ gulp.task('watch', gulp.series('scss', 'fonts', function (done) {
   done();
 }));
 
+gulp.task('compile', gulp.series('scss', 'fonts'));
+
 gulp.task('default', gulp.series('watch', function () {}));

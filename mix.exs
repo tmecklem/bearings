@@ -73,10 +73,14 @@ defmodule Bearings.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "assets.deploy": ["esbuild default --minify", "phx.digest"],
+      "assets.deploy": ["esbuild default --minify", &build_css/1, "phx.digest"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
+  end
+
+  defp build_css(_) do
+    Mix.shell().cmd("cd assets && npm exec gulp compile && cd ..")
   end
 end
