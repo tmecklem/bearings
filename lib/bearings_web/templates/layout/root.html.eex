@@ -43,7 +43,7 @@
           <% else %>
             <div class="navbar-nav">
               <%= link to: Routes.auth_path(@conn, :index, :github), class: "nav-item nav-link", "data-test": "login" do %>
-                Login with <i class="fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
+                Login with <i class="fab fa-github fa-2x" style="vertical-align: middle; padding-left: 3px;"></i>
               <% end %>
             </div>
           <% end %>

@@ -28,7 +28,13 @@ gulp.task('scss', function (done) {
     .on('end', done);
 });
 
-gulp.task('watch', gulp.series('scss', function (done) {
+gulp.task('fonts', function() {
+  return gulp.src([
+    'node_modules/@fortawesome/fontawesome-free/webfonts/*'])
+    .pipe(gulp.dest(`${outputFolder}/webfonts`));
+});
+
+gulp.task('watch', gulp.series('scss', 'fonts', function (done) {
   gulp.watch(watchedResources, gulp.parallel('scss'));
   done();
 }));
