@@ -26,7 +26,7 @@
 
   <div class="row my-2">
     <div class="col-12">
-      <%= live_redirect "Plan a New Day", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.New, @current_user), class: "btn btn-light float-right" %>
+      <.link navigate={Routes.live_path(@socket, BearingsWeb.DailiesLive.New, @current_user)} class="btn btn-light float-right">Plan a New Day</.link>
     </div>
   </div>
 </div>

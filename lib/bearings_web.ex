@@ -16,6 +16,7 @@ defmodule BearingsWeb do
   below. Instead, define any helper function in modules
   and import those modules here.
   """
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
   def controller do
     quote do
@@ -23,6 +24,8 @@ defmodule BearingsWeb do
       import Plug.Conn
       import BearingsWeb.Gettext
       import Phoenix.LiveView.Controller, only: [live_render: 3]
+
+      unquote(verified_routes())
 
       alias BearingsWeb.Router.Helpers, as: Routes
     end
@@ -82,7 +85,8 @@ defmodule BearingsWeb do
       use Phoenix.HTML
 
       # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
+      # import Phoenix.LiveView.Helpers
+      import Phoenix.Component
       import BearingsWeb.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)
@@ -91,7 +95,19 @@ defmodule BearingsWeb do
       import BearingsWeb.ErrorHelpers
       import BearingsWeb.Gettext
       import BearingsWeb.MarkdownHelper
+
+      unquote(verified_routes())
+
       alias BearingsWeb.Router.Helpers, as: Routes
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: BearingsWeb.Endpoint,
+        router: BearingsWeb.Router,
+        statics: BearingsWeb.static_paths()
     end
   end
 

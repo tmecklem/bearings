@@ -24,7 +24,7 @@ defmodule BearingsWeb.Endpoint do
     at: "/",
     from: :bearings,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: BearingsWeb.static_paths()
   )
 
   # Code reloading can be explicitly enabled under the

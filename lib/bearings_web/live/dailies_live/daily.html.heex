@@ -78,11 +78,11 @@
 
   <div class="row mt-1 daily-footer py-2 px-4">
     <div class="col-12">
-      <%= live_redirect "Back to List", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Index), class: "btn btn-secondary-outline" %>
+      <.link navigate={Routes.live_path(@socket, BearingsWeb.DailiesLive.Index)} class="btn btn-secondary-outline">Back to List</.link>
       <span class="float-right">
         <%= if @current_user.id == @daily.owner_id do %>
         <button phx-click="delete" class="btn btn-danger">Delete</button>
-          <%= live_redirect "Edit", to: Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily), class: "btn btn-secondary ml-3" %>
+          <.link navigate={Routes.live_path(@socket, BearingsWeb.DailiesLive.Edit, @current_user.username, @daily)} class="btn btn-secondary ml-3">Edit</.link>
         <% end %>
       </span>
     </div>
