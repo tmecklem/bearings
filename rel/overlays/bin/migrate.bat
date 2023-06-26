@@ -1,0 +1,1 @@
+call "%~dp0\bearings" eval Bearings.Release.migrate
